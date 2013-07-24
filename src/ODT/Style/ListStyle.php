@@ -4,6 +4,7 @@ namespace ODT\Style;
 
 use ODT\Common;
 use ODT\ListLevelProp;
+use ODT\NumberFormat;
 
 class ListStyle extends ContentAutoStyle
 {
@@ -25,11 +26,11 @@ class ListStyle extends ContentAutoStyle
      * Specifies that the list in this level is a numbered list.
      *
      * @param integer $level
-     * @param null $numFormat
-     * @param null $textstyle
+     * @param null|\ODT\NumberFormat $numFormat
+     * @param null|\ODT\Style\TextStyle $textstyle
      * @throws StyleException
      */
-    function setNumberLevel($level, $numFormat = null, $textstyle = null)
+    function setNumberLevel($level, NumberFormat $numFormat = null, TextStyle $textstyle = null)
     {
         if (Common::isNumeric($level, true)) {
             $this->levels[$level] = $this->contentDocument->createElement('text:list-level-style-number');
@@ -139,9 +140,9 @@ class ListStyle extends ContentAutoStyle
      * Set some properties of the list level specified.
      *
      * @param integer $level
-     * @param {@link ListLevelProp.html ListLevelProp} $levelProp
+     * @param \ODT\ListLevelProp $levelProp
      */
-    function setLevelProp($level, $levelProp)
+    function setLevelProp($level, ListLevelProp $levelProp)
     {
         if (Common::isNumeric($level, true)) {
             $element = $this->levels[$level];

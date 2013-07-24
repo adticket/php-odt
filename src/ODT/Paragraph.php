@@ -2,6 +2,7 @@
 
 namespace ODT;
 
+use ODT\Style\ParagraphStyle;
 use ODT\Style\RubyStyle;
 use ODT\Style\StyleConstants;
 use ODT\Style\TextStyle;
@@ -18,13 +19,7 @@ class Paragraph
      */
     private $pElement;
 
-    /**
-     *
-     * @param <type> $pStyle A ParagraphStyle object representing paragraph style properties
-     * @param bool $addToDocument
-     * @internal param \DOMDocument $contentDoc The DOMDocument instance of content.xml
-     */
-    public function __construct($pStyle = null, $addToDocument = true)
+    public function __construct(ParagraphStyle $pStyle = null, $addToDocument = true)
     {
         $this->documentContent = ODT::getInstance()->getDocumentContent();
         $this->pElement = $this->documentContent->createElement('text:p');
@@ -39,13 +34,13 @@ class Paragraph
     /**
      * Add a non-styled text
      * @param string $content
-     * @param null $styles
+     * @param null|\ODT\Style\TextStyle $style
      */
-    public function addText($content, $styles = null)
+    public function addText($content, TextStyle $style = null)
     {
-        if ($styles != null) {
+        if ($style != null) {
             $span = $this->documentContent->createElement('text:span', $content);
-            $span->setAttribute('text:style-name', $styles->getStyleName());
+            $span->setAttribute('text:style-name', $style->getStyleName());
             $this->pElement->appendChild($span);
         } else {
             $this->pElement->appendChild($this->documentContent->createTextNode($content));
@@ -57,9 +52,9 @@ class Paragraph
      * @param TextStyle $styles
      * @param string $content
      */
-//	public function addStyledText($styles, $content) {
+//	public function addStyledText($style, $content) {
 //		$span = $this->documentContent->createElement('text:span', $content);
-//		$span->setAttribute('text:style-name', $styles->getStyleName());
+//		$span->setAttribute('text:style-name', $style->getStyleName());
 //		$this->pElement->appendChild($span);
 //	}
 

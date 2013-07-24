@@ -13,8 +13,14 @@ class Table
     private $tableElement;
     private $columns;
     private $columnsStyles;
+    /**
+     * @var \DOMElement[]
+     */
     private $rows;
     private $rowsStyles;
+    /**
+     * @var \DOMElement[][]
+     */
     private $cells;
     private $cellsStyles;
     private $tableName;
@@ -187,7 +193,7 @@ class Table
         return $this->cellsStyles[$row][$col];
     }
 
-    function setStyle($tableStyle)
+    function setStyle(TableStyle $tableStyle)
     {
         if ($tableStyle->getStyleName() != $this->tableName) {
             $tableStyle->setStyleName($this->tableName);

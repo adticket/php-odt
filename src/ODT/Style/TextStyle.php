@@ -41,7 +41,7 @@ class TextStyle extends Style
             default:
                 throw new StyleException($transform . ' is not a valid "text-transform" value.');
         }
-        $element->setAtrribute('fo:text-transform', $attrTransform);
+        $element->setAttribute('fo:text-transform', $attrTransform);
         $this->styleElement->appendChild($element);
     }
 
