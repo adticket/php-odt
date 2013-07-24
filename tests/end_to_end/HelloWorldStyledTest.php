@@ -43,7 +43,7 @@ class HelloWorldStyledTest extends EndToEndTestCase
         $p = new Paragraph();
         $p->addText('Hello World!', $textStyle);
 
-        $odt->output($this->getOutputFilePath());
+        $odt->save($this->getOutputFilePath());
         exec("unzip {$this->getOutputFilePath()} -d {$this->getOutputUnzipPath()}");
 
 

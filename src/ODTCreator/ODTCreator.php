@@ -334,10 +334,7 @@ class ODTCreator
         return $this->documentContent;
     }
 
-    /**
-     * Write the document to the hard disk
-     */
-    public function output($fileName, $perm = 0777)
+    public function save($fileName, $perm = 0777)
     {
         $document = new \ZipArchive();
         $document->open($fileName, \ZipArchive::OVERWRITE);

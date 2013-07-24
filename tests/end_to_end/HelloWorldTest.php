@@ -37,7 +37,7 @@ class HelloWorldTest extends EndToEndTestCase
         $p = new Paragraph();
         $p->addText('Hello World!');
 
-        $odt->output($this->getOutputFilePath());
+        $odt->save($this->getOutputFilePath());
         exec("unzip {$this->getOutputFilePath()} -d {$this->getOutputUnzipPath()}");
 
 
