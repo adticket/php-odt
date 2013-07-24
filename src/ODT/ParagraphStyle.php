@@ -20,7 +20,7 @@ class ParagraphStyle extends Style
      */
     function setLineHeight($lineHeight)
     {
-        if (!isNumeric($lineHeight) && !isPercentage($lineHeight) && isLengthValue($lineHeight)) {
+        if (!Common::isNumeric($lineHeight) && !Common::isPercentage($lineHeight) && Common::isLengthValue($lineHeight)) {
             if ($lineHeight == StyleConstants::NORMAL) {
                 $lineHeight = 'normal';
             } else {
@@ -40,7 +40,7 @@ class ParagraphStyle extends Style
      */
     function setLineDistance($distance)
     {
-        if (!isNumeric($distance) && isLengthValue($distance)) {
+        if (!Common::isNumeric($distance) && Common::isLengthValue($distance)) {
             throw new StyleException('Invalid line-spacing value.');
         }
         $element = $this->styleDocument->createElement('style:paragraph-properties');
@@ -116,7 +116,7 @@ class ParagraphStyle extends Style
      */
     function setWidows($widows)
     {
-        if (!isNumeric($widows)) {
+        if (!Common::isNumeric($widows)) {
             throw new StyleException('Invalid widows value.');
         }
         $element = $this->styleDocument->createElement('style:paragraph-properties');
@@ -132,7 +132,7 @@ class ParagraphStyle extends Style
      */
     function setOrphans($orphans)
     {
-        if (!isNumeric($orphans)) {
+        if (!Common::isNumeric($orphans)) {
             throw new StyleException('Invalid orphans value.');
         }
         $element = $this->styleDocument->createElement('style:paragraph-properties');
@@ -149,10 +149,10 @@ class ParagraphStyle extends Style
      */
     function setHorizontalMargins($leftMargin = 0, $rightMargin = 0)
     {
-        if (!isNumeric($leftMargin) && !isLengthValue($leftMargin)) {
+        if (!Common::isNumeric($leftMargin) && !Common::isLengthValue($leftMargin)) {
             throw new StyleException('Invalid left-margin value');
         }
-        if (!isNumeric($rightMargin) && !isLengthValue($rightMargin)) {
+        if (!Common::isNumeric($rightMargin) && !Common::isLengthValue($rightMargin)) {
             throw new StyleException('Invalid right-margin value');
         }
         $element = $this->styleDocument->createElement('style:paragraph-properties');
@@ -170,10 +170,10 @@ class ParagraphStyle extends Style
      */
     function setVerticalMargin($topMargin, $bottomMargin)
     {
-        if (!isNumeric($topMargin, true) && !isLengthValue($topMargin, true)) {
+        if (!Common::isNumeric($topMargin, true) && !Common::isLengthValue($topMargin, true)) {
             throw new StyleException('Invalid top-margin value');
         }
-        if (!isNumeric($bottomMargin) && !isLengthValue($bottomMargin)) {
+        if (!Common::isNumeric($bottomMargin) && !Common::isLengthValue($bottomMargin)) {
             throw new StyleException('Invalid bottom-margin value');
         }
         $element = $this->styleDocument->createElement('style:paragraph-properties');
@@ -237,7 +237,7 @@ class ParagraphStyle extends Style
      */
     function setBackgroundColor($color)
     {
-        if ($color != StyleConstants::TRANSPARENT && !isColor($color)) {
+        if ($color != StyleConstants::TRANSPARENT && !Common::isColor($color)) {
             throw new StyleException('Invalid paragraph background color');
         }
         $element = $this->styleDocument->createElement('style:paragraph-properties');
@@ -319,7 +319,7 @@ class ParagraphStyle extends Style
      */
     function setTextIndent($textIndent)
     {
-        if (!isNumeric($textIndent) && !isLengthValue($textIndent)) {
+        if (!Common::isNumeric($textIndent) && !Common::isLengthValue($textIndent)) {
             throw new StyleException('Invalid text-indent value');
         }
         $element = $this->styleDocument->createElement('style:paragraph-properties');
@@ -339,7 +339,7 @@ class ParagraphStyle extends Style
     function setBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                        $borderWidth = StyleConstants::THIN, $position = '')
     {
-        if (!isColor($borderColor)) {
+        if (!Common::isColor($borderColor)) {
             throw new StyleException('Invalid border-color value');
         }
 
@@ -364,7 +364,7 @@ class ParagraphStyle extends Style
                 $borderWidth = 'medium';
                 break;
             default:
-                if (!isLengthValue($borderWidth, true)) {
+                if (!Common::isLengthValue($borderWidth, true)) {
                     throw new StyleException('Invalid border-width value');
                 }
         }
@@ -441,7 +441,7 @@ class ParagraphStyle extends Style
      */
     function setPadding($padding, $position = '')
     {
-        if (!isLengthValue($padding, true) && !isNumeric($padding)) {
+        if (!Common::isLengthValue($padding, true) && !Common::isNumeric($padding)) {
             throw new StyleException('Invalid padding value');
         }
         if (!empty($position)) {

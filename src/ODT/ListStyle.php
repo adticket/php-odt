@@ -24,7 +24,7 @@ class ListStyle extends ContentAutoStyle
      */
     function setNumberLevel($level, $numFormat = NULL, $textstyle = NULL)
     {
-        if (isNumeric($level, true)) {
+        if (Common::isNumeric($level, true)) {
             $this->levels[$level] = $this->contentDocument->createElement('text:list-level-style-number');
             $this->levels[$level]->setAttribute('text:level', $level);
             if ($numFormat != NULL) {
@@ -60,7 +60,7 @@ class ListStyle extends ContentAutoStyle
     function setBulletLevel($level, $bulletChar = StyleConstants::BULLET, $prefix = '', $suffix = '',
                             $textstyle = NULL)
     {
-        if (isNumeric($level, true)) {
+        if (Common::isNumeric($level, true)) {
             $this->levels[$level] = $this->contentDocument->createElement('text:list-level-style-bullet');
             $this->levels[$level]->setAttribute('text:level', $level);
             switch ($bulletChar) {
@@ -102,7 +102,7 @@ class ListStyle extends ContentAutoStyle
      */
     function setImageLevel($level, $image, $width = '.5cm', $height = '.5cm')
     {
-        if (isNumeric($level, true)) {
+        if (Common::isNumeric($level, true)) {
             $this->levels[$level] = $this->contentDocument->createElement('text:list-level-style-image');
             $this->levels[$level]->setAttribute('text:level', $level);
             $file = fopen($image, 'r');
@@ -136,7 +136,7 @@ class ListStyle extends ContentAutoStyle
      */
     function setLevelProp($level, $levelProp)
     {
-        if (isNumeric($level, true)) {
+        if (Common::isNumeric($level, true)) {
             $element = $this->levels[$level];
             $prop = $this->contentDocument->createElement('style:list-level-properties');
 

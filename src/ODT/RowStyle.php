@@ -16,7 +16,7 @@ class RowStyle extends ContentAutoStyle
 
     public function setMinHeight($minHeight)
     {
-        if (isLengthValue($minHeight, true)) {
+        if (Common::isLengthValue($minHeight, true)) {
             $this->rowProp->setAttribute('style:min-row-height', $minHeight);
         } else {
             throw new StyleException('Invalid min-height value');
@@ -25,7 +25,7 @@ class RowStyle extends ContentAutoStyle
 
     public function setHeight($height)
     {
-        if (isLengthValue($height, true)) {
+        if (Common::isLengthValue($height, true)) {
             $this->rowProp->setAttribute('style:row-height', $height);
         } else {
             throw new StyleException('Invalid height value');
@@ -56,7 +56,7 @@ class RowStyle extends ContentAutoStyle
      */
     public function setBgColor($color)
     {
-        if (!isColor($color)) {
+        if (!Common::isColor($color)) {
             throw new StyleException('Invalid color value');
         }
         $this->rowProp->setAttribute('fo:background-color', $color);

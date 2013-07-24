@@ -86,7 +86,7 @@ class ListLevelProp
      */
     public function setMinLabelWidth($minLabelWidth)
     {
-        if (isLengthValue($minLabelWidth, true)) {
+        if (Common::isLengthValue($minLabelWidth, true)) {
             $this->minLabelWidth = $minLabelWidth;
         } else {
             throw new StyleException('Invalid min-label-width value');
@@ -106,7 +106,7 @@ class ListLevelProp
      */
     public function setMinLabelDistance($minLabelDistance)
     {
-        if (isLengthValue($minLabelDistance, true)) {
+        if (Common::isLengthValue($minLabelDistance, true)) {
             $this->minLabelDistance = $minLabelDistance;
         } else {
             throw new StyleException('Invalid min-label-distance value');
@@ -155,7 +155,7 @@ class ListLevelProp
      */
     public function setImageWidth($imageWidth)
     {
-        if (isLengthValue($imageWidth, true)) {
+        if (Common::isLengthValue($imageWidth, true)) {
             $this->imageWidth = $imageWidth;
         } else {
             throw new StyleException('Invalid image width value');
@@ -175,7 +175,7 @@ class ListLevelProp
      */
     public function setImageHeight($imageHeight)
     {
-        if (isLengthValue($imageHeight, true)) {
+        if (Common::isLengthValue($imageHeight, true)) {
             $this->imageHeight = $imageHeight;
         } else {
             throw new StyleException('Invalid image height value');

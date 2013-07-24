@@ -53,7 +53,7 @@ class TextStyle extends Style
      */
     function setColor($color = '#000000')
     {
-        if (isColor($color)) {
+        if (Common::isColor($color)) {
             $element = $this->styleDocument->createElement('style:text-properties');
             $element->setAttribute('fo:color', $color);
             $this->styleElement->appendChild($element);
@@ -166,7 +166,7 @@ class TextStyle extends Style
      */
     function setFontSize($fontSize)
     {
-        if (isNumeric($fontSize) || isPercentage($fontSize)) {
+        if (Common::isNumeric($fontSize) || Common::isPercentage($fontSize)) {
             $element = $this->styleDocument->createElement('style:text-properties');
             $element->setAttribute('fo:font-size', $fontSize);
             $this->styleElement->appendChild($element);
@@ -232,7 +232,7 @@ class TextStyle extends Style
      */
     function setTextShadow($shadowColor = '#000000', $xCoord = 5, $yCoord = 5, $blurRadius = 0)
     {
-        if (isColor($shadowColor) && isNumeric($xCoord) && isNumeric($yCoord) && isNumeric($blurRadius)) {
+        if (Common::isColor($shadowColor) && Common::isNumeric($xCoord) && Common::isNumeric($yCoord) && Common::isNumeric($blurRadius)) {
             $element = $this->styleDocument->createElement('style:text-properties');
             $element->setAttribute('fo:text-shadow', "$shadowColor ${xCoord}px ${yCoord}px $blurRadius");
             $this->styleElement->appendChild($element);
@@ -311,7 +311,7 @@ class TextStyle extends Style
             default:
 //				throw new StyleException('Invalid underline-type value.');
         }
-        if (!isColor($underlineColor)) {
+        if (!Common::isColor($underlineColor)) {
             throw new StyleException('Invalid color value.');
         }
         $element = $this->styleDocument->createElement('style:text-properties');
@@ -387,7 +387,7 @@ class TextStyle extends Style
      */
     function setTextBackgroundColor($color)
     {
-        if ($color == 'transparent' || isColor($color)) {
+        if ($color == 'transparent' || Common::isColor($color)) {
             $element = $this->styleDocument->createElement('style:text-properties');
             $element->setAttribute('fo:background-color', $color);
             $this->styleElement->appendChild($element);

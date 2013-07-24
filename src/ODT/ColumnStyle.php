@@ -25,10 +25,10 @@ class ColumnStyle extends ContentAutoStyle
      */
     public function setWidth($width)
     {
-        if (isLengthValue($width, true) || isPercentage($width)) {
-            if (isLengthValue($width, true)) {
+        if (Common::isLengthValue($width, true) || Common::isPercentage($width)) {
+            if (Common::isLengthValue($width, true)) {
                 $this->colProp->setAttribute('style:column-width', $width);
-            } else if (isPercentage($width)) {
+            } else if (Common::isPercentage($width)) {
                 $this->colProp->setAttribute('style:rel-column-width', $width);
             }
         } else {

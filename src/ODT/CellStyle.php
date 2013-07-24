@@ -117,7 +117,7 @@ class CellStyle extends ContentAutoStyle
      */
     public function setBgColor($color)
     {
-        if (!isColor($color)) {
+        if (!Common::isColor($color)) {
             throw new StyleException('Invalid color value');
         }
         $this->cellProp->setAttribute('fo:background-color', $color);
@@ -198,7 +198,7 @@ class CellStyle extends ContentAutoStyle
     function setBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                        $borderWidth = StyleConstants::THIN, $position = '')
     {
-        if (!isColor($borderColor)) {
+        if (!Common::isColor($borderColor)) {
             throw new StyleException('Invalid border-color value');
         }
 
@@ -223,7 +223,7 @@ class CellStyle extends ContentAutoStyle
                 $borderWidth = 'medium';
                 break;
             default:
-                if (!isLengthValue($borderWidth, true)) {
+                if (!Common::isLengthValue($borderWidth, true)) {
                     throw new StyleException('Invalid border-width value');
                 }
         }
@@ -298,7 +298,7 @@ class CellStyle extends ContentAutoStyle
      */
     function setPadding($padding, $position = '')
     {
-        if (!isLengthValue($padding, true) && !isNumeric($padding)) {
+        if (!Common::isLengthValue($padding, true) && !Common::isNumeric($padding)) {
             throw new StyleException('Invalid padding value');
         }
         if (!empty($position)) {
@@ -372,7 +372,7 @@ class CellStyle extends ContentAutoStyle
 //	 * @param positive integer $angle
 //	 */
 //	function setRotationAngle($angle) {
-//		if (!isNumeric($angle, true)) {
+//		if (!Common::isNumeric($angle, true)) {
 //			throw new StyleException('Invalid rotation angle value');
 //		}
 //		$this->cellProp->setAttribute('style:rotation-angle', $angle);

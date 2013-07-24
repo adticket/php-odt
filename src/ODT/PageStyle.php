@@ -88,7 +88,7 @@ class PageStyle
      */
     function setPageSize($width, $height)
     {
-        if (!isLengthValue($width) && !isLengthValue($height)) {
+        if (!Common::isLengthValue($width) && !Common::isLengthValue($height)) {
             throw new StyleException('Invalid page-height value');
         }
         $this->pageWidth = $width;
@@ -158,10 +158,10 @@ class PageStyle
      */
     function setHorizontalMargin($leftMargin = 0, $rightMargin = 0)
     {
-        if (!isNumeric($leftMargin) && !isLengthValue($leftMargin)) {
+        if (!Common::isNumeric($leftMargin) && !Common::isLengthValue($leftMargin)) {
             throw new StyleException('Invalid left-margin value');
         }
-        if (!isNumeric($rightMargin) && !isLengthValue($rightMargin)) {
+        if (!Common::isNumeric($rightMargin) && !Common::isLengthValue($rightMargin)) {
             throw new StyleException('Invalid right-margin value');
         }
 
@@ -178,10 +178,10 @@ class PageStyle
      */
     function setVerticalMargin($topMargin, $bottomMargin)
     {
-        if (!isNumeric($topMargin, true) && !isLengthValue($topMargin, true)) {
+        if (!Common::isNumeric($topMargin, true) && !Common::isLengthValue($topMargin, true)) {
             throw new StyleException('Invalid top-margin value');
         }
-        if (!isNumeric($bottomMargin) && !isLengthValue($bottomMargin)) {
+        if (!Common::isNumeric($bottomMargin) && !Common::isLengthValue($bottomMargin)) {
             throw new StyleException('Invalid bottom-margin value');
         }
         $this->pageLayoutProperties->setAttribute('fo:margin-top', $topMargin);
@@ -200,7 +200,7 @@ class PageStyle
     function setBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                        $borderWidth = StyleConstants::THIN, $position = '')
     {
-        if (!isColor($borderColor)) {
+        if (!Common::isColor($borderColor)) {
             throw new StyleException('Invalid border-color value');
         }
 
@@ -225,7 +225,7 @@ class PageStyle
                 $borderWidth = 'medium';
                 break;
             default:
-                if (!isLengthValue($borderWidth, true)) {
+                if (!Common::isLengthValue($borderWidth, true)) {
                     throw new StyleException('Invalid border-width value');
                 }
         }
@@ -301,7 +301,7 @@ class PageStyle
      */
     function setPadding($padding, $position = '')
     {
-        if (!isLengthValue($padding, true) && !isNumeric($padding)) {
+        if (!Common::isLengthValue($padding, true) && !Common::isNumeric($padding)) {
             throw new StyleException('Invalid padding value');
         }
         if (!empty($position)) {
@@ -362,7 +362,7 @@ class PageStyle
      */
     function setBackgroundColor($color)
     {
-        if ($color != StyleConstants::TRANSPARENT && !isColor($color)) {
+        if ($color != StyleConstants::TRANSPARENT && !Common::isColor($color)) {
             throw new StyleException('Invalid page background color');
         }
         $this->pageLayoutProperties->setAttribute('fo:background-color', $color);
@@ -442,7 +442,7 @@ class PageStyle
      */
     function setFirstPageNumber($number)
     {
-        if (!isNumeric($number)) {
+        if (!Common::isNumeric($number)) {
             throw new StyleException('Invalid first page number value.');
         }
         $this->pageLayoutProperties->setAttribute('style:first-page-number', $number);
@@ -456,7 +456,7 @@ class PageStyle
      */
     function setMaximumFootnoteHeight($height)
     {
-        if (!isNumeric($height)) {
+        if (!Common::isNumeric($height)) {
             throw new StyleException('Invalid maximum footnote height.');
         }
         $this->pageLayoutProperties->setAttribute('style:footnote-max-height', $height);
@@ -478,10 +478,10 @@ class PageStyle
                                   $distanceBefore = '5mm', $distanceAfter = '5mm',
                                   $lineStyle = StyleConstants::SOLID)
     {
-        if (!isLengthValue($lineWidth)) {
+        if (!Common::isLengthValue($lineWidth)) {
             throw new StyleException('Invalid line-width value');
         }
-        if (!isColor($color)) {
+        if (!Common::isColor($color)) {
             throw new StyleException('Invalid color value');
         }
         switch ($adjustment) {
@@ -497,10 +497,10 @@ class PageStyle
             default:
                 throw new StyleException('Invalid adjustment value');
         }
-        if (!isLengthValue($distanceBefore)) {
+        if (!Common::isLengthValue($distanceBefore)) {
             throw new StyleException('Invalid distance-before value');
         }
-        if (!isLengthValue($distanceAfter)) {
+        if (!Common::isLengthValue($distanceAfter)) {
             throw new StyleException('Invalid distance-before value');
         }
         switch ($lineStyle) {
@@ -583,7 +583,7 @@ class PageStyle
      */
     function setHeadFootHeight($element, $height)
     {
-        if (!isLengthValue($height)) {
+        if (!Common::isLengthValue($height)) {
             throw new StyleException('Invalid height value.');
         }
         if ($element == 'header') {
@@ -613,7 +613,7 @@ class PageStyle
      */
     function setHeadFootMinHeight($element, $minHeight)
     {
-        if (!isLengthValue($minHeight)) {
+        if (!Common::isLengthValue($minHeight)) {
             throw new StyleException('Invalid min-height value.');
         }
         if ($element == 'header') {
@@ -643,10 +643,10 @@ class PageStyle
      */
     function setHeadFootHMargins($element, $leftMargin = 0, $rightMargin = 0)
     {
-        if (!isNumeric($leftMargin) && !isLengthValue($leftMargin)) {
+        if (!Common::isNumeric($leftMargin) && !Common::isLengthValue($leftMargin)) {
             throw new StyleException('Invalid left-margin value');
         }
-        if (!isNumeric($rightMargin) && !isLengthValue($rightMargin)) {
+        if (!Common::isNumeric($rightMargin) && !Common::isLengthValue($rightMargin)) {
             throw new StyleException('Invalid right-margin value');
         }
         if ($element == 'header') {
@@ -677,10 +677,10 @@ class PageStyle
      */
     function setHeadFootVMargins($topMargin, $bottomMargin)
     {
-        if (!isNumeric($topMargin, true) && !isLengthValue($topMargin, true)) {
+        if (!Common::isNumeric($topMargin, true) && !Common::isLengthValue($topMargin, true)) {
             throw new StyleException('Invalid top-margin value');
         }
-        if (!isNumeric($bottomMargin) && !isLengthValue($bottomMargin)) {
+        if (!Common::isNumeric($bottomMargin) && !Common::isLengthValue($bottomMargin)) {
             throw new StyleException('Invalid bottom-margin value');
         }
         $this->headerFooterProperties->setAttribute('fo:margin-top', $topMargin);
@@ -710,7 +710,7 @@ class PageStyle
     function setHeadFootBorder($element, $borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                                $borderWidth = StyleConstants::THIN, $position = '')
     {
-        if (!isColor($borderColor)) {
+        if (!Common::isColor($borderColor)) {
             throw new StyleException('Invalid border-color value');
         }
 
@@ -735,7 +735,7 @@ class PageStyle
                 $borderWidth = 'medium';
                 break;
             default:
-                if (!isLengthValue($borderWidth, true)) {
+                if (!Common::isLengthValue($borderWidth, true)) {
                     throw new StyleException('Invalid border-width value');
                 }
         }
@@ -856,7 +856,7 @@ class PageStyle
      */
     function setHeadFootPadding($element, $padding, $position = '')
     {
-        if (!isLengthValue($padding, true) && !isNumeric($padding)) {
+        if (!Common::isLengthValue($padding, true) && !Common::isNumeric($padding)) {
             throw new StyleException('Invalid padding value');
         }
         if (!empty($position)) {
@@ -932,7 +932,7 @@ class PageStyle
      */
     function setHeadFootBackgroundColor($element, $color)
     {
-        if ($color != StyleConstants::TRANSPARENT && !isColor($color)) {
+        if ($color != StyleConstants::TRANSPARENT && !Common::isColor($color)) {
             throw new StyleException('Invalid background color');
         }
         if ($element == 'header') {

@@ -23,10 +23,10 @@ class TableStyle extends ContentAutoStyle
      */
     public function setWidth($width)
     {
-        if (isLengthValue($width, true) || isPercentage($width)) {
-            if (isLengthValue($width, true)) {
+        if (Common::isLengthValue($width, true) || Common::isPercentage($width)) {
+            if (Common::isLengthValue($width, true)) {
                 $this->tableProp->setAttribute('style:width', $width);
-            } else if (isPercentage($width)) {
+            } else if (Common::isPercentage($width)) {
                 $this->tableProp->setAttribute('style:rel-width', $width);
             }
         } else {
@@ -75,10 +75,10 @@ class TableStyle extends ContentAutoStyle
      */
     function setHorizontalMargin($leftMargin, $rightMargin)
     {
-        if (!isNumeric($leftMargin) && !isLengthValue($leftMargin)) {
+        if (!Common::isNumeric($leftMargin) && !Common::isLengthValue($leftMargin)) {
             throw new StyleException('Invalid left-margin value');
         }
-        if (!isNumeric($rightMargin) && !isLengthValue($rightMargin)) {
+        if (!Common::isNumeric($rightMargin) && !Common::isLengthValue($rightMargin)) {
             throw new StyleException('Invalid right-margin value');
         }
         $this->tableProp->setAttribute('fo:margin-left', $leftMargin);
@@ -94,10 +94,10 @@ class TableStyle extends ContentAutoStyle
      */
     function setVerticalMargin($topMargin, $bottomMargin)
     {
-        if (!isNumeric($topMargin, true) && !isLengthValue($topMargin, true)) {
+        if (!Common::isNumeric($topMargin, true) && !Common::isLengthValue($topMargin, true)) {
             throw new StyleException('Invalid top-margin value');
         }
-        if (!isNumeric($bottomMargin) && !isLengthValue($bottomMargin)) {
+        if (!Common::isNumeric($bottomMargin) && !Common::isLengthValue($bottomMargin)) {
             throw new StyleException('Invalid bottom-margin value');
         }
         $this->tableProp->setAttribute('fo:margin-top', $topMargin);
@@ -154,7 +154,7 @@ class TableStyle extends ContentAutoStyle
      */
     public function setBgColor($color)
     {
-        if (!isColor($color)) {
+        if (!Common::isColor($color)) {
             throw new StyleException('Invalid color value');
         }
         $this->tableProp->setAttribute('fo:background-color', $color);
