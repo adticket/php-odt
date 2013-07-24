@@ -29,11 +29,11 @@ class ContentAutoStyle
      * @param string $name The style name
      * @param string|null $elementNodeName
      */
-    function __construct($name, $elementNodeName = NULL)
+    function __construct($name, $elementNodeName = null)
     {
         $this->contentDocument = ODT::getInstance()->getDocumentContent();
         $this->name = $name;
-        if ($elementNodeName == NULL) {
+        if ($elementNodeName == null) {
             $this->styleElement = $this->contentDocument->createElement('style:style');
         } else {
             $this->styleElement = $this->contentDocument->createElement($elementNodeName);

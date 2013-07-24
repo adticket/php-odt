@@ -4,11 +4,15 @@ namespace ODT;
 
 class ListStyle extends ContentAutoStyle
 {
-    private $levels;
     const INDENT = 0.5;
     const LABEL_DISTANCE = 0.5;
 
-    function __construct($name)
+    /**
+     * @var \DOMElement[]
+     */
+    private $levels;
+
+    public function __construct($name)
     {
         parent::__construct($name, 'text:list-style');
         $this->levels = array();
@@ -22,17 +26,17 @@ class ListStyle extends ContentAutoStyle
      * @param null $textstyle
      * @throws StyleException
      */
-    function setNumberLevel($level, $numFormat = NULL, $textstyle = NULL)
+    function setNumberLevel($level, $numFormat = null, $textstyle = null)
     {
         if (Common::isNumeric($level, true)) {
             $this->levels[$level] = $this->contentDocument->createElement('text:list-level-style-number');
             $this->levels[$level]->setAttribute('text:level', $level);
-            if ($numFormat != NULL) {
+            if ($numFormat != null) {
                 $this->levels[$level]->setAttribute('style:num-format', $numFormat->getFormat());
                 $this->levels[$level]->setAttribute('style:num-prefix', $numFormat->getPrefix());
                 $this->levels[$level]->setAttribute('style:num-suffix', $numFormat->getSuffix());
             }
-            if ($textstyle != NULL) {
+            if ($textstyle != null) {
                 $this->levels[$level]->setAttribute('text:style-name', $textstyle->getStyleName());
             }
 
@@ -58,7 +62,7 @@ class ListStyle extends ContentAutoStyle
      * @throws StyleException
      */
     function setBulletLevel($level, $bulletChar = StyleConstants::BULLET, $prefix = '', $suffix = '',
-                            $textstyle = NULL)
+                            $textstyle = null)
     {
         if (Common::isNumeric($level, true)) {
             $this->levels[$level] = $this->contentDocument->createElement('text:list-level-style-bullet');
@@ -74,7 +78,7 @@ class ListStyle extends ContentAutoStyle
                 default:
                     throw new StyleException('Invalid bullet character value');
             }
-            if ($textstyle != NULL) {
+            if ($textstyle != null) {
                 $this->levels[$level]->setAttribute('text:style-name', $textstyle->getStyleName());
             }
             $this->levels[$level]->setAttribute('style:num-prefix', $prefix);
@@ -140,31 +144,31 @@ class ListStyle extends ContentAutoStyle
             $element = $this->levels[$level];
             $prop = $this->contentDocument->createElement('style:list-level-properties');
 
-            if ($levelProp->getAlign() != NULL) {
+            if ($levelProp->getAlign() != null) {
                 $prop->setAttribute('fo:text-align', $levelProp->getAlign());
             }
 
-            if ($levelProp->getIndent() == NULL) {
+            if ($levelProp->getIndent() == null) {
                 $indent = ($level * 0.5) . 'cm';
             } else {
                 $indent = $levelProp->getIndent();
             }
             $prop->setAttribute('text:space-before', $indent);
 
-            if ($levelProp->getMinLabelWidth() != NULL) {
+            if ($levelProp->getMinLabelWidth() != null) {
                 $prop->setAttribute('text:min-label-width', $levelProp->getMinLabelWidth());
             }
 
-            if ($levelProp->getMinLabelDistance() != NULL) {
+            if ($levelProp->getMinLabelDistance() != null) {
                 $prop->setAttribute('text:min-label-distance', $levelProp->getMinLabelDistance());
             }
-            if ($levelProp->getVAlign() != NULL) {
+            if ($levelProp->getVAlign() != null) {
                 $prop->setAttribute('style:vertical-pos', $levelProp->getVAlign());
             }
-            if ($levelProp->getImageWidth() != NULL) {
+            if ($levelProp->getImageWidth() != null) {
                 $prop->setAttribute('fo:width', $levelProp->getImageWidth());
             }
-            if ($levelProp->getImageHeight() != NULL) {
+            if ($levelProp->getImageHeight() != null) {
                 $prop->setAttribute('fo:height', $levelProp->getImageHeight());
             }
             $element->appendChild($prop);

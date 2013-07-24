@@ -4,13 +4,13 @@ namespace ODT;
 
 class ListLevelProp
 {
-    private $align = NULL;
-    private $indent = NULL;
-    private $minLabelWidth = NULL;
-    private $minLabelDistance = NULL;
-    private $vAlign = NULL;
-    private $imageWidth = NULL;
-    private $imageHeight = NULL;
+    private $align = null;
+    private $indent = null;
+    private $minLabelWidth = null;
+    private $minLabelDistance = null;
+    private $vAlign = null;
+    private $imageWidth = null;
+    private $imageHeight = null;
 
     function __construct()
     {

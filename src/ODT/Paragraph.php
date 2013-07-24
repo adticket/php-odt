@@ -31,9 +31,9 @@ class Paragraph
      * @param string $content
      * @param null $styles
      */
-    public function addText($content, $styles = NULL)
+    public function addText($content, $styles = null)
     {
-        if ($styles != NULL) {
+        if ($styles != null) {
             $span = $this->documentContent->createElement('text:span', $content);
             $span->setAttribute('text:style-name', $styles->getStyleName());
             $this->pElement->appendChild($span);
@@ -142,13 +142,13 @@ class Paragraph
     public function addNote($body, $noteClass = StyleConstants::FOOTNOTE)
     {
         $note = $this->documentContent->createElement('text:note');
-//		if ($citation != NULL) {
+//		if ($citation != null) {
 //			$note_citation = $this->documentContent->createElement('text:note-citation');
 //			$note_citation->setAttribute('text:label', $citation);
 //			$note->appendChild($note_citation);
 //		}
         $note_body = $this->documentContent->createElement('text:note-body');
-        $p = new Paragraph(NULL, FALSE);
+        $p = new Paragraph(null, FALSE);
         $p->addText($body);
         $note_body->appendChild($p->getDOMElement());
         $note->appendChild($note_body);
@@ -174,19 +174,19 @@ class Paragraph
      * @param RubyStyle $rubyStyle The style to apply to this ruby
      */
 
-    function addRuby($base, $text, $textRubyStyle = NULL, $rubyStyle = NULL)
+    function addRuby($base, $text, $textRubyStyle = null, $rubyStyle = null)
     {
         $ruby = $this->documentContent->createElement('text:ruby');
         $ruby_base = $this->documentContent->createElement('text:ruby-base');
         $ruby_base->appendChild($this->documentContent->createTextNode($base));
         $ruby->appendChild($ruby_base);
         $ruby_text = $this->documentContent->createElement('text:ruby-text');
-        if ($textRubyStyle != NULL) {
+        if ($textRubyStyle != null) {
             $ruby_text->setAttribute('text:style-name', $textRubyStyle->getStyleName());
         }
         $ruby_text->appendChild($this->documentContent->createTextNode($text));
         $ruby->appendChild($ruby_text);
-        if ($rubyStyle != NULL) {
+        if ($rubyStyle != null) {
             $ruby->setAttribute('text:style-name', $rubyStyle->getStyleName());
         }
         $this->pElement->appendChild($ruby);

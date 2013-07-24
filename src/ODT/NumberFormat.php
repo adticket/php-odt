@@ -75,6 +75,7 @@ class NumberFormat
             case 'i':
             case 'I':
                 $this->format = $format;
+                break;
             default:
                 throw new \Exception('Invalid num-format value');
         }

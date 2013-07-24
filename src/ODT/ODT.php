@@ -7,28 +7,49 @@ class ODT
     const GENERATOR = 'PHP-ODT 0.3';
 
     /**
-     * The name of the odt file
+     * @var null|ODT
      */
-//	private $fileName;
+    private static $instance = null;
+
+    /**
+     * @var \DOMDocument
+     */
     private $manifest;
+
+    /**
+     * @var \DOMDocument
+     */
     private $styles;
-    private $documentContent;
-    private $officeBody;
-    private $officeText;
+
+    /**
+     * @var \DOMDocument
+     */
     private $metadata;
+
+    /**
+     * @var \DOMDocument
+     */
+    private $documentContent;
+
+    /**
+     * @var \DOMElement
+     */
+    private $officeBody;
+
+    /**
+     * @var \DOMElement
+     */
+    private $officeText;
+
+    /**
+     * @var \DOMElement
+     */
     private $officeMeta;
-//	private $officeStyles;
-//	private $officeAutomaticStyles;
-//	private $permissions;
 
-    private static $instance;
-
-    private function __construct()
-    {
-        $this->initContent();
-    }
-
-    static function getInstance()
+    /**
+     * @return ODT
+     */
+    public static function getInstance()
     {
         if (self::$instance == null) {
             self::$instance = new ODT();
@@ -36,11 +57,18 @@ class ODT
         return self::$instance;
     }
 
+    private function __construct()
+    {
+        $this->createManifest();
+        $this->createStyles();
+        $this->createMetadata();
+        $this->createDocumentContent();
+    }
+
     /**
-     * Creates the manifest document, wich describe all the files contained in
-     * the odt document
+     * Creates the manifest document, which describes all the files contained in the odt document
      */
-    function createManifest()
+    private function createManifest()
     {
         $manifestDoc = new \DOMDocument('1.0', 'UTF-8');
         $root = $manifestDoc->createElement('manifest:manifest');
@@ -74,7 +102,7 @@ class ODT
     /**
      * Creates the styles document, which contains all the styles used in the document
      */
-    function createStyle()
+    private function createStyles()
     {
         $this->styles = new \DOMDocument('1.0', 'UTF-8');
         $root = $this->styles->createElement('office:document-styles');
@@ -102,10 +130,9 @@ class ODT
     }
 
     /**
-     * Creates the metadata document, containing the general informations about the document,
-     *
+     * Creates the metadata document, containing the general information about the document
      */
-    function createMetadata()
+    private function createMetadata()
     {
         $this->metadata = new \DOMDocument('1.0', 'UTF-8');
         $root = $this->metadata->createElement('office:document-meta');
@@ -123,12 +150,38 @@ class ODT
         $root->appendChild($this->officeMeta);
     }
 
+    private function createDocumentContent()
+    {
+        $this->documentContent = new \DOMDocument('1.0', 'UTF-8');
+        $this->documentContent->substituteEntities = true;
+        $root = $this->documentContent->createElement('office:document-content');
+        $root->setAttribute('xmlns:office', 'urn:oasis:names:tc:opendocument:xmlns:office:1.0');
+        $root->setAttribute('xmlns:text', 'urn:oasis:names:tc:opendocument:xmlns:text:1.0');
+        $root->setAttribute('xmlns:draw', 'urn:oasis:names:tc:opendocument:xmlns:drawing:1.0');
+        $root->setAttribute('xmlns:svg', 'urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0');
+        $root->setAttribute('xmlns:table', 'urn:oasis:names:tc:opendocument:xmlns:table:1.0');
+        $root->setAttribute('xmlns:style', 'urn:oasis:names:tc:opendocument:xmlns:style:1.0');
+        $root->setAttribute('xmlns:fo', 'urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0');
+        $root->setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+        $root->setAttribute('office:version', '1.1');
+        $this->documentContent->appendChild($root);
+
+        $officeAutomaticStyles = $this->documentContent->createElement('office:automatic-styles');
+        $root->appendChild($officeAutomaticStyles);
+
+        $this->officeBody = $this->documentContent->createElement('office:body');
+        $root->appendChild($this->officeBody);
+
+        $this->officeText = $this->documentContent->createElement('office:text');
+        $this->officeBody->appendChild($this->officeText);
+    }
+
     /**
      * Declare the fonts that can be used in the document
      *
      * @param \DOMElement $rootStyles The root element of the styles document
      */
-    function declareFontFaces($rootStyles)
+    private function declareFontFaces($rootStyles)
     {
         $fontFaceDecl = $this->styles->createElement('office:font-face-decls');
         $rootStyles->appendChild($fontFaceDecl);
@@ -170,47 +223,11 @@ class ODT
     }
 
     /**
-     * Creates the needed documents and does the needed initialization
-     * @return \DOMDocument An empty odt document
-     */
-    function initContent()
-    {
-        $this->createManifest();
-        $this->createStyle();
-        $this->createMetadata();
-
-        $this->documentContent = new \DOMDocument('1.0', 'UTF-8');
-        $this->documentContent->substituteEntities = true;
-        $root = $this->documentContent->createElement('office:document-content');
-        $root->setAttribute('xmlns:office', 'urn:oasis:names:tc:opendocument:xmlns:office:1.0');
-        $root->setAttribute('xmlns:text', 'urn:oasis:names:tc:opendocument:xmlns:text:1.0');
-        $root->setAttribute('xmlns:draw', 'urn:oasis:names:tc:opendocument:xmlns:drawing:1.0');
-        $root->setAttribute('xmlns:svg', 'urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0');
-        $root->setAttribute('xmlns:table', 'urn:oasis:names:tc:opendocument:xmlns:table:1.0');
-        $root->setAttribute('xmlns:style', 'urn:oasis:names:tc:opendocument:xmlns:style:1.0');
-        $root->setAttribute('xmlns:fo', 'urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0');
-        $root->setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-        $root->setAttribute('office:version', '1.1');
-        $this->documentContent->appendChild($root);
-
-        $officeAutomaticStyles = $this->documentContent->createElement('office:automatic-styles');
-        $root->appendChild($officeAutomaticStyles);
-
-        $this->officeBody = $this->documentContent->createElement('office:body');
-        $root->appendChild($this->officeBody);
-
-        $this->officeText = $this->documentContent->createElement('office:text');
-        $this->officeBody->appendChild($this->officeText);
-
-//		return $this->documentContent;
-    }
-
-    /**
      * Sets the title of the document
      *
      * @param string $title
      */
-    function setTitle($title)
+    public function setTitle($title)
     {
         $element = $this->metadata->createElement('dc:title', $title);
         $this->officeMeta->appendChild($element);
@@ -221,7 +238,7 @@ class ODT
      *
      * @param string $description
      */
-    function setDescription($description)
+    public function setDescription($description)
     {
         $element = $this->metadata->createElement('dc:description', $description);
         $this->officeMeta->appendChild($element);
@@ -232,7 +249,7 @@ class ODT
      *
      * @param string $subject
      */
-    function setSubject($subject)
+    public function setSubject($subject)
     {
         $element = $this->metadata->createElement('dc:subject', $subject);
         $this->officeMeta->appendChild($element);
@@ -244,7 +261,7 @@ class ODT
      * @param array $keywords
      * @throws ODTException
      */
-    function setKeywords($keywords)
+    public function setKeywords($keywords)
     {
         if (!is_array($keywords)) {
             throw new ODTException('Keywords must be an array.');
@@ -260,17 +277,16 @@ class ODT
      *
      * @param string $creator
      */
-    function setCreator($creator)
+    public function setCreator($creator)
     {
         $element = $this->metadata->createElement('meta:initial-creator', $creator);
         $this->officeMeta->appendChild($element);
     }
 
     /**
-     *
      * @return \DOMDocument The document containing all the styles
      */
-    function getStyleDocument()
+    public function getStyleDocument()
     {
         return $this->styles;
     }
@@ -283,7 +299,7 @@ class ODT
     /**
      * Write the document to the hard disk
      */
-    function output($fileName, $perm = 0777)
+    public function output($fileName, $perm = 0777)
     {
         $document = new \ZipArchive();
         $document->open($fileName, \ZipArchive::OVERWRITE);

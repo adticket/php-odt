@@ -56,7 +56,6 @@ class Table
         $letters = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
             'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
         $columnsElem = $this->contentDocument->createElement('table:table-columns');
-        $letterIndex = 0;
         for ($i = 0; $i < $nbCols; $i++) {
             $column = $this->contentDocument->createElement('table:table-column');
             $styleName = $this->tableName . '.' . ($i < 26 ? $letters[$i] : $letters[0] . $letters[$i - 26]);
