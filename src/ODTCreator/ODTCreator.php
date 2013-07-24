@@ -127,7 +127,6 @@ class ODTCreator
         $root->setAttribute('xmlns:draw', 'urn:oasis:names:tc:opendocument:xmlns:drawing:1.0');
         $root->setAttribute('xmlns:table', 'urn:oasis:names:tc:opendocument:xmlns:table:1.0');
         $root->setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-        $root->setAttribute('office:version', '1.1');
         $this->styles->appendChild($root);
 
         $this->declareFontFaces($root);
@@ -153,7 +152,6 @@ class ODTCreator
         $root->setAttribute('xmlns:meta', 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0');
         $root->setAttribute('xmlns:office', 'urn:oasis:names:tc:opendocument:xmlns:office:1.0');
         $root->setAttribute('xmlns:dc', 'http://purl.org/dc/elements/1.1/');
-        $root->setAttribute('office:version', '1.1');
         $metadata->appendChild($root);
 
         $officeMeta = $metadata->createElement('office:meta');
@@ -210,7 +208,6 @@ class ODTCreator
         $root->setAttribute('xmlns:style', 'urn:oasis:names:tc:opendocument:xmlns:style:1.0');
         $root->setAttribute('xmlns:fo', 'urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0');
         $root->setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-        $root->setAttribute('office:version', '1.1');
         $this->documentContent->appendChild($root);
 
         $officeAutomaticStyles = $this->documentContent->createElement('office:automatic-styles');
