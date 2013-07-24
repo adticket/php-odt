@@ -1,10 +1,10 @@
 <?php
 
-namespace ODT\Tests\EndToEnd;
+namespace ODTCreator\Tests\EndToEnd;
 
-use ODT\ODT;
-use ODT\Paragraph;
-use ODT\Style\TextStyle;
+use ODTCreator\ODTCreator;
+use ODTCreator\Paragraph;
+use ODTCreator\Style\TextStyle;
 
 class HelloWorldStyledTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,17 +16,15 @@ class HelloWorldStyledTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->testName = 'hello_world_styled';
-
-        mkdir($this->getOutputUnzipPath());
     }
 
     public function testHelloWorldStyled()
     {
-        $odt = ODT::getInstance();
+        $odt = ODTCreator::getInstance();
 
         // Hack: Inject the date that is stored in the meta.xml against which we compare
         // This is neccessary to get a meta.xml with a predictable date for testing
-        $reflectionClass = new \ReflectionClass('ODT\ODT');
+        $reflectionClass = new \ReflectionClass('ODTCreator\ODTCreator');
         $creationDateProperty = $reflectionClass->getProperty('creationDate');
         $creationDateProperty->setAccessible(true);
         $creationDateProperty->setValue($odt, new \DateTime('2013-01-01 12:00:00'));

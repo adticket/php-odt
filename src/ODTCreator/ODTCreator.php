@@ -1,13 +1,13 @@
 <?php
 
-namespace ODT;
+namespace ODTCreator;
 
-class ODT
+class ODTCreator
 {
-    const GENERATOR = 'PHP-ODT 0.3';
+    const GENERATOR = 'PHP-ODTCreator 0.1';
 
     /**
-     * @var null|ODT
+     * @var null|ODTCreator
      */
     private static $instance = null;
 
@@ -62,12 +62,12 @@ class ODT
     private $creationDate;
 
     /**
-     * @return ODT
+     * @return ODTCreator
      */
     public static function getInstance()
     {
         if (self::$instance == null) {
-            self::$instance = new ODT();
+            self::$instance = new ODTCreator();
         }
         return self::$instance;
     }

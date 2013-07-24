@@ -1,8 +1,8 @@
 <?php
 
-namespace ODT\Style;
+namespace ODTCreator\Style;
 
-use ODT\Common;
+use ODTCreator\Common;
 
 class CellStyle extends ContentAutoStyle
 {

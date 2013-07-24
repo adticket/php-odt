@@ -1,10 +1,10 @@
 <?php
 
-namespace ODT\Style;
+namespace ODTCreator\Style;
 
-use ODT\Common;
-use ODT\ListLevelProp;
-use ODT\NumberFormat;
+use ODTCreator\Common;
+use ODTCreator\ListLevelProp;
+use ODTCreator\NumberFormat;
 
 class ListStyle extends ContentAutoStyle
 {
@@ -26,8 +26,8 @@ class ListStyle extends ContentAutoStyle
      * Specifies that the list in this level is a numbered list.
      *
      * @param integer $level
-     * @param null|\ODT\NumberFormat $numFormat
-     * @param null|\ODT\Style\TextStyle $textstyle
+     * @param null|\ODTCreator\NumberFormat $numFormat
+     * @param null|\ODTCreator\Style\TextStyle $textstyle
      * @throws StyleException
      */
     function setNumberLevel($level, NumberFormat $numFormat = null, TextStyle $textstyle = null)
@@ -140,7 +140,7 @@ class ListStyle extends ContentAutoStyle
      * Set some properties of the list level specified.
      *
      * @param integer $level
-     * @param \ODT\ListLevelProp $levelProp
+     * @param \ODTCreator\ListLevelProp $levelProp
      */
     function setLevelProp($level, ListLevelProp $levelProp)
     {

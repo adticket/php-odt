@@ -1,10 +1,10 @@
 <?php
 
-namespace ODT\Style;
+namespace ODTCreator\Style;
 
-use ODT\Common;
-use ODT\ODT;
-use ODT\Paragraph;
+use ODTCreator\Common;
+use ODTCreator\ODTCreator;
+use ODTCreator\Paragraph;
 
 class PageStyle
 {
@@ -52,7 +52,7 @@ class PageStyle
      */
     function __construct($name)
     {
-        $this->styleDocument = ODT::getInstance()->getStyleDocument();
+        $this->styleDocument = ODTCreator::getInstance()->getStyleDocument();
         $this->name = $name;
         $pageLayoutStyleElement = $this->styleDocument->createElement('style:page-layout');
         $this->pageLayoutProperties = $this->styleDocument->createElement('style:page-layout-properties');

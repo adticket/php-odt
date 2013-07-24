@@ -1,11 +1,11 @@
 <?php
 
-namespace ODT;
+namespace ODTCreator;
 
-use ODT\Style\ParagraphStyle;
-use ODT\Style\RubyStyle;
-use ODT\Style\StyleConstants;
-use ODT\Style\TextStyle;
+use ODTCreator\Style\ParagraphStyle;
+use ODTCreator\Style\RubyStyle;
+use ODTCreator\Style\StyleConstants;
+use ODTCreator\Style\TextStyle;
 
 class Paragraph
 {
@@ -21,7 +21,7 @@ class Paragraph
 
     public function __construct(ParagraphStyle $pStyle = null, $addToDocument = true)
     {
-        $this->documentContent = ODT::getInstance()->getDocumentContent();
+        $this->documentContent = ODTCreator::getInstance()->getDocumentContent();
         $this->pElement = $this->documentContent->createElement('text:p');
         if ($pStyle != null) {
             $this->pElement->setAttribute('text:style-name', $pStyle->getStyleName());
@@ -33,7 +33,7 @@ class Paragraph
 
     /**
      * @param string $content
-     * @param \ODT\Style\TextStyle $textStyle
+     * @param \ODTCreator\Style\TextStyle $textStyle
      */
     public function addText($content, TextStyle $textStyle = null)
     {

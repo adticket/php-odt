@@ -1,11 +1,11 @@
 <?php
 
-namespace ODT;
+namespace ODTCreator;
 
-use ODT\Style\CellStyle;
-use ODT\Style\ColumnStyle;
-use ODT\Style\RowStyle;
-use ODT\Style\TableStyle;
+use ODTCreator\Style\CellStyle;
+use ODTCreator\Style\ColumnStyle;
+use ODTCreator\Style\RowStyle;
+use ODTCreator\Style\TableStyle;
 
 class Table
 {
@@ -33,7 +33,7 @@ class Table
      */
     public function __construct($tableName, $tableStyle = null)
     {
-        $this->contentDocument = ODT::getInstance()->getDocumentContent();
+        $this->contentDocument = ODTCreator::getInstance()->getDocumentContent();
         $this->tableName = $tableName;
         $this->tableElement = $this->contentDocument->createElement('table:table');
         $this->tableElement->setAttribute('table:name', $tableName);

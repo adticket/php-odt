@@ -1,9 +1,9 @@
 <?php
 
-namespace ODT;
+namespace ODTCreator;
 
-use ODT\Style\StyleConstants;
-use ODT\Style\StyleException;
+use ODTCreator\Style\StyleConstants;
+use ODTCreator\Style\StyleException;
 
 class ListLevelProp
 {

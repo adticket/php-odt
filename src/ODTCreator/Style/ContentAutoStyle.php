@@ -1,8 +1,8 @@
 <?php
 
-namespace ODT\Style;
+namespace ODTCreator\Style;
 
-use ODT\ODT;
+use ODTCreator\ODTCreator;
 
 class ContentAutoStyle
 {
@@ -33,7 +33,7 @@ class ContentAutoStyle
      */
     function __construct($name, $elementNodeName = null)
     {
-        $this->contentDocument = ODT::getInstance()->getDocumentContent();
+        $this->contentDocument = ODTCreator::getInstance()->getDocumentContent();
         $this->name = $name;
         if ($elementNodeName == null) {
             $this->styleElement = $this->contentDocument->createElement('style:style');

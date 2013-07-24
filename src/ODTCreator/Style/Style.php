@@ -1,8 +1,8 @@
 <?php
 
-namespace ODT\Style;
+namespace ODTCreator\Style;
 
-use ODT\ODT;
+use ODTCreator\ODTCreator;
 
 class Style
 {
@@ -33,7 +33,7 @@ class Style
      */
     function __construct($name)
     {
-        $this->styleDocument = ODT::getInstance()->getStyleDocument();
+        $this->styleDocument = ODTCreator::getInstance()->getStyleDocument();
         $this->name = $name;
         $this->styleElement = $this->styleDocument->createElement('style:style');
         $this->styleElement->setAttribute('style:name', $name);

@@ -1,6 +1,6 @@
 <?php
 
-namespace ODT\Style;
+namespace ODTCreator\Style;
 
 class StyleConstants
 {
