@@ -24,11 +24,6 @@ class ODTCreator
     /**
      * @var \DOMElement
      */
-    private $officeBody;
-
-    /**
-     * @var \DOMElement
-     */
     private $officeText;
 
     /**
@@ -205,6 +200,7 @@ class ODTCreator
     {
         $this->documentContent = new \DOMDocument('1.0', 'UTF-8');
         $this->documentContent->substituteEntities = true;
+
         $root = $this->documentContent->createElement('office:document-content');
         $root->setAttribute('xmlns:office', 'urn:oasis:names:tc:opendocument:xmlns:office:1.0');
         $root->setAttribute('xmlns:text', 'urn:oasis:names:tc:opendocument:xmlns:text:1.0');
@@ -219,11 +215,11 @@ class ODTCreator
         $officeAutomaticStyles = $this->documentContent->createElement('office:automatic-styles');
         $root->appendChild($officeAutomaticStyles);
 
-        $this->officeBody = $this->documentContent->createElement('office:body');
-        $root->appendChild($this->officeBody);
+        $officeBody = $this->documentContent->createElement('office:body');
+        $root->appendChild($officeBody);
 
         $this->officeText = $this->documentContent->createElement('office:text');
-        $this->officeBody->appendChild($this->officeText);
+        $officeBody->appendChild($this->officeText);
     }
 
     /**
