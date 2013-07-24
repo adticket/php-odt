@@ -17,6 +17,8 @@ class HelloWorldStyledTest extends EndToEndTestCase
 
     public function testHelloWorldStyled()
     {
+        ODTCreator::resetInstance();
+
         $odt = ODTCreator::getInstance();
 
         // Hack: Inject the date that is stored in the meta.xml against which we compare

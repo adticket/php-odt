@@ -72,6 +72,12 @@ class ODTCreator
         return self::$instance;
     }
 
+    public static function resetInstance()
+    {
+        // TODO: Refactor the whole lib and get rid of this singleton crap
+        self::$instance = null;
+    }
+
     private function __construct()
     {
         $this->creationDate = new \DateTime();
