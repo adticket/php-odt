@@ -1,5 +1,7 @@
 <?php
 
+namespace ODT;
+
 class CellStyle extends ContentAutoStyle
 {
     private $cellProp;

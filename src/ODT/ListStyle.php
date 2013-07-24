@@ -1,5 +1,7 @@
 <?php
 
+namespace ODT;
+
 class ListStyle extends ContentAutoStyle
 {
     private $levels;
@@ -52,7 +54,7 @@ class ListStyle extends ContentAutoStyle
      * @param string $bulletChar The character to use as the bullet, may be StyleConstants::(BULLET|BLACK_CIRCLE|CHECK_MARK|RIGHT_ARROW|RIGHT_ARROWHEAD)
      * @param string $prefix The characters to add before the bullet character.
      * @param string $suffix The characters to add behind the bullet character.
-     * @param $textstyle The style to use to format the list bullet.
+     * @param TextStyle|null $textstyle The style to use to format the list bullet.
      * @throws StyleException
      */
     function setBulletLevel($level, $bulletChar = StyleConstants::BULLET, $prefix = '', $suffix = '',

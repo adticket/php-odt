@@ -1,5 +1,7 @@
 <?php
 
+namespace ODT;
+
 class PageStyle
 {
     private $pageWidth = '21cm';
@@ -8,21 +10,18 @@ class PageStyle
 
     /**
      * The DOMDocument representing the styles xml file
-     * @access private
-     * @var DOMDocument
+     * @var \DOMDocument
      */
     private $styleDocument;
     /**
      * The name of the style
-     * @access private
      * @var string
      */
     private $name;
 
     /**
      * The DOMElement representing the page layout properties
-     * @access private
-     * @var DOMElement
+     * @var \DOMElement
      */
     private $pageLayoutProperties;
 
@@ -30,15 +29,13 @@ class PageStyle
 
     /**
      * The DOMElement representing the header properties
-     * @access private
-     * @var DOMElement
+     * @var \DOMElement
      */
     private $headerProperties;
 
     /**
      * The DOMElement representing the header properties
-     * @access private
-     * @var DOMElement
+     * @var \DOMElement
      */
     private $footerProperties;
 

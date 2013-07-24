@@ -1,5 +1,7 @@
 <?php
 
+namespace ODT;
+
 class Table
 {
     private $contentDocument;

@@ -1,5 +1,7 @@
 <?php
 
+namespace ODT;
+
 class ColumnStyle extends ContentAutoStyle
 {
     private $colProp;

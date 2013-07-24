@@ -1,16 +1,18 @@
 <?php
 
+namespace ODT;
+
 class ODTList
 {
     /**
      * The DOMDocument instance containing the content of the document
-     * @var DOMDocument
+     * @var \DOMDocument
      */
     private $contentDocument;
 
     /**
      * The DOMElement representing the list
-     * @var DOMElement
+     * @var \DOMElement
      */
     private $listElement;
 
@@ -73,7 +75,7 @@ class ODTList
     /**
      * Returns the DOMElement representing this list
      *
-     * @return DOMElement
+     * @return \DOMElement
      */
     public function getDOMElement()
     {

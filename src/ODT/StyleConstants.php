@@ -1,5 +1,7 @@
 <?php
 
+namespace ODT;
+
 class StyleConstants
 {
     const NONE = 1;

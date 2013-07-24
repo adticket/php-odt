@@ -1,5 +1,7 @@
 <?php
 
+namespace ODT;
+
 class TextStyle extends Style
 {
     public function __construct($name = '')
@@ -158,7 +160,7 @@ class TextStyle extends Style
 
     /**
      *
-     * @param $fontSize The font size can be either a numeric value representing absolute length
+     * @param string $fontSize The font size can be either a numeric value representing absolute length
      * or a percentage
      * @throws StyleException
      */

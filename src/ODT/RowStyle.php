@@ -1,5 +1,7 @@
 <?php
 
+namespace ODT;
+
 class RowStyle extends ContentAutoStyle
 {
     private $rowProp;

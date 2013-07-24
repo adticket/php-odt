@@ -1,5 +1,7 @@
 <?php
 
+namespace ODT;
+
 class ParagraphStyle extends Style
 {
     public function __construct($name)

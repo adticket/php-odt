@@ -1,5 +1,7 @@
 <?php
 
+namespace ODT;
+
 class RubyStyle extends ContentAutoStyle
 {
     private $rubyProperties;

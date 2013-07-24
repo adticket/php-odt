@@ -1,5 +1,7 @@
 <?php
 
+namespace ODT;
+
 class Paragraph
 {
 //	private $contentDocument;
@@ -192,7 +194,7 @@ class Paragraph
 
     /**
      * Get the DOMElement representing this paragraph
-     * @return DOMElement
+     * @return \DOMElement
      */
     public function getDOMElement()
     {

@@ -1,25 +1,24 @@
 <?php
 
+namespace ODT;
+
 class ContentAutoStyle
 {
     /**
      * The DOMDocument representing the styles xml file
-     * @access private
-     * @var DOMDocument
+     * @var \DOMDocument
      */
     protected $contentDocument;
 
     /**
      * The name of the style
-     * @access private
      * @var string
      */
     protected $name;
 
     /**
      * The DOMElement representing this style
-     * @access private
-     * @var DOMElement
+     * @var \DOMElement
      */
     protected $styleElement;
 

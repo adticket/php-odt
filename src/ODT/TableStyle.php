@@ -1,5 +1,7 @@
 <?php
 
+namespace ODT;
+
 class TableStyle extends ContentAutoStyle
 {
     private $tableProp;

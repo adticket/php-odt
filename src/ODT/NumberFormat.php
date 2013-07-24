@@ -1,5 +1,7 @@
 <?php
 
+namespace ODT;
+
 class NumberFormat
 {
     private $prefix;
@@ -62,7 +64,7 @@ class NumberFormat
      * The argument can be "1", "a", "A", "i", or "I". If empty, no number is displayed.
      *
      * @param string $format
-     * @throws Exception
+     * @throws \Exception
      */
     public function setFormat($format)
     {
@@ -74,7 +76,7 @@ class NumberFormat
             case 'I':
                 $this->format = $format;
             default:
-                throw new Exception('Invalid num-format value');
+                throw new \Exception('Invalid num-format value');
         }
 
     }

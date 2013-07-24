@@ -1,5 +1,7 @@
 <?php
 
+namespace ODT;
+
 class ODT
 {
     const GENERATOR = 'PHP-ODT 0.3';
@@ -40,7 +42,7 @@ class ODT
      */
     function createManifest()
     {
-        $manifestDoc = new DOMDocument('1.0', 'UTF-8');
+        $manifestDoc = new \DOMDocument('1.0', 'UTF-8');
         $root = $manifestDoc->createElement('manifest:manifest');
         $root->setAttribute('xmlns:manifest', 'urn:oasis:names:tc:opendocument:xmlns:manifest:1.0');
         $root->setAttribute('office:version', "1.1");
@@ -74,7 +76,7 @@ class ODT
      */
     function createStyle()
     {
-        $this->styles = new DOMDocument('1.0', 'UTF-8');
+        $this->styles = new \DOMDocument('1.0', 'UTF-8');
         $root = $this->styles->createElement('office:document-styles');
         $root->setAttribute('xmlns:office', 'urn:oasis:names:tc:opendocument:xmlns:office:1.0');
         $root->setAttribute('xmlns:style', 'urn:oasis:names:tc:opendocument:xmlns:style:1.0');
@@ -105,7 +107,7 @@ class ODT
      */
     function createMetadata()
     {
-        $this->metadata = new DOMDocument('1.0', 'UTF-8');
+        $this->metadata = new \DOMDocument('1.0', 'UTF-8');
         $root = $this->metadata->createElement('office:document-meta');
         $root->setAttribute('xmlns:meta', 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0');
         $root->setAttribute('xmlns:office', 'urn:oasis:names:tc:opendocument:xmlns:office:1.0');
@@ -124,7 +126,7 @@ class ODT
     /**
      * Declare the fonts that can be used in the document
      *
-     * @param DOMElement $rootStyles The root element of the styles document
+     * @param \DOMElement $rootStyles The root element of the styles document
      */
     function declareFontFaces($rootStyles)
     {
@@ -169,7 +171,7 @@ class ODT
 
     /**
      * Creates the needed documents and does the needed initialization
-     * @return DOMDocument An empty odt document
+     * @return \DOMDocument An empty odt document
      */
     function initContent()
     {
@@ -177,7 +179,7 @@ class ODT
         $this->createStyle();
         $this->createMetadata();
 
-        $this->documentContent = new DOMDocument('1.0', 'UTF-8');
+        $this->documentContent = new \DOMDocument('1.0', 'UTF-8');
         $this->documentContent->substituteEntities = true;
         $root = $this->documentContent->createElement('office:document-content');
         $root->setAttribute('xmlns:office', 'urn:oasis:names:tc:opendocument:xmlns:office:1.0');
@@ -266,7 +268,7 @@ class ODT
 
     /**
      *
-     * @return DOMDocument The document containing all the styles
+     * @return \DOMDocument The document containing all the styles
      */
     function getStyleDocument()
     {
@@ -283,8 +285,8 @@ class ODT
      */
     function output($fileName, $perm = 0777)
     {
-        $document = new ZipArchive();
-        $document->open($fileName, ZIPARCHIVE::OVERWRITE);
+        $document = new \ZipArchive();
+        $document->open($fileName, \ZipArchive::OVERWRITE);
 
         $document->addFromString('META-INF/manifest.xml', $this->manifest->saveXML());
         $document->addFromString('styles.xml', $this->styles->saveXML());
