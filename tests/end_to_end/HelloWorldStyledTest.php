@@ -6,13 +6,10 @@ use ODTCreator\ODTCreator;
 use ODTCreator\Paragraph;
 use ODTCreator\Style\TextStyle;
 
-class HelloWorldStyledTest extends \PHPUnit_Framework_TestCase
-{
-    /**
-     * @var string
-     */
-    private $testName;
+require_once __DIR__ . '/EndToEndTestCase.php';
 
+class HelloWorldStyledTest extends EndToEndTestCase
+{
     protected function setUp()
     {
         $this->testName = 'hello_world_styled';
@@ -63,43 +60,5 @@ class HelloWorldStyledTest extends \PHPUnit_Framework_TestCase
         $expectedFile = $this->getFixturePath() . '/META-INF/manifest.xml';
         $actualFile = $this->getOutputUnzipPath() . '/META-INF/manifest.xml';
         $this->assertXmlFileEqualsXmlFile($expectedFile, $actualFile);
-    }
-
-    protected function tearDown()
-    {
-        unlink($this->getOutputFilePath());
-        exec("rm -fr " . $this->getOutputUnzipPath());
-    }
-
-    /**
-     * @return string
-     */
-    private function getOutputPath()
-    {
-        return __DIR__ . '/output';
-    }
-
-    /**
-     * @return string
-     */
-    private function getOutputFilePath()
-    {
-        return $this->getOutputPath() . '/' . $this->testName . '.odt';
-    }
-
-    /**
-     * @return string
-     */
-    private function getOutputUnzipPath()
-    {
-        return $this->getOutputPath() . '/' . $this->testName;
-    }
-
-    /**
-     * @return string
-     */
-    private function getFixturePath()
-    {
-        return __DIR__ . '/expected_output/' . $this->testName;
     }
 }
