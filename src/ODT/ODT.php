@@ -14,17 +14,7 @@ class ODT
     /**
      * @var \DOMDocument
      */
-    private $manifest;
-
-    /**
-     * @var \DOMDocument
-     */
     private $styles;
-
-    /**
-     * @var \DOMDocument
-     */
-    private $metadata;
 
     /**
      * @var \DOMDocument
@@ -42,9 +32,34 @@ class ODT
     private $officeText;
 
     /**
-     * @var \DOMElement
+     * @var string|null
      */
-    private $officeMeta;
+    private $creator = null;
+
+    /**
+     * @var string|null
+     */
+    private $title = null;
+
+    /**
+     * @var string|null
+     */
+    private $description = null;
+
+    /**
+     * @var string|null
+     */
+    private $subject = null;
+
+    /**
+     * @var array
+     */
+    private $keywords = array();
+
+    /**
+     * @var \DateTime
+     */
+    private $creationDate;
 
     /**
      * @return ODT
@@ -59,9 +74,8 @@ class ODT
 
     private function __construct()
     {
-        $this->createManifest();
+        $this->creationDate = new \DateTime();
         $this->createStyles();
-        $this->createMetadata();
         $this->createDocumentContent();
     }
 
@@ -73,7 +87,6 @@ class ODT
         $manifestDoc = new \DOMDocument('1.0', 'UTF-8');
         $root = $manifestDoc->createElement('manifest:manifest');
         $root->setAttribute('xmlns:manifest', 'urn:oasis:names:tc:opendocument:xmlns:manifest:1.0');
-        $root->setAttribute('office:version', "1.1");
         $manifestDoc->appendChild($root);
 
         $fileEntryRoot = $manifestDoc->createElement('manifest:file-entry');
@@ -96,7 +109,7 @@ class ODT
         $fileEntryMeta->setAttribute('manifest:full-path', 'meta.xml');
         $root->appendChild($fileEntryMeta);
 
-        $this->manifest = $manifestDoc;
+        return $manifestDoc;
     }
 
     /**
@@ -130,24 +143,58 @@ class ODT
     }
 
     /**
-     * Creates the metadata document, containing the general information about the document
+     * @return \DOMDocument
      */
     private function createMetadata()
     {
-        $this->metadata = new \DOMDocument('1.0', 'UTF-8');
-        $root = $this->metadata->createElement('office:document-meta');
+        $metadata = new \DOMDocument('1.0', 'UTF-8');
+
+        $root = $metadata->createElement('office:document-meta');
         $root->setAttribute('xmlns:meta', 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0');
         $root->setAttribute('xmlns:office', 'urn:oasis:names:tc:opendocument:xmlns:office:1.0');
         $root->setAttribute('xmlns:dc', 'http://purl.org/dc/elements/1.1/');
         $root->setAttribute('office:version', '1.1');
-        $this->metadata->appendChild($root);
+        $metadata->appendChild($root);
 
-        $generator = $this->metadata->createElement('meta:generator', self::GENERATOR);
-        $creationDate = $this->metadata->createElement('meta:creation-date', date('Y-m-d\TH:i:s'));
-        $this->officeMeta = $this->metadata->createElement('office:meta');
-        $this->officeMeta->appendChild($generator);
-        $this->officeMeta->appendChild($creationDate);
-        $root->appendChild($this->officeMeta);
+        $officeMeta = $metadata->createElement('office:meta');
+
+        $generator = $metadata->createElement('meta:generator', self::GENERATOR);
+        $officeMeta->appendChild($generator);
+
+        $creationDate = $metadata->createElement(
+            'meta:creation-date',
+            $this->creationDate->format('Y-m-d\TH:i:s')
+        );
+        $officeMeta->appendChild($creationDate);
+
+        if (null !== $this->creator) {
+            $creatorElement = $metadata->createElement('meta:initial-creator', $this->creator);
+            $officeMeta->appendChild($creatorElement);
+        }
+
+        if (null !== $this->title) {
+            $titleElement = $metadata->createElement('dc:title', $this->title);
+            $officeMeta->appendChild($titleElement);
+        }
+
+        if (null !== $this->description) {
+            $descriptionElement = $metadata->createElement('dc:description', $this->description);
+            $officeMeta->appendChild($descriptionElement);
+        }
+
+        if (null !== $this->subject) {
+            $subjectElement = $metadata->createElement('dc:subject', $this->subject);
+            $officeMeta->appendChild($subjectElement);
+        }
+
+        foreach ($this->keywords as $keyword) {
+            $keywordElement = $metadata->createElement('meta:keyword', $keyword);
+            $officeMeta->appendChild($keywordElement);
+        }
+
+        $root->appendChild($officeMeta);
+
+        return $metadata;
     }
 
     private function createDocumentContent()
@@ -229,8 +276,7 @@ class ODT
      */
     public function setTitle($title)
     {
-        $element = $this->metadata->createElement('dc:title', $title);
-        $this->officeMeta->appendChild($element);
+        $this->title = $title;
     }
 
     /**
@@ -240,8 +286,7 @@ class ODT
      */
     public function setDescription($description)
     {
-        $element = $this->metadata->createElement('dc:description', $description);
-        $this->officeMeta->appendChild($element);
+        $this->description = $description;
     }
 
     /**
@@ -251,25 +296,17 @@ class ODT
      */
     public function setSubject($subject)
     {
-        $element = $this->metadata->createElement('dc:subject', $subject);
-        $this->officeMeta->appendChild($element);
+        $this->subject = $subject;
     }
 
     /**
      * Sets the keywords related to the document
      *
      * @param array $keywords
-     * @throws ODTException
      */
-    public function setKeywords($keywords)
+    public function setKeywords(array $keywords)
     {
-        if (!is_array($keywords)) {
-            throw new ODTException('Keywords must be an array.');
-        }
-        foreach ($keywords as $keyword) {
-            $element = $this->metadata->createElement('meta:keyword', $keyword);
-            $this->officeMeta->appendChild($element);
-        }
+        $this->keywords = $keywords;
     }
 
     /**
@@ -279,8 +316,7 @@ class ODT
      */
     public function setCreator($creator)
     {
-        $element = $this->metadata->createElement('meta:initial-creator', $creator);
-        $this->officeMeta->appendChild($element);
+        $this->creator = $creator;
     }
 
     /**
@@ -307,13 +343,23 @@ class ODT
         $document = new \ZipArchive();
         $document->open($fileName, \ZipArchive::OVERWRITE);
 
-        $document->addFromString('META-INF/manifest.xml', $this->manifest->saveXML());
+        $document->addFromString('META-INF/manifest.xml', $this->createManifest()->saveXML());
         $document->addFromString('styles.xml', $this->styles->saveXML());
-        $document->addFromString('meta.xml', $this->metadata->saveXML());
+        $document->addFromString('meta.xml', $this->createMetadata()->saveXML());
         $document->addFromString('content.xml', html_entity_decode($this->documentContent->saveXML()));
 
         $document->close();
 
         chmod($fileName, $perm);
+    }
+
+    /**
+     * This is a bit hacky - it is required to get a meta.xml with a predictable date for testing
+     *
+     * @param \DateTime $creationDate
+     */
+    public function setCreationDate(\DateTime $creationDate)
+    {
+        $this->creationDate = $creationDate;
     }
 }

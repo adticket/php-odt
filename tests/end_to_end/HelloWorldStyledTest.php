@@ -27,6 +27,12 @@ class HelloWorldStyledTest extends \PHPUnit_Framework_TestCase
         $odt->setCreationDate(new \DateTime('2013-01-01 12:00:00'));
 
 
+        $odt->setCreator('Tom Tester');
+        $odt->setTitle('My Title');
+        $odt->setDescription('Some description here');
+        $odt->setSubject('My Subject');
+        $odt->setKeywords(array('My first keyword', 'My second keyword'));
+
         $textStyle = new TextStyle('t1');
         $textStyle->setColor('#ff0000');
         $textStyle->setBold();
