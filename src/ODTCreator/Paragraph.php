@@ -47,17 +47,6 @@ class Paragraph
     }
 
     /**
-     * Add styled text
-     * @param TextStyle $styles
-     * @param string $content
-     */
-//	public function addStyledText($textStyle, $content) {
-//		$span = $this->documentContent->createElement('text:span', $content);
-//		$span->setAttribute('text:style-name', $textStyle->getStyleName());
-//		$this->pElement->appendChild($span);
-//	}
-
-    /**
      * Add an hyperlink
      * @param string $text The text that will be displayed
      * @param string $url The URL for the target location of the link
