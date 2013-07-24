@@ -2,6 +2,7 @@
 
 namespace ODTCreator;
 
+// TODO: Refactor all places where these methods are used to use value objects instead and then get rid of this class
 class Common
 {
     public static function isColor($color)
