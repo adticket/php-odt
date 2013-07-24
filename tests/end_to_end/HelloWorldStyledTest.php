@@ -23,8 +23,13 @@ class HelloWorldStyledTest extends \PHPUnit_Framework_TestCase
     public function testHelloWorldStyled()
     {
         $odt = ODT::getInstance();
-        // This is the date that is stored in the meta.xml against which we compare
-        $odt->setCreationDate(new \DateTime('2013-01-01 12:00:00'));
+
+        // Hack: Inject the date that is stored in the meta.xml against which we compare
+        // This is neccessary to get a meta.xml with a predictable date for testing
+        $reflectionClass = new \ReflectionClass('ODT\ODT');
+        $creationDateProperty = $reflectionClass->getProperty('creationDate');
+        $creationDateProperty->setAccessible(true);
+        $creationDateProperty->setValue($odt, new \DateTime('2013-01-01 12:00:00'));
 
 
         $odt->setCreator('Tom Tester');

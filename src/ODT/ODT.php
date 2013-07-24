@@ -352,14 +352,4 @@ class ODT
 
         chmod($fileName, $perm);
     }
-
-    /**
-     * This is a bit hacky - it is required to get a meta.xml with a predictable date for testing
-     *
-     * @param \DateTime $creationDate
-     */
-    public function setCreationDate(\DateTime $creationDate)
-    {
-        $this->creationDate = $creationDate;
-    }
 }
