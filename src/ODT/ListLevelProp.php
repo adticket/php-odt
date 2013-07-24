@@ -2,6 +2,9 @@
 
 namespace ODT;
 
+use ODT\Style\StyleConstants;
+use ODT\Style\StyleException;
+
 class ListLevelProp
 {
     private $align = null;

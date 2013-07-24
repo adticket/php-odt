@@ -2,11 +2,21 @@
 
 namespace ODT;
 
+use ODT\Style\RubyStyle;
+use ODT\Style\StyleConstants;
+use ODT\Style\TextStyle;
+
 class Paragraph
 {
-//	private $contentDocument;
-    private $pElement;
+    /**
+     * @var \DOMDocument
+     */
     private $documentContent;
+
+    /**
+     * @var \DOMElement
+     */
+    private $pElement;
 
     /**
      *

@@ -1,6 +1,8 @@
 <?php
 
-namespace ODT;
+namespace ODT\Style;
+
+use ODT\ODT;
 
 class Style
 {

@@ -1,6 +1,8 @@
 <?php
 
-namespace ODT;
+namespace ODT\Style;
+
+use ODT\Common;
 
 class ParagraphStyle extends Style
 {

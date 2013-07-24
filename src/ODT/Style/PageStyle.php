@@ -1,6 +1,10 @@
 <?php
 
-namespace ODT;
+namespace ODT\Style;
+
+use ODT\Common;
+use ODT\ODT;
+use ODT\Paragraph;
 
 class PageStyle
 {

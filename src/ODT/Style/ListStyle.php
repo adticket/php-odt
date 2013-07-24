@@ -1,6 +1,9 @@
 <?php
 
-namespace ODT;
+namespace ODT\Style;
+
+use ODT\Common;
+use ODT\ListLevelProp;
 
 class ListStyle extends ContentAutoStyle
 {

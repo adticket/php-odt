@@ -2,6 +2,8 @@
 
 namespace ODT;
 
+use ODT\Style\ListStyle;
+
 class ODTList
 {
     /**

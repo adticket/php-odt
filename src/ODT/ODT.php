@@ -291,6 +291,9 @@ class ODT
         return $this->styles;
     }
 
+    /**
+     * @return \DOMDocument
+     */
     public function getDocumentContent()
     {
         return $this->documentContent;

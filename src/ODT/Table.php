@@ -2,6 +2,11 @@
 
 namespace ODT;
 
+use ODT\Style\CellStyle;
+use ODT\Style\ColumnStyle;
+use ODT\Style\RowStyle;
+use ODT\Style\TableStyle;
+
 class Table
 {
     private $contentDocument;
