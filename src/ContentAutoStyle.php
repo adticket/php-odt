@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Base class for paragraph & text styles.
- *
- * @author Issam RACHDI
- */
 class ContentAutoStyle
 {
     /**
@@ -32,8 +27,8 @@ class ContentAutoStyle
      * The constructor initializes the properties, then creates a <style:style> element , or an other element
      * if $elementNodeName is specified, representing this specific style, and add it to <office:automatic-styles> element
      *
-     * @param DOMDocument $contentDoc The content Document returned by the method {@link ODT.html#initContent initContent()}
      * @param string $name The style name
+     * @param string|null $elementNodeName
      */
     function __construct($name, $elementNodeName = NULL)
     {

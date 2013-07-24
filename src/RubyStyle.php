@@ -53,5 +53,4 @@ class RubyStyle extends ContentAutoStyle
         }
         $this->rubyProperties->setAttribute('style:ruby-align', $align);
     }
-
 }

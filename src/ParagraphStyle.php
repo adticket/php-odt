@@ -1,11 +1,5 @@
 <?php
 
-/**
- * A Class representing style properties for paragraphs.
- *
- * @author Issam RACHDI
- */
-
 class ParagraphStyle extends Style
 {
     public function __construct($name)
@@ -19,7 +13,8 @@ class ParagraphStyle extends Style
      * relates to the highest character in a line. The value StyleConstants::NORMAL
      * activates the default line height calculation
      *
-     * @param length|percentage|StyleConstants::NORMAL $lineHeight
+     * @param $lineHeight
+     * @throws StyleException
      */
     function setLineHeight($lineHeight)
     {
@@ -38,7 +33,8 @@ class ParagraphStyle extends Style
     /**
      * Specifies a fixed distance between two lines.
      *
-     * @param length $distance
+     * @param $distance
+     * @throws StyleException
      */
     function setLineDistance($distance)
     {
@@ -54,6 +50,7 @@ class ParagraphStyle extends Style
      * Specifies how to align text in paragraphs
      *
      * @param integer $textAlign Valid values are StyleConstants::(START, END, LEFT, RIGHT, CENTER, JUSTIFY)
+     * @throws StyleException
      */
     function setTextAlign($textAlign)
     {
@@ -89,7 +86,8 @@ class ParagraphStyle extends Style
      * the same page or column (if the value is ALWAYS),
      * or whether breaks are allowed within the paragraph (if the value is AUTO)
      *
-     * @param integer $keepTogether Valid values are StyleConstants::(AUTO, ALWAYS)
+     * @param int $keepTogether Valid values are StyleConstants::(AUTO, ALWAYS)
+     * @throws StyleException
      */
     function setKeepTogether($keepTogether = StyleConstants::ALWAYS)
     {
@@ -112,6 +110,7 @@ class ParagraphStyle extends Style
      * Specifies the minimum number of lines allowed at the top of a page to avoid paragraph widows.
      *
      * @param integer $widows Minimum number of lines
+     * @throws StyleException
      */
     function setWidows($widows)
     {
@@ -127,6 +126,7 @@ class ParagraphStyle extends Style
      * Specifies the minimum number of lines required at the bottom of a page to avoid paragraph orphans.
      *
      * @param integer $orphans Minimum number of lines
+     * @throws StyleException
      */
     function setOrphans($orphans)
     {
@@ -143,6 +143,7 @@ class ParagraphStyle extends Style
      *
      * @param integer|string $leftMargin
      * @param integer|string $rightMargin
+     * @throws StyleException
      */
     function setHorizontalMargins($leftMargin = 0, $rightMargin = 0)
     {
@@ -163,6 +164,7 @@ class ParagraphStyle extends Style
      *
      * @param integer|string $topMargin
      * @param integer|string $bottomMargin
+     * @throws StyleException
      */
     function setVerticalMargin($topMargin, $bottomMargin)
     {
@@ -182,6 +184,7 @@ class ParagraphStyle extends Style
      * Insert a page or column break before a paragraph
      *
      * @param integer $breakBefore Valid values are StyleConstants::(PAGE|COLUMN)
+     * @throws StyleException
      */
     function setBreakBefore($breakBefore)
     {
@@ -204,6 +207,7 @@ class ParagraphStyle extends Style
      * Insert a page or column break after a paragraph
      *
      * @param integer $breakAfter Valid values are StyleConstants::(PAGE|COLUMN)
+     * @throws StyleException
      */
     function setBreakAfter($breakAfter)
     {
@@ -226,7 +230,8 @@ class ParagraphStyle extends Style
      * Specifies the background color for the paragraph. The color format
      * must be #XXYYZZ where XX is the red, YY the green and ZZ the blue, in hexadecimal.
      *
-     * @param color $color
+     * @param string $color
+     * @throws StyleException
      */
     function setBackgroundColor($color)
     {
@@ -243,8 +248,10 @@ class ParagraphStyle extends Style
      * will not be repeated
      *
      * @param string $image The image's path.
+     * @param $repeat
      * @param integer $position Specifies where to position a background image in a paragraph.
      * Valid values are StyleConstants::(LEFT|RIGHT|CENTER|TOP|BOTTOM)
+     * @throws StyleException
      */
     function setBackgroundImage($image, $repeat = StyleConstants::REPEAT,
                                 $position = -1)
@@ -305,7 +312,8 @@ class ParagraphStyle extends Style
     /**
      * Specifies a positive or negative indent for the first line of a paragraph
      *
-     * @param length $textIndent
+     * @param $textIndent
+     * @throws StyleException
      */
     function setTextIndent($textIndent)
     {
@@ -320,10 +328,11 @@ class ParagraphStyle extends Style
     /**
      * Specifies the border properties for paragraphs.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      * @param string $position Do not use this, it's for internal use only.
+     * @throws StyleException
      */
     function setBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                        $borderWidth = StyleConstants::THIN, $position = '')
@@ -372,9 +381,9 @@ class ParagraphStyle extends Style
     /**
      * Specifies the top border properties for paragraphs.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      */
     function setTopBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                           $borderWidth = StyleConstants::THIN)
@@ -385,9 +394,9 @@ class ParagraphStyle extends Style
     /**
      * Specifies the bottom border properties for paragraphs.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      */
     function setBottomBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                              $borderWidth = StyleConstants::THIN)
@@ -398,9 +407,9 @@ class ParagraphStyle extends Style
     /**
      * Specifies the left border properties for paragraphs.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      */
     function setLeftBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                            $borderWidth = StyleConstants::THIN)
@@ -411,9 +420,9 @@ class ParagraphStyle extends Style
     /**
      * Specifies the right border properties for paragraphs.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      */
     function setRightBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                             $borderWidth = StyleConstants::THIN)
@@ -424,8 +433,9 @@ class ParagraphStyle extends Style
     /**
      * Specifies the spacing around a paragraph.
      *
-     * @param length $padding
+     * @param $padding
      * @param string $position Do not use this, it's for internal use only.
+     * @throws StyleException
      */
     function setPadding($padding, $position = '')
     {
@@ -447,7 +457,7 @@ class ParagraphStyle extends Style
     /**
      * Specifies the spacing on top of a paragraph.
      *
-     * @param length $padding
+     * @param $padding
      */
     function setTopPadding($padding)
     {
@@ -457,7 +467,7 @@ class ParagraphStyle extends Style
     /**
      * Specifies the spacing in the bottom of a paragraph.
      *
-     * @param length $padding
+     * @param $padding
      */
     function setBottomPadding($padding)
     {
@@ -467,7 +477,7 @@ class ParagraphStyle extends Style
     /**
      * Specifies the spacing in the left side of a paragraph.
      *
-     * @param length $padding
+     * @param $padding
      */
     function setLeftPadding($padding)
     {
@@ -477,7 +487,7 @@ class ParagraphStyle extends Style
     /**
      * Specifies the spacing in the right side of a paragraph.
      *
-     * @param length $padding
+     * @param $padding
      */
     function setRightPadding($padding)
     {
@@ -504,6 +514,7 @@ class ParagraphStyle extends Style
      * Specifies the vertical position of a character. By default characters are aligned according to their baseline.
      *
      * @param integer $align Valid values: StyleConstants::(TOP|BOTTOM|MIDDLE|BASELINE|AUTO)
+     * @throws StyleException
      */
     function setVerticalAlignment($align)
     {
@@ -534,6 +545,7 @@ class ParagraphStyle extends Style
     /**
      * Specifies the writing mode of a paragraph.
      * @param integer $writingMode Valid values: StyleConstants::(LR_TB|RL_TB|TB_RL|TB_LR|RL|TB|PAGE)
+     * @throws StyleException
      */
     function setWritingMode($writingMode)
     {

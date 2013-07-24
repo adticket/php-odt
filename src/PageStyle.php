@@ -1,10 +1,5 @@
 <?php
 
-/**
- * A Class representing the properties of a page.
- *
- * @author Issam RACHDI
- */
 class PageStyle
 {
     private $pageWidth = '21cm';
@@ -51,8 +46,8 @@ class PageStyle
      * The constructor initializes the properties, then creates a <style:style>
      * element representing this specific style, and add it to <office:styles>
      * element
-     * @param DOMDocument $styleDoc
      * @param string $name
+     * @internal param \DOMDocument $styleDoc
      */
     function __construct($name)
     {
@@ -90,8 +85,9 @@ class PageStyle
     /**
      * Specify the physical size of the page.
      *
-     * @param integer|length $width
+     * @param integer $width
      * @param integer|string $height
+     * @throws StyleException
      */
     function setPageSize($width, $height)
     {
@@ -110,6 +106,7 @@ class PageStyle
      * @param string $prefix
      * @param string $suffix
      * @param string $format Valid values: "1", "a", "A", "i", or "I"
+     * @throws StyleException
      */
     function setPageNumberFormat($prefix, $suffix, $format)
     {
@@ -132,6 +129,7 @@ class PageStyle
      * Specifies the orientation of the printed page
      *
      * @param integer $orientation Valid values: StyleConstants::(LANDSCAPE|PORTRAIT)
+     * @throws StyleException
      */
     function setOrientation($orientation)
     {
@@ -159,6 +157,7 @@ class PageStyle
      *
      * @param integer|string $leftMargin
      * @param integer|string $rightMargin
+     * @throws StyleException
      */
     function setHorizontalMargin($leftMargin = 0, $rightMargin = 0)
     {
@@ -178,6 +177,7 @@ class PageStyle
      *
      * @param integer|string $topMargin
      * @param integer|string $bottomMargin
+     * @throws StyleException
      */
     function setVerticalMargin($topMargin, $bottomMargin)
     {
@@ -194,10 +194,11 @@ class PageStyle
     /**
      * Specifies the border properties for the page.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      * @param string $position Do not use this, it's for internal use only.
+     * @throws StyleException
      */
     function setBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                        $borderWidth = StyleConstants::THIN, $position = '')
@@ -244,9 +245,9 @@ class PageStyle
     /**
      * Specifies the top border property for pages.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      */
     function setTopBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                           $borderWidth = StyleConstants::THIN)
@@ -257,9 +258,9 @@ class PageStyle
     /**
      * Specifies the bottom border property for paragraphs.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      */
     function setBottomBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                              $borderWidth = StyleConstants::THIN)
@@ -270,9 +271,9 @@ class PageStyle
     /**
      * Specifies the left border property for pages.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      */
     function setLeftBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                            $borderWidth = StyleConstants::THIN)
@@ -283,9 +284,9 @@ class PageStyle
     /**
      * Specifies the right border property for pages.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      */
     function setRightBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                             $borderWidth = StyleConstants::THIN)
@@ -297,8 +298,9 @@ class PageStyle
      * Specifies the spacing around the page.
      * Note that you must first specify the border
      *
-     * @param length $padding
+     * @param $padding
      * @param string $position Do not use this, it's for internal use only.
+     * @throws StyleException
      */
     function setPadding($padding, $position = '')
     {
@@ -318,7 +320,7 @@ class PageStyle
     /**
      * Specifies the spacing on top of the pages.
      *
-     * @param length $padding
+     * @param $padding
      */
     function setTopPadding($padding)
     {
@@ -328,7 +330,7 @@ class PageStyle
     /**
      * Specifies the spacing in the bottom of the pages.
      *
-     * @param length $padding
+     * @param $padding
      */
     function setBottomPadding($padding)
     {
@@ -338,7 +340,7 @@ class PageStyle
     /**
      * Specifies the spacing in the left side of the pages.
      *
-     * @param length $padding
+     * @param $padding
      */
     function setLeftPadding($padding)
     {
@@ -348,7 +350,7 @@ class PageStyle
     /**
      * Specifies the spacing in the right side of the pages.
      *
-     * @param length $padding
+     * @param $padding
      */
     function setRightPadding($padding)
     {
@@ -358,7 +360,8 @@ class PageStyle
     /**
      * Specifies the background color for the page
      *
-     * @param color $color
+     * @param $color
+     * @throws StyleException
      */
     function setBackgroundColor($color)
     {
@@ -373,8 +376,10 @@ class PageStyle
      * will not be repeated
      *
      * @param string $image The image's path.
+     * @param $repeat
      * @param integer $position Specifies where to position a background image in a paragraph.
      * Valid values are StyleConstants::(LEFT|RIGHT|CENTER|TOP|BOTTOM)
+     * @throws StyleException
      */
     function setBackgroundImage($image, $repeat = StyleConstants::REPEAT,
                                 $position = -1)
@@ -436,6 +441,7 @@ class PageStyle
      * Specify the number of the first page
      *
      * @param integer $number
+     * @throws StyleException
      */
     function setFirstPageNumber($number)
     {
@@ -448,7 +454,8 @@ class PageStyle
     /**
      * Specifies the maximum amount of space on the page that a footnote can occupy.
      *
-     * @param length $height
+     * @param $height
+     * @throws StyleException
      */
     function setMaximumFootnoteHeight($height)
     {
@@ -461,12 +468,13 @@ class PageStyle
     /**
      * Specify the line that separates the footnote from the body text area on a page
      *
-     * @param length $lineWidth
-     * @param color $color
-     * @param integer $adjustment How the line is aligned on the page. Valid values: StyleConstants::(LEFT|RIGHT|CENTER)
-     * @param length $distanceBefore
-     * @param length $distanceAfter
-     * @param integer $lineStyle
+     * @param string $lineWidth
+     * @param string $color
+     * @param int $adjustment How the line is aligned on the page. Valid values: StyleConstants::(LEFT|RIGHT|CENTER)
+     * @param string $distanceBefore
+     * @param string $distanceAfter
+     * @param int $lineStyle
+     * @throws StyleException
      */
 
     function setFootnoteSeparator($lineWidth = '1mm', $color = '#000000', $adjustment = StyleConstants::CENTER,
@@ -537,6 +545,7 @@ class PageStyle
      * Specifies the writing mode for the pages.
      *
      * @param integer $writingMode Valid values: StyleConstants::(LR_TB|RL_TB|TB_RL|TB_LR|RL|TB|PAGE)
+     * @throws StyleException
      */
     function setWritingMode($writingMode)
     {
@@ -571,7 +580,9 @@ class PageStyle
     /**
      * Specifies the height of the headers & footers
      *
-     * @param length $height
+     * @param $element
+     * @param $height
+     * @throws StyleException
      */
     function setHeadFootHeight($element, $height)
     {
@@ -598,7 +609,10 @@ class PageStyle
     /**
      * Specifies the minimum height of the headers & footers
      *
-     * @param length $height
+     * @param $element
+     * @param $minHeight
+     * @throws StyleException
+     * @internal param $height
      */
     function setHeadFootMinHeight($element, $minHeight)
     {
@@ -625,8 +639,10 @@ class PageStyle
     /**
      * Specify the left & right margin for headers & footers
      *
+     * @param $element
      * @param integer|string $leftMargin
      * @param integer|string $rightMargin
+     * @throws StyleException
      */
     function setHeadFootHMargins($element, $leftMargin = 0, $rightMargin = 0)
     {
@@ -660,6 +676,7 @@ class PageStyle
      *
      * @param integer|string $topMargin
      * @param integer|string $bottomMargin
+     * @throws StyleException
      */
     function setHeadFootVMargins($topMargin, $bottomMargin)
     {
@@ -686,10 +703,12 @@ class PageStyle
     /**
      * Specifies the border properties for headers & footers.
      *
-     * @param color $borderColor Border color
+     * @param $element
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      * @param string $position Do not use this, it's for internal use only.
+     * @throws StyleException
      */
     function setHeadFootBorder($element, $borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                                $borderWidth = StyleConstants::THIN, $position = '')
@@ -752,9 +771,9 @@ class PageStyle
     /**
      * Specifies the border properties for headers & footers.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      */
 
     function setHeaderTopBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
@@ -772,9 +791,9 @@ class PageStyle
     /**
      * Specifies the border properties for headers & footers.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      */
 
     function setHeaderBottomBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
@@ -792,9 +811,9 @@ class PageStyle
     /**
      * Specifies the border properties for headers & footers.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      */
 
     function setHeaderLeftBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
@@ -812,9 +831,9 @@ class PageStyle
     /**
      * Specifies the border properties for headers & footers.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      */
 
     function setHeaderRightBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
@@ -833,8 +852,10 @@ class PageStyle
      * Specifies the spacing around the headers & footers..
      * Note that you must first specify the border for the padding to work
      *
-     * @param length $padding
+     * @param $element
+     * @param $padding
      * @param string $position Do not use this, it's for internal use only.
+     * @throws StyleException
      */
     function setHeadFootPadding($element, $padding, $position = '')
     {
@@ -908,7 +929,9 @@ class PageStyle
     /**
      * Specify the background color of the headers & footers.
      *
-     * @param color $color
+     * @param $element
+     * @param $color
+     * @throws StyleException
      */
     function setHeadFootBackgroundColor($element, $color)
     {
@@ -934,11 +957,13 @@ class PageStyle
 
     /**
      *
+     * @param $element
      * @param string $image The image's path.
-     * @param integer $repeat Specifies whether a background image is repeated or stretched.
+     * @param int $repeat Specifies whether a background image is repeated or stretched.
      * Valid values are StyleConstants::(REPEAT|NO_REPEAT|STRETCH)
-     * @param integer $position Specifies where to position a background image in a paragraph.
+     * @param int $position Specifies where to position a background image in a paragraph.
      * Valid values are StyleConstants::(LEFT|RIGHT|CENTER|TOP|BOTTOM)
+     * @throws StyleException
      */
     function setHeadFootBackgroundImage($element, $image, $repeat = StyleConstants::REPEAT,
                                         $position = StyleConstants::CENTER)

@@ -1,19 +1,11 @@
 <?php
 
-/**
- * A Class representing style properties for table columns.
- *
- * @author Issam RACHDI
- */
-
 class ColumnStyle extends ContentAutoStyle
 {
     private $colProp;
 
     /**
-     *
-     * @param type $contentDoc
-     * @param type $name
+     * @param string $name
      */
     public function __construct($name)
     {
@@ -26,7 +18,8 @@ class ColumnStyle extends ContentAutoStyle
     /**
      * Sets the width of the table.
      *
-     * @param length|percentage $width
+     * @param string $width
+     * @throws StyleException
      */
     public function setWidth($width)
     {
@@ -44,7 +37,8 @@ class ColumnStyle extends ContentAutoStyle
     /**
      * Specifies if the column width should be recalculated automatically if some content in the column changes.
      *
-     * @param boolean $optimal
+     * @param bool $optimalWidth
+     * @throws StyleException
      */
     public function setOptimalWidth($optimalWidth)
     {
@@ -59,6 +53,7 @@ class ColumnStyle extends ContentAutoStyle
      * Insert a page or column break before a table column.
      *
      * @param integer $breakBefore Possible values: StyleConstants::(PAGE|COLUMN)
+     * @throws StyleException
      */
     function setBreakBefore($breakBefore)
     {
@@ -79,6 +74,7 @@ class ColumnStyle extends ContentAutoStyle
      * Insert a page or column break after a table column
      *
      * @param integer $breakAfter Possible values: StyleConstants::(PAGE|COLUMN)
+     * @throws StyleException
      */
     function setBreakAfter($breakAfter)
     {

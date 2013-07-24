@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Base class for paragraph & text styles.
- *
- * @author Issam RACHDI
- */
 class Style
 {
     /**
@@ -13,12 +8,14 @@ class Style
      * @var DOMDocument
      */
     protected $styleDocument;
+
     /**
      * The name of the style
      * @access private
      * @var string
      */
     protected $name;
+
     /**
      * The DOMElement representing this style
      * @access private
@@ -30,8 +27,8 @@ class Style
      * The constructor initializes the properties, then creates a <style:style>
      * element representing this specific style, and add it to <office:styles> element
      *
-     * @param DOMDocument $styleDoc
      * @param string $name
+     * @internal param \DOMDocument $styleDoc
      */
     function __construct($name)
     {
@@ -55,6 +52,4 @@ class Style
     {
         $this->name = $name;
     }
-
 }
-

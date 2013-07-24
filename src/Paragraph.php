@@ -1,11 +1,5 @@
 <?php
 
-/**
- * A Class representing a paragraph.
- *
- * @author Issam RACHDI
- */
-
 class Paragraph
 {
 //	private $contentDocument;
@@ -14,8 +8,9 @@ class Paragraph
 
     /**
      *
-     * @param DOMDocument $contentDoc The DOMDocument instance of content.xml
      * @param <type> $pStyle A ParagraphStyle object representing paragraph style properties
+     * @param bool $addToDocument
+     * @internal param \DOMDocument $contentDoc The DOMDocument instance of content.xml
      */
     public function __construct($pStyle = null, $addToDocument = true)
     {
@@ -32,6 +27,7 @@ class Paragraph
     /**
      * Add a non-styled text
      * @param string $content
+     * @param null $styles
      */
     public function addText($content, $styles = NULL)
     {
@@ -58,7 +54,7 @@ class Paragraph
     /**
      * Add an hyperlink
      * @param string $text The text that will be displayed
-     * @param URL $url The URL for the target location of the link
+     * @param string $url The URL for the target location of the link
      * @param string $title A short accessible description for hint text
      */
     public function addHyperlink($text, $url, $title = '')
@@ -72,8 +68,9 @@ class Paragraph
     /**
      * Add an image to the pararaph.
      * @param string $image The path to the image
-     * @param length $width The width of the image (not in pixels)
-     * @param length $height The height of the image (not in pixels)
+     * @param string $width The width of the image (not in pixels)
+     * @param string $height The height of the image (not in pixels)
+     * @throws ODTException
      */
     public function addImage($image, $width, $height)
     {
@@ -107,7 +104,7 @@ class Paragraph
     /**
      * Create a bookmark
      *
-     * @param type $name The name of the bookmark
+     * @param string $name The name of the bookmark
      */
 
     public function addBookmark($name)
@@ -119,8 +116,8 @@ class Paragraph
 
     /**
      * Create a reference to a bookmark
-     * @param type $name The name of the bookmark to reference
-     * @param type $refText The text to display for the reference
+     * @param string $name The name of the bookmark to reference
+     * @param string $refText The text to display for the reference
      */
 
     public function addBookmarkRef($name, $refText)
@@ -136,8 +133,8 @@ class Paragraph
      * A note represents text notes which are attached to a certain text position.
      * A common implementation of this concept are the footnotes and endnotes found in most word processors.
      *
-     * @param type $body The note's content
-     * @param type $noteClass The type of the note, either FOOTNOTE (In the footer of the page), or ENDNOTE(The end of the document)
+     * @param string $body The note's content
+     * @param string $noteClass The type of the note, either FOOTNOTE (In the footer of the page), or ENDNOTE(The end of the document)
      */
 
     public function addNote($body, $noteClass = StyleConstants::FOOTNOTE)

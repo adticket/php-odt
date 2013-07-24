@@ -1,11 +1,5 @@
 <?php
 
-/**
- * A Class representing a list.
- *
- * @author Issam RACHDI
- */
-
 class ODTList
 {
     /**
@@ -22,9 +16,9 @@ class ODTList
 
     /**
      *
-     * @param DOMDocument $contentDocument
-     * @param boolean $addToDocument true if you're adding the list to the document, false if you want to add it as an item to another list
      * @param array $items The items of the list. You can also add items via the addItem method
+     * @param boolean $addToDocument true if you're adding the list to the document, false if you want to add it as an item to another list
+     * @internal param \DOMDocument $contentDocument
      */
     function __construct($items = null, $addToDocument = true)
     {

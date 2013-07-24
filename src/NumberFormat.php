@@ -3,6 +3,7 @@
 class NumberFormat
 {
     private $prefix;
+
     /**
      * What will be displayed before the number
      * @var string
@@ -61,6 +62,7 @@ class NumberFormat
      * The argument can be "1", "a", "A", "i", or "I". If empty, no number is displayed.
      *
      * @param string $format
+     * @throws Exception
      */
     public function setFormat($format)
     {

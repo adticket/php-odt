@@ -1,10 +1,5 @@
 <?php
 
-/**
- * A Class representing a table.
- *
- * @author Issam RACHDI
- */
 class Table
 {
     private $contentDocument;
@@ -19,8 +14,9 @@ class Table
 
     /**
      *
-     * @param DOMDocument $contentDoc The DOMDocument instance of content.xml
+     * @param $tableName
      * @param TableStyle $tableStyle A TableStyle object representing table style properties
+     * @internal param \DOMDocument $contentDoc The DOMDocument instance of content.xml
      */
     public function __construct($tableName, $tableStyle = null)
     {
@@ -50,7 +46,8 @@ class Table
      * the method {@link #getColumnStyle getColumnStyle()}
      *
      * @param integer $nbCols The number of columns
-     * @param DOMDocument $styleDoc
+     * @param bool $createStyles
+     * @internal param \DOMDocument $styleDoc
      */
     public function createColumns($nbCols, $createStyles = true)
     {
@@ -101,7 +98,8 @@ class Table
      * Add rows to the table.
      *
      * @param array $rows A two dimension array, representing the rows, and the cells inside each row
-     * @param DOMDocument $styleDoc The DOMDocument representing the styles
+     * @param bool $createStyles
+     * @internal param \DOMDocument $styleDoc The DOMDocument representing the styles
      */
     public function addRows($rows, $createStyles = true)
     {

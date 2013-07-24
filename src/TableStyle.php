@@ -1,11 +1,5 @@
 <?php
 
-/**
- * A Class representing style properties for tables.
- *
- * @author Issam RACHDI
- */
-
 class TableStyle extends ContentAutoStyle
 {
     private $tableProp;
@@ -22,7 +16,8 @@ class TableStyle extends ContentAutoStyle
      * Specify the width of the table. You must also set the widths of each column,
      * and set the alignment to a value different than StyleConstants::MARGINS
      *
-     * @param positiveLength|percentage $width
+     * @param $width
+     * @throws StyleException
      */
     public function setWidth($width)
     {
@@ -45,6 +40,7 @@ class TableStyle extends ContentAutoStyle
      * RIGHT — The table aligns to the center.
      * CENTER — The table aligns to the right.
      * MARGINS — The table fills all the space between the left and right margins.
+     * @throws StyleException
      */
     public function setAlignment($align)
     {
@@ -73,6 +69,7 @@ class TableStyle extends ContentAutoStyle
      *
      * @param integer|string $leftMargin
      * @param integer|string $rightMargin
+     * @throws StyleException
      */
     function setHorizontalMargin($leftMargin, $rightMargin)
     {
@@ -91,6 +88,7 @@ class TableStyle extends ContentAutoStyle
      *
      * @param integer|string $topMargin
      * @param integer|string $bottomMargin
+     * @throws StyleException
      */
     function setVerticalMargin($topMargin, $bottomMargin)
     {
@@ -108,6 +106,7 @@ class TableStyle extends ContentAutoStyle
      * Insert a page or column break before a table
      *
      * @param integer $breakBefore Valid values: StyleConstants::(PAGE|COLUMN)
+     * @throws StyleException
      */
     function setBreakBefore($breakBefore)
     {
@@ -128,6 +127,7 @@ class TableStyle extends ContentAutoStyle
      * Insert a page or column break after a table
      *
      * @param integer $breakAfter Valid values: StyleConstants::(PAGE|COLUMN)
+     * @throws StyleException
      */
     function setBreakAfter($breakAfter)
     {
@@ -147,7 +147,8 @@ class TableStyle extends ContentAutoStyle
     /**
      * Sets the background color of the table
      *
-     * @param color $color
+     * @param $color
+     * @throws StyleException
      */
     public function setBgColor($color)
     {
@@ -162,9 +163,10 @@ class TableStyle extends ContentAutoStyle
      * will not be repeated
      *
      * @param string $image The image's path.
-     * @param integer $repeat Specifies whether the background image is repeated or stretched.
+     * @param int $repeat Specifies whether the background image is repeated or stretched.
      * @param integer $position Specifies where to position the background image.
      * Valid values are StyleConstants::(LEFT|RIGHT|CENTER|TOP|BOTTOM)
+     * @throws StyleException
      */
     public function setBgImage($image, $repeat = StyleConstants::REPEAT,
                                $position = -1)
@@ -236,7 +238,8 @@ class TableStyle extends ContentAutoStyle
      * Separating border model:
      * Borders appear within the cell that specifies the border.
      *
-     * @param type $model StyleConstants::(COLLAPSING, SEPARATING)
+     * @param $model StyleConstants::(COLLAPSING, SEPARATING)
+     * @throws StyleException
      */
     function setBorderModel($model)
     {
@@ -257,6 +260,7 @@ class TableStyle extends ContentAutoStyle
      * Specifies the writing mode.
      *
      * @param integer $writingMode Valid values: StyleConstants::(LR_TB|RL_TB|TB_RL|TB_LR|RL|TB|PAGE)
+     * @throws StyleException
      */
     function setWritingMode($writingMode)
     {
@@ -288,4 +292,3 @@ class TableStyle extends ContentAutoStyle
         $this->tableProp->setAttribute('style:writing-mode', $writingMode);
     }
 }
-

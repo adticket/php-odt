@@ -1,11 +1,5 @@
 <?php
 
-/**
- * A Class representing a list style.
- *
- * @author Issam RACHDI
- */
-
 class ListStyle extends ContentAutoStyle
 {
     private $levels;
@@ -22,8 +16,9 @@ class ListStyle extends ContentAutoStyle
      * Specifies that the list in this level is a numbered list.
      *
      * @param integer $level
-     * @param {@link NumberFormat.html NumberFormat} $numFormat
-     * @param {@link TextStyle.html TextStyle} $textstyle The style to apply to the numbers
+     * @param null $numFormat
+     * @param null $textstyle
+     * @throws StyleException
      */
     function setNumberLevel($level, $numFormat = NULL, $textstyle = NULL)
     {
@@ -56,9 +51,9 @@ class ListStyle extends ContentAutoStyle
      * @param integer $level
      * @param string $bulletChar The character to use as the bullet, may be StyleConstants::(BULLET|BLACK_CIRCLE|CHECK_MARK|RIGHT_ARROW|RIGHT_ARROWHEAD)
      * @param string $prefix The characters to add before the bullet character.
-     * @param string $suffixThe characters to add behind the bullet character.
-     * @param {@link TextStyle.html TextStyle} $textstyle The style to use to format the list bullet.
-
+     * @param string $suffix The characters to add behind the bullet character.
+     * @param $textstyle The style to use to format the list bullet.
+     * @throws StyleException
      */
     function setBulletLevel($level, $bulletChar = StyleConstants::BULLET, $prefix = '', $suffix = '',
                             $textstyle = NULL)
@@ -99,6 +94,9 @@ class ListStyle extends ContentAutoStyle
      *
      * @param integer $level
      * @param string $image The image's location.
+     * @param string $width
+     * @param string $height
+     * @throws StyleException
      */
     function setImageLevel($level, $image, $width = '.5cm', $height = '.5cm')
     {

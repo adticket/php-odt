@@ -1,18 +1,10 @@
 <?php
 
-/**
- * A Class representing style properties for table cells.
- *
- * @author Issam RACHDI
- */
-
 class CellStyle extends ContentAutoStyle
 {
     private $cellProp;
 
     /**
-     *
-     * @param DOMDocument $contentDoc
      * @param string $name
      */
     public function __construct($name)
@@ -26,7 +18,8 @@ class CellStyle extends ContentAutoStyle
     /**
      * Specifies the vertical alignment of text in a table cell
      *
-     * @param type $vAlign Possible values are StyleConstants::(TOP|MIDDLE|BOTTOM|AUTO)
+     * @param string $vAlign Possible values are StyleConstants::(TOP|MIDDLE|BOTTOM|AUTO)
+     * @throws StyleException
      */
     public function setVerticalAlign($vAlign)
     {
@@ -73,7 +66,8 @@ class CellStyle extends ContentAutoStyle
      * (StyleConstants::LTR). The other direction is top to bottom (StyleConstants::TTB), where the
      * characters in the cell are stacked but not rotated.
      *
-     * @param integer $direction
+     * @param string $direction
+     * @throws StyleException
      */
     public function setDirection($direction)
     {
@@ -95,7 +89,8 @@ class CellStyle extends ContentAutoStyle
      * The property specifies an angle or automatic mode. The only possible angle is 0, which disables
      * this feature.
      *
-     * @param integer $orientation
+     * @param string $orientation
+     * @throws StyleException
      */
     public function setVertGlyphOrient($orientation)
     {
@@ -115,7 +110,8 @@ class CellStyle extends ContentAutoStyle
     /**
      * Sets the background color of the cell.
      *
-     * @param color $color
+     * @param string $color
+     * @throws StyleException
      */
     public function setBgColor($color)
     {
@@ -130,9 +126,10 @@ class CellStyle extends ContentAutoStyle
      * will not be repeated
      *
      * @param string $image The image's path.
-     * @param integer $repeat Specifies whether the background image is repeated or stretched.
-     * @param integer $position Specifies where to position the background image.
+     * @param string $repeat Specifies whether the background image is repeated or stretched.
+     * @param string $position Specifies where to position the background image.
      * Valid values are StyleConstants::(LEFT|RIGHT|CENTER|TOP|BOTTOM)
+     * @throws StyleException
      */
     public function setBgImage($image, $repeat = StyleConstants::REPEAT, $position = -1)
     {
@@ -190,10 +187,11 @@ class CellStyle extends ContentAutoStyle
     /**
      * Specifies the border properties for cell.
      *
-     * @param color $borderColor Border color
-     * @param integer $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param integer|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param string $borderColor Border color
+     * @param string $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
+     * @param string $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      * @param string $position
+     * @throws StyleException
      */
     function setBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                        $borderWidth = StyleConstants::THIN, $position = '')
@@ -240,9 +238,9 @@ class CellStyle extends ContentAutoStyle
     /**
      * Specifies the top border properties for a cell.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      */
     function setTopBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                           $borderWidth = StyleConstants::THIN)
@@ -253,9 +251,9 @@ class CellStyle extends ContentAutoStyle
     /**
      * Specifies the bottom border properties for a cell.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      */
     function setBottomBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                              $borderWidth = StyleConstants::THIN)
@@ -266,9 +264,9 @@ class CellStyle extends ContentAutoStyle
     /**
      * Specifies the left border properties for a cell.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      */
     function setLeftBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                            $borderWidth = StyleConstants::THIN)
@@ -279,9 +277,9 @@ class CellStyle extends ContentAutoStyle
     /**
      * Specifies the right border properties for a cell.
      *
-     * @param color $borderColor Border color
+     * @param string $borderColor Border color
      * @param int $borderStyle Valid values: StyleConstants::(SOLID|DOUBLE)
-     * @param int|length $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
+     * @param int $borderWidth Can be a length, or one of these values: StyleConstants::(THIN|THICK|MEDIUM)
      */
     function setRightBorder($borderColor = '#000000', $borderStyle = StyleConstants::SOLID,
                             $borderWidth = StyleConstants::THIN)
@@ -292,8 +290,9 @@ class CellStyle extends ContentAutoStyle
     /**
      * Specifies the spacing around a table cell.
      *
-     * @param length $padding
+     * @param string $padding
      * @param string $position
+     * @throws StyleException
      */
     function setPadding($padding, $position = '')
     {
@@ -313,7 +312,7 @@ class CellStyle extends ContentAutoStyle
     /**
      * Specifies the spacing on top of a table cell.
      *
-     * @param length $padding
+     * @param string $padding
      */
     function setTopPadding($padding)
     {
@@ -323,7 +322,7 @@ class CellStyle extends ContentAutoStyle
     /**
      * Specifies the spacing in the bottom of a table cell.
      *
-     * @param length $padding
+     * @param string $padding
      */
     function setBottomPadding($padding)
     {
@@ -333,7 +332,7 @@ class CellStyle extends ContentAutoStyle
     /**
      * Specifies the spacing in the left side of a table cell.
      *
-     * @param length $padding
+     * @param string $padding
      */
     function setLeftPadding($padding)
     {
@@ -343,7 +342,7 @@ class CellStyle extends ContentAutoStyle
     /**
      * Specifies the spacing in the right side of a table cell.
      *
-     * @param length $padding
+     * @param string $padding
      */
     function setRightPadding($padding)
     {

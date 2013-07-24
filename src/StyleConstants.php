@@ -1,11 +1,5 @@
 <?php
 
-/**
- * A Class containing constants used in the library.
- *
- * @author Issam RACHDI
- */
-
 class StyleConstants
 {
     const NONE = 1;

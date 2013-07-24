@@ -24,6 +24,7 @@ class ListLevelProp
      * specified by the {@link #setMinLabelWidth setMinLabelWidth()} method
      *
      * @param integer $align
+     * @throws StyleException
      */
     public function setAlign($align)
     {
@@ -63,7 +64,7 @@ class ListLevelProp
      * calculated the indent value of the current level is only considered. The indent values for
      * lower levels do not affect the label position.
      *
-     * @param length $indent
+     * @param $indent
      */
     public function setIndent($indent)
     {
@@ -78,7 +79,8 @@ class ListLevelProp
     /**
      * Specifies the minimum width of a number.
      *
-     * @param length $minLabelWidth
+     * @param $minLabelWidth
+     * @throws StyleException
      */
     public function setMinLabelWidth($minLabelWidth)
     {
@@ -97,7 +99,8 @@ class ListLevelProp
     /**
      * Specifies the minimum distance between the number and the text of the list item.
      *
-     * @param length $minLabelDistance
+     * @param $minLabelDistance
+     * @throws StyleException
      */
     public function setMinLabelDistance($minLabelDistance)
     {
@@ -117,6 +120,7 @@ class ListLevelProp
      * Specifies the vertical alignment of the image.
      *
      * @param integer $vAlign Valid values are StyleConstants::(TOP|MIDDLE|BOTTOM)
+     * @throws StyleException
      */
     public function setVAlign($vAlign)
     {
@@ -144,7 +148,8 @@ class ListLevelProp
     /**
      * Specifies the images's width
      *
-     * @param length $imageWidth
+     * @param $imageWidth
+     * @throws StyleException
      */
     public function setImageWidth($imageWidth)
     {
@@ -163,7 +168,8 @@ class ListLevelProp
     /**
      * Specifies the images's heiht
      *
-     * @param length $imageHeight
+     * @param $imageHeight
+     * @throws StyleException
      */
     public function setImageHeight($imageHeight)
     {

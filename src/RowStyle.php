@@ -1,11 +1,5 @@
 <?php
 
-/**
- * A Class representing style properties for table rows.
- *
- * @author Issam RACHDI
- */
-
 class RowStyle extends ContentAutoStyle
 {
     private $rowProp;
@@ -40,7 +34,8 @@ class RowStyle extends ContentAutoStyle
      * Specifies if the row height should be recalculated automatically
      * if some content in the row changes.
      *
-     * @param type $optimalHeight
+     * @param $optimalHeight
+     * @throws StyleException
      */
     public function setOptimalHeight($optimalHeight)
     {
@@ -54,7 +49,8 @@ class RowStyle extends ContentAutoStyle
     /**
      * Sets the background color of the row
      *
-     * @param color $color
+     * @param $color
+     * @throws StyleException
      */
     public function setBgColor($color)
     {
@@ -69,9 +65,10 @@ class RowStyle extends ContentAutoStyle
      * will not be repeated
      *
      * @param string $image The image's path.
-     * @param integer $repeat Specifies whether the background image is repeated or stretched.
+     * @param int $repeat Specifies whether the background image is repeated or stretched.
      * @param integer $position Specifies where to position the background image.
      * Valid values are StyleConstants::(LEFT|RIGHT|CENTER|TOP|BOTTOM)
+     * @throws StyleException
      */
     public function setBgImage($image, $repeat = StyleConstants::REPEAT,
                                $position = -1)

@@ -1,11 +1,5 @@
 <?php
 
-/**
- * A Class representing style properties for text content.
- *
- * @author Issam RACHDI
- */
-
 class TextStyle extends Style
 {
     public function __construct($name = '')
@@ -22,6 +16,7 @@ class TextStyle extends Style
      * StyleConstants::UPPER_CASE and StyleConstants::CAPITALIZE.
      * In case the value passed is equal to none of these values, a StyleException is thrown
      * @param integer $transform
+     * @throws StyleException
      */
     function setTextTransform($transform)
     {
@@ -51,7 +46,8 @@ class TextStyle extends Style
      * must be a 6 character hexadecimal value, for example #FF0000
      * or three integer (0 to 255) representing red, green, blue, for example "rgb(255, 0, 0)"
      * or a valid color name : red, blue ...
-     * @param color $color
+     * @param string $color
+     * @throws StyleException
      */
     function setColor($color = '#000000')
     {
@@ -80,8 +76,9 @@ class TextStyle extends Style
      * Draw a line through text.
      * lineType can have one of these
      * lineWidth can have these
-     * @param integer $lineType values: StyleConstants::NONE, StyleConstants::SINGLE, StyleConstants::DOUBLE
-     * @param integer $lineWidth Valid values are: StyleConstants::NORMAL, StyleConstants::BOLD
+     * @param int $lineType values: StyleConstants::NONE, StyleConstants::SINGLE, StyleConstants::DOUBLE
+     * @param int $lineWidth Valid values are: StyleConstants::NORMAL, StyleConstants::BOLD
+     * @throws StyleException
      */
     function setLineThrough($lineType = StyleConstants::SINGLE, $lineWidth = StyleConstants::NORMAL)
     {
@@ -129,6 +126,7 @@ class TextStyle extends Style
     /**
      * Sets the text position according to the baseline
      * @param integer $position
+     * @throws StyleException
      */
     function setTextPosition($position)
     {
@@ -149,7 +147,7 @@ class TextStyle extends Style
 
     /**
      * Specify the font name for the text
-     * @param <type> $fontName
+     * @param $fontName
      */
     function setFontName($fontName)
     {
@@ -160,8 +158,9 @@ class TextStyle extends Style
 
     /**
      *
-     * @param numeric|percentage $fontSize The font size can be either a numeric value representing absolute length
+     * @param $fontSize The font size can be either a numeric value representing absolute length
      * or a percentage
+     * @throws StyleException
      */
     function setFontSize($fontSize)
     {
@@ -202,8 +201,8 @@ class TextStyle extends Style
     }
 
     /**
-     *
      * @param integer $fontRelief Valid values: StyleConstants::EMBOSSED, StyleConstants::ENGRAVED
+     * @throws StyleException
      */
     function setFontRelief($fontRelief)
     {
@@ -224,10 +223,10 @@ class TextStyle extends Style
 
     /**
      *
-     * @param color $shadowColor The color of the shadow
-     * @param numeric $xCoord     The x coordinate of the shadow, relative to the text
-     * @param numeric $yCoord     The x coordinate of the shadow, relative to the text
-     * @param numeric $blurRadius    The amount of blurriness of the shadow
+     * @param string $shadowColor The color of the shadow
+     * @param int $xCoord The x coordinate of the shadow, relative to the text
+     * @param int $yCoord The x coordinate of the shadow, relative to the text
+     * @param int $blurRadius The amount of blurriness of the shadow
      */
     function setTextShadow($shadowColor = '#000000', $xCoord = 5, $yCoord = 5, $blurRadius = 0)
     {
@@ -240,10 +239,11 @@ class TextStyle extends Style
 
     /**
      *
-     * @param integer $underlineType Valid values: StyleConstants::SINGLE, StyleConstants::DOUBLE
-     * @param integer $underlineStyle Valid values: StyleConstants::SOLID, StyleConstants::DOTTED, StyleConstants::DASH, StyleConstants::LONG_DASH, StyleConstants::DOT_DOT_DASH, StyleConstants::WAVE
-     * @param integer $underlineWidth Valid values: StyleConstants::AUTO, StyleConstants::NORMAL, StyleConstants::BOLD, StyleConstants::THIN, StyleConstants::DASH, StyleConstants::MEDIUM, StyleConstants::THICK
-     * @param color $underlineColor a valid color
+     * @param int $underlineType Valid values: StyleConstants::SINGLE, StyleConstants::DOUBLE
+     * @param int $underlineStyle Valid values: StyleConstants::SOLID, StyleConstants::DOTTED, StyleConstants::DASH, StyleConstants::LONG_DASH, StyleConstants::DOT_DOT_DASH, StyleConstants::WAVE
+     * @param int $underlineWidth Valid values: StyleConstants::AUTO, StyleConstants::NORMAL, StyleConstants::BOLD, StyleConstants::THIN, StyleConstants::DASH, StyleConstants::MEDIUM, StyleConstants::THICK
+     * @param string $underlineColor a valid color
+     * @throws StyleException
      */
     function setTextUnderline($underlineType = StyleConstants::SINGLE,
                               $underlineStyle = StyleConstants::SOLID,
@@ -370,7 +370,7 @@ class TextStyle extends Style
 
     /**
      * Specify whether or not text blinks
-     * @param boolean $blinking
+     * @internal param bool $blinking
      */
     function setTextBlinking()
     {
@@ -381,7 +381,7 @@ class TextStyle extends Style
 
     /**
      * Specify the background color to apply to characters.
-     * @param color $color Background color
+     * @param string $color Background color
      */
     function setTextBackgroundColor($color)
     {
@@ -401,6 +401,9 @@ class TextStyle extends Style
      * If the value of the attribute is StyleConstants::LETTERS, up to 5 characters are combined within two lines. Any
      * additional character is displayed as normal text.
      * @param integer $textCombine
+     * @param string $startChar
+     * @param string $endChar
+     * @throws StyleException
      */
     function setTextCombine($textCombine, $startChar = '', $endChar = '')
     {
@@ -427,6 +430,7 @@ class TextStyle extends Style
      * Specifies an angle to which text is rotated. The angle can be 0, 90 or 270.
      *
      * @param integer $angle Angle of rotation
+     * @throws StyleException
      */
     function setRotationAngle($angle)
     {
@@ -437,5 +441,4 @@ class TextStyle extends Style
         $element->setAttribute('style:text-rotation-angle', $angle);
         $this->styleElement->appendChild($element);
     }
-
 }

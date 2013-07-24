@@ -1,11 +1,5 @@
 <?php
 
-/**
- * The class responsible for creating the xml documents needed
- * to generate an ODT document
- *
- * @author Issam RACHDI
- */
 class ODT
 {
     const GENERATOR = 'PHP-ODT 0.3';
@@ -27,10 +21,6 @@ class ODT
 
     private static $instance;
 
-    /**
-     * @param $fileName The name of the odt file
-     * @param $perm The permissions of the file (optional)
-     */
     private function __construct()
     {
         $this->initContent();
@@ -250,6 +240,7 @@ class ODT
      * Sets the keywords related to the document
      *
      * @param array $keywords
+     * @throws ODTException
      */
     function setKeywords($keywords)
     {
