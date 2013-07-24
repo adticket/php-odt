@@ -334,7 +334,7 @@ class ODTCreator
         return $this->documentContent;
     }
 
-    public function save($fileName, $perm = 0777)
+    public function save($fileName)
     {
         $document = new \ZipArchive();
         $document->open($fileName, \ZipArchive::OVERWRITE);
@@ -345,7 +345,5 @@ class ODTCreator
         $document->addFromString('content.xml', html_entity_decode($this->documentContent->saveXML()));
 
         $document->close();
-
-        chmod($fileName, $perm);
     }
 }
