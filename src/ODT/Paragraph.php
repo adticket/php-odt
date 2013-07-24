@@ -32,15 +32,14 @@ class Paragraph
     }
 
     /**
-     * Add a non-styled text
      * @param string $content
-     * @param null|\ODT\Style\TextStyle $style
+     * @param \ODT\Style\TextStyle $textStyle
      */
-    public function addText($content, TextStyle $style = null)
+    public function addText($content, TextStyle $textStyle = null)
     {
-        if ($style != null) {
+        if ($textStyle != null) {
             $span = $this->documentContent->createElement('text:span', $content);
-            $span->setAttribute('text:style-name', $style->getStyleName());
+            $span->setAttribute('text:style-name', $textStyle->getStyleName());
             $this->pElement->appendChild($span);
         } else {
             $this->pElement->appendChild($this->documentContent->createTextNode($content));
@@ -52,9 +51,9 @@ class Paragraph
      * @param TextStyle $styles
      * @param string $content
      */
-//	public function addStyledText($style, $content) {
+//	public function addStyledText($textStyle, $content) {
 //		$span = $this->documentContent->createElement('text:span', $content);
-//		$span->setAttribute('text:style-name', $style->getStyleName());
+//		$span->setAttribute('text:style-name', $textStyle->getStyleName());
 //		$this->pElement->appendChild($span);
 //	}
 
