@@ -1,7 +1,5 @@
 <?php
 
-require_once 'class.odt.php';
-
 /**
  * A Class representing a paragraph.
  *

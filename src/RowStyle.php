@@ -1,10 +1,5 @@
 <?php
 
-//require_once 'class.contentautostyle.php';
-//require_once 'exceptions/class.styleexception.php';
-
-include_once 'phpodt.php';
-
 /**
  * A Class representing style properties for table rows.
  *

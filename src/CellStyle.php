@@ -50,11 +50,11 @@ class CellStyle extends ContentAutoStyle
     }
 
 //	/**
-//	 * Specifies the source of the text-alignment. If the value of this attribute is StyleConstants::FIX, 
-//	 * the value specified with setVerticalAlign is used. If the value is StyleConstants::VALUE_TYPE, 
+//	 * Specifies the source of the text-alignment. If the value of this attribute is StyleConstants::FIX,
+//	 * the value specified with setVerticalAlign is used. If the value is StyleConstants::VALUE_TYPE,
 //	 * the text alignment depends on the value-type of the cell.
-//	 * 
-//	 * @param type $src 
+//	 *
+//	 * @param type $src
 //	 */
 //	public function setTextAlignSrc($src) {
 //		switch ($src) {
@@ -351,7 +351,7 @@ class CellStyle extends ContentAutoStyle
     }
 
 //	/**
-//	 * Specifies whether text wraps within a table cell. 
+//	 * Specifies whether text wraps within a table cell.
 //	 * @param integer $wrapOption
 //	 */
 //	function setWrapOption($wrapOption) {
@@ -364,11 +364,11 @@ class CellStyle extends ContentAutoStyle
 //				throw new StyleException('Invalid wrap option value');
 //		}
 //		$this->cellProp->setAttribute('fo:wrap-option', $wrapOption);
-//	}		
+//	}
 
 //	/**
 //	 * Specifies the rotation angle of the cell content in degrees.
-//	 * @param positive integer $angle 
+//	 * @param positive integer $angle
 //	 */
 //	function setRotationAngle($angle) {
 //		if (!isNumeric($angle, true)) {
@@ -378,9 +378,9 @@ class CellStyle extends ContentAutoStyle
 //	}
 
 //	/**
-//	 * Specifies how the edge of the text in a cell is aligned after a rotation. 
+//	 * Specifies how the edge of the text in a cell is aligned after a rotation.
 //	 * There are four alignment options: StyleConstants::(TOP|BOTTOM|CENTER|NONE)
-//	 * @param integer $angle 
+//	 * @param integer $angle
 //	 */
 //	function setRotationAlign($align) {
 //		switch ($align) {

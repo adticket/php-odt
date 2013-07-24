@@ -1,10 +1,5 @@
 <?php
 
-//require_once 'class.paragraph.php';
-//require_once 'class.odt.php';
-
-include_once 'phpodt.php';
-
 /**
  * A Class representing a list.
  *

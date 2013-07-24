@@ -1,9 +1,5 @@
 <?php
 
-//require_once 'class.styleconstants.php';
-
-include_once 'phpodt.php';
-
 /**
  * The class responsible for creating the xml documents needed
  * to generate an ODT document

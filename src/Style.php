@@ -1,10 +1,5 @@
 <?php
 
-//require_once 'functions.php';
-//require_once 'class.odt.php';
-
-include_once 'phpodt.php';
-
 /**
  * Base class for paragraph & text styles.
  *

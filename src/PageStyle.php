@@ -1,8 +1,5 @@
 <?php
 
-//require_once 'functions.php';
-require_once 'class.odt.php';
-
 /**
  * A Class representing the properties of a page.
  *
