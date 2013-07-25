@@ -22,12 +22,14 @@ class PDFToPNGRenderer
 
     /**
      * @param \SplFileInfo $pdfFile
+     * @param int|null $firstPage
+     * @param int|null $lastPage
      * @return \SplFileInfo[]
      */
-    public function render(\SplFileInfo $pdfFile)
+    public function render(\SplFileInfo $pdfFile, $firstPage = null, $lastPage = null)
     {
         $outputFileNamePattern = $this->createOutputFileNamePattern($pdfFile);
-        $shellCommand = $this->createShellCommand($pdfFile, $outputFileNamePattern);
+        $shellCommand = $this->createShellCommand($pdfFile, $outputFileNamePattern, $firstPage, $lastPage);
 
         $shellCommandExecutor = new ShellCommandExecutor();
         $result = $shellCommandExecutor->execute($shellCommand);
@@ -40,17 +42,30 @@ class PDFToPNGRenderer
     /**
      * @param \SplFileInfo $pdfFile
      * @param string $outputFileNamePattern
+     * @param int|null $firstPage
+     * @param int|null $lastPage
      * @return string
      */
-    private function createShellCommand(\SplFileInfo $pdfFile, $outputFileNamePattern)
+    private function createShellCommand(\SplFileInfo $pdfFile, $outputFileNamePattern, $firstPage, $lastPage)
     {
-        return
+        $shellCommand =
             "{$this->ghostscriptBinary->getPathname()} "
             . "-dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m "
             . "-sOutputFile=\"{$outputFileNamePattern}\" "
-            . "-dTextAlphaBits=4 -dMaxBitmap=500000000 "
-            . "{$pdfFile->getRealPath()} "
+            . "-dTextAlphaBits=4 -dMaxBitmap=500000000 ";
+
+        if (null !== $firstPage) {
+            $shellCommand .= "-dFirstPage=$firstPage ";
+        }
+        if (null !== $lastPage) {
+            $shellCommand .= "-dLastPage=$lastPage ";
+        }
+
+        $shellCommand .=
+            "{$pdfFile->getRealPath()} "
             . "-r300";
+
+        return $shellCommand;
     }
 
     /**
