@@ -1,20 +1,19 @@
 <?php
 
-namespace ODTCreator\Tests\EndToEnd;
+namespace ODTCreator\Test\EndToEnd;
 
 use ODTCreator\ODTCreator;
 use ODTCreator\Paragraph;
+use ODTCreator\Style\TextStyle;
 
-require_once __DIR__ . '/EndToEndTestCase.php';
-
-class HelloWorldTest extends EndToEndTestCase
+class HelloWorldStyledTest extends EndToEndTestCase
 {
     protected function setUp()
     {
-        $this->testName = 'hello_world';
+        $this->testName = 'hello_world_styled';
     }
 
-    public function testHelloWorld()
+    public function testHelloWorldStyled()
     {
         ODTCreator::resetInstance();
 
@@ -34,8 +33,13 @@ class HelloWorldTest extends EndToEndTestCase
         $odt->setSubject('My Subject');
         $odt->setKeywords(array('My first keyword', 'My second keyword'));
 
+        $textStyle = new TextStyle('t1');
+        $textStyle->setColor('#ff0000');
+        $textStyle->setBold();
+        $textStyle->setFontSize(20);
+
         $p = new Paragraph();
-        $p->addText('Hello World!');
+        $p->addText('Hello World!', $textStyle);
 
         $odt->save($this->getOutputFilePath());
         exec("unzip {$this->getOutputFilePath()} -d {$this->getOutputUnzipPath()}");
