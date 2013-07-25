@@ -342,7 +342,7 @@ class ODTCreator
         $document->addFromString('META-INF/manifest.xml', $this->createManifest()->saveXML());
         $document->addFromString('styles.xml', $this->styles->saveXML());
         $document->addFromString('meta.xml', $this->createMetadata()->saveXML());
-        $document->addFromString('content.xml', html_entity_decode($this->documentContent->saveXML()));
+        $document->addFromString('content.xml', $this->documentContent->saveXML());
 
         $document->close();
     }
