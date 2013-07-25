@@ -11,8 +11,8 @@ class EndToEndTestCase extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
-        unlink($this->getOutputFilePath());
-        exec("rm -fr " . $this->getOutputUnzipPath());
+        unlink($this->getOutputFileInfo());
+        exec("rm -fr " . $this->getOutputUnzipDirInfo()->getPathname());
     }
 
     /**
@@ -24,33 +24,33 @@ class EndToEndTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return string
+     * @return \SplFileInfo
      */
-    protected function getOutputFilePath()
+    protected function getOutputFileInfo()
     {
         $this->assertIsTestNameSet();
 
-        return $this->getOutputPath() . '/' . $this->testName . '.odt';
+        return new \SplFileInfo($this->getOutputPath() . '/' . $this->testName . '.odt');
     }
 
     /**
-     * @return string
+     * @return \SplFileInfo
      */
-    protected function getOutputUnzipPath()
+    protected function getOutputUnzipDirInfo()
     {
         $this->assertIsTestNameSet();
 
-        return $this->getOutputPath() . '/' . $this->testName;
+        return new \SplFileInfo($this->getOutputPath() . '/' . $this->testName);
     }
 
     /**
-     * @return string
+     * @return \SplFileInfo
      */
-    protected function getFixturePath()
+    protected function getFixtureDirInfo()
     {
         $this->assertIsTestNameSet();
 
-        return __DIR__ . '/expected_output/' . $this->testName;
+        return new \SplFileInfo(__DIR__ . '/expected_output/' . $this->testName);
     }
 
     /**

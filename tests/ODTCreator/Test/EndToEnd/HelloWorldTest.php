@@ -35,24 +35,24 @@ class HelloWorldTest extends EndToEndTestCase
         $p = new Paragraph();
         $p->addText('Hello World!');
 
-        $odt->save($this->getOutputFilePath());
-        exec("unzip {$this->getOutputFilePath()} -d {$this->getOutputUnzipPath()}");
+        $odt->save($this->getOutputFileInfo());
+        exec("unzip {$this->getOutputFileInfo()->getPathname()} -d {$this->getOutputUnzipDirInfo()->getPathname()}");
 
 
-        $expectedFile = $this->getFixturePath() . '/content.xml';
-        $actualFile = $this->getOutputUnzipPath() . '/content.xml';
+        $expectedFile = $this->getFixtureDirInfo()->getPathname() . '/content.xml';
+        $actualFile = $this->getOutputUnzipDirInfo()->getPathname() . '/content.xml';
         $this->assertXmlFileEqualsXmlFile($expectedFile, $actualFile);
 
-        $expectedFile = $this->getFixturePath() . '/meta.xml';
-        $actualFile = $this->getOutputUnzipPath() . '/meta.xml';
+        $expectedFile = $this->getFixtureDirInfo()->getPathname() . '/meta.xml';
+        $actualFile = $this->getOutputUnzipDirInfo()->getPathname() . '/meta.xml';
         $this->assertXmlFileEqualsXmlFile($expectedFile, $actualFile);
 
-        $expectedFile = $this->getFixturePath() . '/styles.xml';
-        $actualFile = $this->getOutputUnzipPath() . '/styles.xml';
+        $expectedFile = $this->getFixtureDirInfo()->getPathname() . '/styles.xml';
+        $actualFile = $this->getOutputUnzipDirInfo()->getPathname() . '/styles.xml';
         $this->assertXmlFileEqualsXmlFile($expectedFile, $actualFile);
 
-        $expectedFile = $this->getFixturePath() . '/META-INF/manifest.xml';
-        $actualFile = $this->getOutputUnzipPath() . '/META-INF/manifest.xml';
+        $expectedFile = $this->getFixtureDirInfo()->getPathname() . '/META-INF/manifest.xml';
+        $actualFile = $this->getOutputUnzipDirInfo()->getPathname() . '/META-INF/manifest.xml';
         $this->assertXmlFileEqualsXmlFile($expectedFile, $actualFile);
     }
 }

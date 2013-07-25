@@ -334,10 +334,10 @@ class ODTCreator
         return $this->documentContent;
     }
 
-    public function save($fileName)
+    public function save(\SplFileInfo $targetFile)
     {
         $document = new \ZipArchive();
-        $document->open($fileName, \ZipArchive::OVERWRITE);
+        $document->open($targetFile->getPathname(), \ZipArchive::OVERWRITE);
 
         $document->addFromString('META-INF/manifest.xml', $this->createManifest()->saveXML());
         $document->addFromString('styles.xml', $this->styles->saveXML());
