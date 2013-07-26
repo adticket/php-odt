@@ -17,11 +17,6 @@ class Paragraph
      */
     private $contents = array();
 
-    /**
-     * @var \DOMElement
-     */
-    private $pElement;
-
     public function __construct(ParagraphStyle $style = null)
     {
         $this->style = $style;
