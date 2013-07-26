@@ -56,7 +56,7 @@ class ODTCreator
     }
 
     /**
-     * @param \ODTCreator\File\Meta $meta
+     * @param Meta $meta
      */
     public function setMeta(Meta $meta)
     {
@@ -64,7 +64,7 @@ class ODTCreator
     }
 
     /**
-     * @return \ODTCreator\File\Meta
+     * @return Meta
      */
     private function getMeta()
     {

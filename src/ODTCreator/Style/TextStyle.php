@@ -2,7 +2,6 @@
 
 namespace ODTCreator\Style;
 
-use ODTCreator\Common;
 use ODTCreator\Value\Color;
 use ODTCreator\Value\FontSize;
 

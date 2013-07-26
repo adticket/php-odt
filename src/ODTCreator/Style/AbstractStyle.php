@@ -8,22 +8,9 @@ use ODTCreator\ODTCreator;
 abstract class AbstractStyle
 {
     /**
-     * The DOMDocument representing the styles xml file
-     * @var \DOMDocument
-     */
-    protected $styleDocument;
-
-    /**
-     * The name of the style
      * @var string
      */
     protected $name;
-
-    /**
-     * The DOMElement representing this style
-     * @var \DOMElement
-     */
-    protected $styleElement;
 
     /**
      * The constructor initializes the properties, then creates a <style:style>
