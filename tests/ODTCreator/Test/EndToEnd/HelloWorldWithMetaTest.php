@@ -4,29 +4,34 @@ namespace ODTCreator\Test\EndToEnd;
 
 use ODTCreator\ODTCreator;
 use ODTCreator\Paragraph;
-use ODTCreator\Style\TextStyle;
 use ODTCreator\Test\Unit\ODTCreator\File\MetaMock;
 
-class HelloWorldStyledTest extends EndToEndTestCase
+class HelloWorldWithMetaTest extends EndToEndTestCase
 {
     protected function setUp()
     {
-        $this->testName = 'hello_world_styled';
+        $this->testName = 'hello_world_with_meta';
     }
 
-    public function testHelloWorldStyled()
+    public function testHelloWorld()
     {
         ODTCreator::resetInstance();
 
         $odt = ODTCreator::getInstance();
 
-        $textStyle = new TextStyle('t1');
-        $textStyle->setColor('#ff0000');
-        $textStyle->setBold();
-        $textStyle->setFontSize(20);
+        $meta = new MetaMock();
+        // Inject the date that is stored in the meta.xml against which we compare
+        // This is neccessary to get a meta.xml with a predictable date for testing
+        $meta->setCreationDate(new \DateTime('2013-01-01 12:00:00'));
+        $meta->setCreator('Tom Tester');
+        $meta->setTitle('My Title');
+        $meta->setDescription('Some description here');
+        $meta->setSubject('My Subject');
+        $meta->setKeywords(array('My first keyword', 'My second keyword'));
+        $odt->setMeta($meta);
 
         $p = new Paragraph();
-        $p->addText('Hello World!', $textStyle);
+        $p->addText('Hello World!');
 
         $odt->save($this->getOutputFileInfo());
         exec("unzip {$this->getOutputFileInfo()->getPathname()} -d {$this->getOutputUnzipDirInfo()->getPathname()}");
@@ -36,9 +41,9 @@ class HelloWorldStyledTest extends EndToEndTestCase
         $actualFile = $this->getOutputUnzipDirInfo()->getPathname() . '/content.xml';
         $this->assertXmlFileEqualsXmlFile($expectedFile, $actualFile);
 
-        // Testing the meta.xml content is in the scope of other tests
-        // Because of the varying creation date, we ignore it here
-        $this->assertFileExists($this->getOutputUnzipDirInfo()->getPathname() . '/meta.xml');
+        $expectedFile = $this->getFixtureDirInfo()->getPathname() . '/meta.xml';
+        $actualFile = $this->getOutputUnzipDirInfo()->getPathname() . '/meta.xml';
+        $this->assertXmlFileEqualsXmlFile($expectedFile, $actualFile);
 
         $expectedFile = $this->getFixtureDirInfo()->getPathname() . '/styles.xml';
         $actualFile = $this->getOutputUnzipDirInfo()->getPathname() . '/styles.xml';

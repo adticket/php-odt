@@ -19,17 +19,6 @@ class HelloWorldTest extends EndToEndTestCase
 
         $odt = ODTCreator::getInstance();
 
-        $meta = new MetaMock();
-        // Inject the date that is stored in the meta.xml against which we compare
-        // This is neccessary to get a meta.xml with a predictable date for testing
-        $meta->setCreationDate(new \DateTime('2013-01-01 12:00:00'));
-        $meta->setCreator('Tom Tester');
-        $meta->setTitle('My Title');
-        $meta->setDescription('Some description here');
-        $meta->setSubject('My Subject');
-        $meta->setKeywords(array('My first keyword', 'My second keyword'));
-        $odt->setMeta($meta);
-
         $p = new Paragraph();
         $p->addText('Hello World!');
 
@@ -41,9 +30,9 @@ class HelloWorldTest extends EndToEndTestCase
         $actualFile = $this->getOutputUnzipDirInfo()->getPathname() . '/content.xml';
         $this->assertXmlFileEqualsXmlFile($expectedFile, $actualFile);
 
-        $expectedFile = $this->getFixtureDirInfo()->getPathname() . '/meta.xml';
-        $actualFile = $this->getOutputUnzipDirInfo()->getPathname() . '/meta.xml';
-        $this->assertXmlFileEqualsXmlFile($expectedFile, $actualFile);
+        // Testing the meta.xml content is in the scope of other tests
+        // Because of the varying creation date, we ignore it here
+        $this->assertFileExists($this->getOutputUnzipDirInfo()->getPathname() . '/meta.xml');
 
         $expectedFile = $this->getFixtureDirInfo()->getPathname() . '/styles.xml';
         $actualFile = $this->getOutputUnzipDirInfo()->getPathname() . '/styles.xml';
