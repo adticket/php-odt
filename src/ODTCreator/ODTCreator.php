@@ -3,8 +3,8 @@
 namespace ODTCreator;
 
 use ODTCreator\File\Manifest;
+use ODTCreator\File\Meta;
 use ODTCreator\File\Styles;
-use ODTCreator\Style\Style;
 
 class ODTCreator
 {
@@ -14,6 +14,11 @@ class ODTCreator
      * @var null|ODTCreator
      */
     private static $instance = null;
+
+    /**
+     * @var Meta
+     */
+    private $meta;
 
     /**
      * @var Styles
@@ -29,36 +34,6 @@ class ODTCreator
      * @var \DOMElement
      */
     private $officeText;
-
-    /**
-     * @var string|null
-     */
-    private $creator = null;
-
-    /**
-     * @var string|null
-     */
-    private $title = null;
-
-    /**
-     * @var string|null
-     */
-    private $description = null;
-
-    /**
-     * @var string|null
-     */
-    private $subject = null;
-
-    /**
-     * @var array
-     */
-    private $keywords = array();
-
-    /**
-     * @var \DateTime
-     */
-    private $creationDate;
 
     /**
      * @return ODTCreator
@@ -79,63 +54,8 @@ class ODTCreator
 
     private function __construct()
     {
-        $this->creationDate = new \DateTime();
         $this->styles = new Styles();
         $this->createDocumentContent();
-    }
-
-    /**
-     * @return \DOMDocument
-     */
-    private function createMetadata()
-    {
-        $metadata = new \DOMDocument('1.0', 'UTF-8');
-
-        $root = $metadata->createElement('office:document-meta');
-        $root->setAttribute('xmlns:meta', 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0');
-        $root->setAttribute('xmlns:office', 'urn:oasis:names:tc:opendocument:xmlns:office:1.0');
-        $root->setAttribute('xmlns:dc', 'http://purl.org/dc/elements/1.1/');
-        $metadata->appendChild($root);
-
-        $officeMeta = $metadata->createElement('office:meta');
-
-        $generator = $metadata->createElement('meta:generator', self::GENERATOR);
-        $officeMeta->appendChild($generator);
-
-        $creationDate = $metadata->createElement(
-            'meta:creation-date',
-            $this->creationDate->format('Y-m-d\TH:i:s')
-        );
-        $officeMeta->appendChild($creationDate);
-
-        if (null !== $this->creator) {
-            $creatorElement = $metadata->createElement('meta:initial-creator', $this->creator);
-            $officeMeta->appendChild($creatorElement);
-        }
-
-        if (null !== $this->title) {
-            $titleElement = $metadata->createElement('dc:title', $this->title);
-            $officeMeta->appendChild($titleElement);
-        }
-
-        if (null !== $this->description) {
-            $descriptionElement = $metadata->createElement('dc:description', $this->description);
-            $officeMeta->appendChild($descriptionElement);
-        }
-
-        if (null !== $this->subject) {
-            $subjectElement = $metadata->createElement('dc:subject', $this->subject);
-            $officeMeta->appendChild($subjectElement);
-        }
-
-        foreach ($this->keywords as $keyword) {
-            $keywordElement = $metadata->createElement('meta:keyword', $keyword);
-            $officeMeta->appendChild($keywordElement);
-        }
-
-        $root->appendChild($officeMeta);
-
-        return $metadata;
     }
 
     private function createDocumentContent()
@@ -165,53 +85,22 @@ class ODTCreator
     }
 
     /**
-     * Sets the title of the document
-     *
-     * @param string $title
+     * @param \ODTCreator\File\Meta $meta
      */
-    public function setTitle($title)
+    public function setMeta(Meta $meta)
     {
-        $this->title = $title;
+        $this->meta = $meta;
     }
 
     /**
-     * Sets a description for the document
-     *
-     * @param string $description
+     * @return \ODTCreator\File\Meta
      */
-    public function setDescription($description)
+    private function getMeta()
     {
-        $this->description = $description;
-    }
-
-    /**
-     * Sets the subject of the document
-     *
-     * @param string $subject
-     */
-    public function setSubject($subject)
-    {
-        $this->subject = $subject;
-    }
-
-    /**
-     * Sets the keywords related to the document
-     *
-     * @param array $keywords
-     */
-    public function setKeywords(array $keywords)
-    {
-        $this->keywords = $keywords;
-    }
-
-    /**
-     * Specifies the name of the person who created the document initially
-     *
-     * @param string $creator
-     */
-    public function setCreator($creator)
-    {
-        $this->creator = $creator;
+        if (null === $this->meta) {
+            $this->meta = new Meta();
+        }
+        return $this->meta;
     }
 
     /**
@@ -243,7 +132,9 @@ class ODTCreator
         $styles = $this->styles;
         $document->addFromString($styles->getRelativePath(), $styles->render());
 
-        $document->addFromString('meta.xml', $this->createMetadata()->saveXML());
+        $meta = $this->getMeta();
+        $document->addFromString($meta->getRelativePath(), $meta->render());
+
         $document->addFromString('content.xml', $this->documentContent->saveXML());
 
         $document->close();

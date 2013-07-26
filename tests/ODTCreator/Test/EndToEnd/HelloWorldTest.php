@@ -4,6 +4,7 @@ namespace ODTCreator\Test\EndToEnd;
 
 use ODTCreator\ODTCreator;
 use ODTCreator\Paragraph;
+use ODTCreator\Test\Unit\ODTCreator\File\MetaMock;
 
 class HelloWorldTest extends EndToEndTestCase
 {
@@ -18,19 +19,16 @@ class HelloWorldTest extends EndToEndTestCase
 
         $odt = ODTCreator::getInstance();
 
-        // Hack: Inject the date that is stored in the meta.xml against which we compare
+        $meta = new MetaMock();
+        // Inject the date that is stored in the meta.xml against which we compare
         // This is neccessary to get a meta.xml with a predictable date for testing
-        $reflectionClass = new \ReflectionClass('ODTCreator\ODTCreator');
-        $creationDateProperty = $reflectionClass->getProperty('creationDate');
-        $creationDateProperty->setAccessible(true);
-        $creationDateProperty->setValue($odt, new \DateTime('2013-01-01 12:00:00'));
-
-
-        $odt->setCreator('Tom Tester');
-        $odt->setTitle('My Title');
-        $odt->setDescription('Some description here');
-        $odt->setSubject('My Subject');
-        $odt->setKeywords(array('My first keyword', 'My second keyword'));
+        $meta->setCreationDate(new \DateTime('2013-01-01 12:00:00'));
+        $meta->setCreator('Tom Tester');
+        $meta->setTitle('My Title');
+        $meta->setDescription('Some description here');
+        $meta->setSubject('My Subject');
+        $meta->setKeywords(array('My first keyword', 'My second keyword'));
+        $odt->setMeta($meta);
 
         $p = new Paragraph();
         $p->addText('Hello World!');
