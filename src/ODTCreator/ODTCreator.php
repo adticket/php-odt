@@ -72,7 +72,7 @@ class ODTCreator
         $meta = $this->getMeta();
         $document->addFromString($meta->getRelativePath(), $meta->render());
 
-        // TODO: Check for usage of styles that were not added
+        // TODO: Check for usage of styles that were not added or have them created and managed by a factory
         $content = $this->content;
         $document->addFromString($content->getRelativePath(), $content->render());
 
