@@ -2,7 +2,6 @@
 
 namespace ODTCreator\Style;
 
-use Assert\Assertion as Assert;
 use ODTCreator\ODTCreator;
 
 abstract class AbstractStyle
