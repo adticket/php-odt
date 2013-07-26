@@ -21,7 +21,7 @@ class Paragraph
 
     public function __construct(ParagraphStyle $pStyle = null, $addToDocument = true)
     {
-        $this->documentContent = ODTCreator::getInstance()->getDocumentContent();
+        $this->documentContent = ODTCreator::getInstance()->getContentDocument();
         $this->pElement = $this->documentContent->createElement('text:p');
         if ($pStyle != null) {
             $this->pElement->setAttribute('text:style-name', $pStyle->getStyleName());

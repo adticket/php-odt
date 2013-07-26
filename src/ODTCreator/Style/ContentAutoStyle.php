@@ -33,7 +33,7 @@ class ContentAutoStyle
      */
     function __construct($name, $elementNodeName = null)
     {
-        $this->contentDocument = ODTCreator::getInstance()->getDocumentContent();
+        $this->contentDocument = ODTCreator::getInstance()->getContentDocument();
         $this->name = $name;
         if ($elementNodeName == null) {
             $this->styleElement = $this->contentDocument->createElement('style:style');

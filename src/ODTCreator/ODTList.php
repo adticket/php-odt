@@ -26,7 +26,7 @@ class ODTList
      */
     function __construct($items = null, $addToDocument = true)
     {
-        $this->contentDocument = ODTCreator::getInstance()->getDocumentContent();
+        $this->contentDocument = ODTCreator::getInstance()->getContentDocument();
         $this->listElement = $this->contentDocument->createElement('text:list');
         if ($addToDocument) {
             $this->contentDocument->getElementsByTagName('office:text')->item(0)->appendChild($this->listElement);

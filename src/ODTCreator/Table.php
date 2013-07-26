@@ -33,7 +33,7 @@ class Table
      */
     public function __construct($tableName, $tableStyle = null)
     {
-        $this->contentDocument = ODTCreator::getInstance()->getDocumentContent();
+        $this->contentDocument = ODTCreator::getInstance()->getContentDocument();
         $this->tableName = $tableName;
         $this->tableElement = $this->contentDocument->createElement('table:table');
         $this->tableElement->setAttribute('table:name', $tableName);
