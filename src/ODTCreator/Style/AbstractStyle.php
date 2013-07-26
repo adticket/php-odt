@@ -42,7 +42,7 @@ abstract class AbstractStyle
         $styleElement->setAttribute('style:name', $this->name);
         $domDocument->getElementsByTagName('office:styles')->item(0)->appendChild($styleElement);
 
-        $this->handleStyleElement($styleElement, $domDocument);
+        $this->appendToStyleElement($styleElement, $domDocument);
     }
 
     /**
@@ -50,5 +50,5 @@ abstract class AbstractStyle
      * @param \DOMDocument $domDocument
      * @return void
      */
-    abstract protected function handleStyleElement(\DOMElement $styleElement, \DOMDocument $domDocument);
+    abstract protected function appendToStyleElement(\DOMElement $styleElement, \DOMDocument $domDocument);
 }
