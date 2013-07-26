@@ -36,12 +36,10 @@ class Paragraph
     }
 
     /**
-     * @param string $content
-     * @param \ODTCreator\Style\TextStyle $style
+     * @param ParagraphContent\Text $text
      */
     public function addText(Text $text)
     {
-        // TODO: Refactor text elements et al to separate classes
         $this->texts[] = $text;
     }
 
@@ -53,6 +51,7 @@ class Paragraph
      */
     public function addHyperlink($text, $url, $title = '')
     {
+        // TODO: Refactor elements to separate classes
         $link = $this->documentContent->createElement('text:a', $text);
         $link->setAttribute('office:title', $title);
         $link->setAttribute('xlink:href', $url);
