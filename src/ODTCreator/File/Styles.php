@@ -4,7 +4,7 @@ namespace ODTCreator\File;
 
 use ODTCreator\Style\TextStyle;
 
-class Styles implements FileInterface
+class Styles implements File
 {
     /**
      * @var \DOMDocument

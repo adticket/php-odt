@@ -4,7 +4,7 @@ namespace ODTCreator\File;
 
 use ODTCreator\ODTCreator;
 
-class Meta implements FileInterface
+class Meta implements File
 {
     /**
      * @var \DateTime

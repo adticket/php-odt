@@ -2,7 +2,7 @@
 
 namespace ODTCreator\File;
 
-class Manifest implements FileInterface
+class Manifest implements File
 {
     /**
      * @return string The file content

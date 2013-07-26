@@ -4,7 +4,7 @@ namespace ODTCreator\File;
 
 use ODTCreator\Paragraph;
 
-class Content implements FileInterface
+class Content implements File
 {
     /**
      * @var Paragraph[]

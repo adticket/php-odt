@@ -2,7 +2,7 @@
 
 namespace ODTCreator\File;
 
-interface FileInterface
+interface File
 {
     /**
      * @return string The file content
