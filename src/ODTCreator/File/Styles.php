@@ -116,16 +116,6 @@ class Styles implements File
         return 'styles.xml';
     }
 
-    /**
-     * @return \DOMDocument
-     */
-    public function getDOMDocument()
-    {
-        // TODO: Remove this helper method as soon as all its users are refactored
-
-        return $this->domDocument;
-    }
-
     public function addTextStyle($textStyle)
     {
         $this->textStyles[] = $textStyle;

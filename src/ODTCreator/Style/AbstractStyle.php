@@ -49,11 +49,6 @@ abstract class AbstractStyle
         return $this->name;
     }
 
-    public function setStyleName($name)
-    {
-        $this->name = $name;
-    }
-
     public function insertInto(\DOMDocument $domDocument)
     {
         $styleElement = $domDocument->createElement('style:style');

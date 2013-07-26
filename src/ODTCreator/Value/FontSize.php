@@ -2,7 +2,6 @@
 
 namespace ODTCreator\Value;
 
-use ODTCreator\Common;
 use ODTCreator\Style\StyleException;
 
 class FontSize
@@ -14,7 +13,7 @@ class FontSize
 
     public function __construct($fontSize)
     {
-        if (!Common::isNumeric($fontSize) && !Common::isPercentage($fontSize)) {
+        if (!preg_match('/(\d*.?\d+(pt|cm|mm)?|\d+(.\d)*%)/', $fontSize)) {
             throw new StyleException("Invalid font size value '$fontSize'");
         }
 

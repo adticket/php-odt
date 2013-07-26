@@ -74,24 +74,6 @@ class ODTCreator
         return $this->meta;
     }
 
-    /**
-     * @return \DOMDocument The document containing all the styles
-     */
-    public function getStyleDocument()
-    {
-        // TODO: Remove this method as soon as all its users are refactored
-        return $this->styles->getDOMDocument();
-    }
-
-    /**
-     * @return \DOMDocument
-     */
-    public function getContentDocument()
-    {
-        // TODO: Remove this method as soon as all its users are refactored
-        return $this->content->getDOMDocument();
-    }
-
     public function addParagraph(Paragraph $paragraph)
     {
         $this->content->addParagraph($paragraph);

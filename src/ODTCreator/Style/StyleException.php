@@ -2,7 +2,7 @@
 
 namespace ODTCreator\Style;
 
-use ODTCreator\ODTException;
+use ODTCreator\Exception;
 
-class StyleException extends ODTException
+class StyleException extends Exception
 {}

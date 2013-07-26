@@ -2,7 +2,7 @@
 
 namespace ODTCreator;
 
-class ODTException extends \Exception
+class Exception extends \Exception
 {
     protected $message;
 

@@ -74,12 +74,4 @@ class Content implements File
     {
         return 'content.xml';
     }
-
-    /**
-     * @return \DOMDocument
-     */
-    public function getDOMDocument()
-    {
-        return $this->domDocument;
-    }
 }
