@@ -19,7 +19,7 @@ mkdir($outputDir);
 
 // Create an ODT file
 $startTime = microtime(true);
-$odt = \ODTCreator\ODTCreator::getInstance();
+$odt = new \ODTCreator\ODTCreator();
 
 $dummyText = file_get_contents(__DIR__ . '/dummyText.txt');
 for ($i = 0; $i < 20; $i++) {

@@ -13,11 +13,6 @@ class ODTCreator
     const GENERATOR = 'PHP-ODTCreator 0.1';
 
     /**
-     * @var null|ODTCreator
-     */
-    private static $instance = null;
-
-    /**
      * @var Meta
      */
     private $meta;
@@ -32,24 +27,7 @@ class ODTCreator
      */
     private $content;
 
-    /**
-     * @return ODTCreator
-     */
-    public static function getInstance()
-    {
-        if (self::$instance == null) {
-            self::$instance = new ODTCreator();
-        }
-        return self::$instance;
-    }
-
-    public static function resetInstance()
-    {
-        // TODO: Refactor the whole lib and get rid of this singleton crap
-        self::$instance = null;
-    }
-
-    private function __construct()
+    public function __construct()
     {
         $this->styles = new Styles();
         $this->content = new Content();

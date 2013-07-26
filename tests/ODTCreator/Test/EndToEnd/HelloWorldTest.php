@@ -15,9 +15,7 @@ class HelloWorldTest extends EndToEndTestCase
 
     public function testHelloWorld()
     {
-        ODTCreator::resetInstance();
-
-        $odt = ODTCreator::getInstance();
+        $odt = new ODTCreator();
 
         $p = new Paragraph();
         $p->addContent(new PlainText('Hello World!'));

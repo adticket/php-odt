@@ -16,9 +16,7 @@ class HelloWorldWithMetaTest extends EndToEndTestCase
 
     public function testHelloWorld()
     {
-        ODTCreator::resetInstance();
-
-        $odt = ODTCreator::getInstance();
+        $odt = new ODTCreator();
 
         $meta = new MetaMock();
         // Inject the date that is stored in the meta.xml against which we compare

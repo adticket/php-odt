@@ -18,9 +18,7 @@ class HelloWorldStyledTest extends EndToEndTestCase
 
     public function testHelloWorldStyled()
     {
-        ODTCreator::resetInstance();
-
-        $odt = ODTCreator::getInstance();
+        $odt = new ODTCreator();
 
         $textStyle = new TextStyle('t1');
         $textStyle->setColor(new Color('#ff0000'));
