@@ -3,7 +3,6 @@
 namespace ODTCreator;
 
 use ODTCreator\ParagraphContent\ParagraphContent;
-use ODTCreator\ParagraphContent\Text;
 use ODTCreator\Style\ParagraphStyle;
 use ODTCreator\Style\RubyStyle;
 use ODTCreator\Style\StyleConstants;
