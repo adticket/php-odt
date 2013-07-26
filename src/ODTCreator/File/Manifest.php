@@ -2,10 +2,10 @@
 
 namespace ODTCreator\File;
 
-class Manifest
+class Manifest implements FileInterface
 {
     /**
-     * @return \DOMDocument
+     * @return string The file content
      */
     public function render()
     {
@@ -35,6 +35,14 @@ class Manifest
         $fileEntryMeta->setAttribute('manifest:full-path', 'meta.xml');
         $root->appendChild($fileEntryMeta);
 
-        return $manifestDoc;
+        return $manifestDoc->saveXML();
+    }
+
+    /**
+     * @return string The relative path of the file within the ODT structure
+     */
+    public function getRelativePath()
+    {
+        return '/META-INF/manifest.xml';
     }
 }

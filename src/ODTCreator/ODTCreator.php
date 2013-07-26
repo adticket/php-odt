@@ -3,6 +3,8 @@
 namespace ODTCreator;
 
 use ODTCreator\File\Manifest;
+use ODTCreator\File\Styles;
+use ODTCreator\Style\Style;
 
 class ODTCreator
 {
@@ -14,7 +16,7 @@ class ODTCreator
     private static $instance = null;
 
     /**
-     * @var \DOMDocument
+     * @var Styles
      */
     private $styles;
 
@@ -78,37 +80,8 @@ class ODTCreator
     private function __construct()
     {
         $this->creationDate = new \DateTime();
-        $this->createStyles();
+        $this->styles = new Styles();
         $this->createDocumentContent();
-    }
-
-    /**
-     * Creates the styles document, which contains all the styles used in the document
-     */
-    private function createStyles()
-    {
-        $this->styles = new \DOMDocument('1.0', 'UTF-8');
-        $root = $this->styles->createElement('office:document-styles');
-        $root->setAttribute('xmlns:office', 'urn:oasis:names:tc:opendocument:xmlns:office:1.0');
-        $root->setAttribute('xmlns:style', 'urn:oasis:names:tc:opendocument:xmlns:style:1.0');
-        $root->setAttribute('xmlns:text', 'urn:oasis:names:tc:opendocument:xmlns:text:1.0');
-        $root->setAttribute('xmlns:fo', 'urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0');
-        $root->setAttribute('xmlns:svg', 'urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0');
-        $root->setAttribute('xmlns:draw', 'urn:oasis:names:tc:opendocument:xmlns:drawing:1.0');
-        $root->setAttribute('xmlns:table', 'urn:oasis:names:tc:opendocument:xmlns:table:1.0');
-        $root->setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-        $this->styles->appendChild($root);
-
-        $this->declareFontFaces($root);
-
-        $officeStyles = $this->styles->createElement('office:styles');
-        $root->appendChild($officeStyles);
-
-        $officeAutomaticStyles = $this->styles->createElement('office:automatic-styles');
-        $root->appendChild($officeAutomaticStyles);
-
-        $officeMasterStyles = $this->styles->createElement('office:master-styles');
-        $root->appendChild($officeMasterStyles);
     }
 
     /**
@@ -192,52 +165,6 @@ class ODTCreator
     }
 
     /**
-     * Declare the fonts that can be used in the document
-     *
-     * @param \DOMElement $rootStyles The root element of the styles document
-     */
-    private function declareFontFaces($rootStyles)
-    {
-        $fontFaceDecl = $this->styles->createElement('office:font-face-decls');
-        $rootStyles->appendChild($fontFaceDecl);
-
-        $ff = $this->styles->createElement('style:font-face');
-        $ff->setAttribute('style:name', 'Courier');
-        $ff->setAttribute('svg:font-family', 'Courier');
-        $ff->setAttribute('style:font-family-generic', 'modern');
-        $ff->setAttribute('style:font-pitch', 'fixed');
-        $fontFaceDecl->appendChild($ff);
-
-        $ff = $this->styles->createElement('style:font-face');
-        $ff->setAttribute('style:name', 'DejaVu Serif');
-        $ff->setAttribute('svg:font-family', '&apos;DejaVu Serif&apos;');
-        $ff->setAttribute('style:font-family-generic', 'roman');
-        $ff->setAttribute('style:font-pitch', 'variable');
-        $fontFaceDecl->appendChild($ff);
-
-        $ff = $this->styles->createElement('style:font-face');
-        $ff->setAttribute('style:name', 'Times New Roman');
-        $ff->setAttribute('svg:font-family', '&apos;Times New Roman&apos;');
-        $ff->setAttribute('style:font-family-generic', 'roman');
-        $ff->setAttribute('style:font-pitch', 'variable');
-        $fontFaceDecl->appendChild($ff);
-
-        $ff = $this->styles->createElement('style:font-face');
-        $ff->setAttribute('style:name', 'DejaVu Sans');
-        $ff->setAttribute('svg:font-family', '&apos;DejaVu Sans&apos;');
-        $ff->setAttribute('style:font-family-generic', 'swiss');
-        $ff->setAttribute('style:font-pitch', 'variable');
-        $fontFaceDecl->appendChild($ff);
-
-        $ff = $this->styles->createElement('style:font-face');
-        $ff->setAttribute('style:name', 'Verdana');
-        $ff->setAttribute('svg:font-family', 'Verdana');
-        $ff->setAttribute('style:font-family-generic', 'swiss');
-        $ff->setAttribute('style:font-pitch', 'variable');
-        $fontFaceDecl->appendChild($ff);
-    }
-
-    /**
      * Sets the title of the document
      *
      * @param string $title
@@ -292,7 +219,9 @@ class ODTCreator
      */
     public function getStyleDocument()
     {
-        return $this->styles;
+        // TODO: Remove this method as soon as all its users are refactored
+
+        return $this->styles->getDOMDocument();
     }
 
     /**
@@ -309,9 +238,11 @@ class ODTCreator
         $document->open($targetFile->getPathname(), \ZipArchive::OVERWRITE);
 
         $manifest = new Manifest();
-        $document->addFromString('META-INF/manifest.xml', $manifest->render()->saveXML());
+        $document->addFromString($manifest->getRelativePath(), $manifest->render());
 
-        $document->addFromString('styles.xml', $this->styles->saveXML());
+        $styles = $this->styles;
+        $document->addFromString($styles->getRelativePath(), $styles->render());
+
         $document->addFromString('meta.xml', $this->createMetadata()->saveXML());
         $document->addFromString('content.xml', $this->documentContent->saveXML());
 

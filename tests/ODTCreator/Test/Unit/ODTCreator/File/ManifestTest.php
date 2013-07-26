@@ -10,7 +10,7 @@ class ManifestTest extends \PHPUnit_Framework_TestCase
     {
         $sut = new Manifest();
 
-        $actualXMLString = $sut->render()->saveXML();
+        $actualXMLString = $sut->render();
         $expectedFile = __DIR__ . '/ManifestTest/expected_output/manifest.xml';
 
         $this->assertXmlStringEqualsXmlFile($expectedFile, $actualXMLString);
