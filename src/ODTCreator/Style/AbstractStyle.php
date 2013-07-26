@@ -2,9 +2,10 @@
 
 namespace ODTCreator\Style;
 
+use Assert\Assertion as Assert;
 use ODTCreator\ODTCreator;
 
-class Style
+abstract class AbstractStyle
 {
     /**
      * The DOMDocument representing the styles xml file
@@ -29,22 +30,21 @@ class Style
      * element representing this specific style, and add it to <office:styles> element
      *
      * @param string $name
-     * @internal param \DOMDocument $styleDoc
      */
-    function __construct($name)
+    public function __construct($name)
     {
-        $this->styleDocument = ODTCreator::getInstance()->getStyleDocument();
+        // TODO: names must be unique
+        Assert::string($name);
+        Assert::notEmpty($name);
+
         $this->name = $name;
-        $this->styleElement = $this->styleDocument->createElement('style:style');
-        $this->styleElement->setAttribute('style:name', $name);
-        $this->styleDocument->getElementsByTagName('office:styles')->item(0)->appendChild($this->styleElement);
     }
 
     /**
      * return the name of this style
      * @return string
      */
-    function getStyleName()
+    public function getStyleName()
     {
         return $this->name;
     }
@@ -53,4 +53,20 @@ class Style
     {
         $this->name = $name;
     }
+
+    public function insertInto(\DOMDocument $domDocument)
+    {
+        $styleElement = $domDocument->createElement('style:style');
+        $styleElement->setAttribute('style:name', $this->name);
+        $domDocument->getElementsByTagName('office:styles')->item(0)->appendChild($styleElement);
+
+        $this->handleStyleElement($styleElement, $domDocument);
+    }
+
+    /**
+     * @param \DOMElement $styleElement
+     * @param \DOMDocument $domDocument
+     * @return void
+     */
+    abstract protected function handleStyleElement(\DOMElement $styleElement, \DOMDocument $domDocument);
 }

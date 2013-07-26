@@ -10,6 +10,13 @@ use ODTCreator\Style\TextStyle;
 class Paragraph
 {
     /**
+     * @var Style\ParagraphStyle
+     */
+    private $style;
+
+    private $texts = array();
+
+    /**
      * @var \DOMDocument
      */
     private $documentContent;
@@ -19,31 +26,22 @@ class Paragraph
      */
     private $pElement;
 
-    public function __construct(ParagraphStyle $pStyle = null, $addToDocument = true)
+    public function __construct(ParagraphStyle $style = null)
     {
-        $this->documentContent = ODTCreator::getInstance()->getContentDocument();
-        $this->pElement = $this->documentContent->createElement('text:p');
-        if ($pStyle != null) {
-            $this->pElement->setAttribute('text:style-name', $pStyle->getStyleName());
-        }
-        if ($addToDocument) {
-            $this->documentContent->getElementsByTagName('office:text')->item(0)->appendChild($this->pElement);
-        }
+        $this->style = $style;
     }
 
     /**
      * @param string $content
-     * @param \ODTCreator\Style\TextStyle $textStyle
+     * @param \ODTCreator\Style\TextStyle $style
      */
-    public function addText($content, TextStyle $textStyle = null)
+    public function addText($content, TextStyle $style = null)
     {
-        if ($textStyle != null) {
-            $span = $this->documentContent->createElement('text:span', $content);
-            $span->setAttribute('text:style-name', $textStyle->getStyleName());
-            $this->pElement->appendChild($span);
-        } else {
-            $this->pElement->appendChild($this->documentContent->createTextNode($content));
-        }
+        // TODO: Refactor text elements et al to separate classes
+        $this->texts[] = array(
+            'content' => $content,
+            'style' => $style
+        );
     }
 
     /**
@@ -192,6 +190,29 @@ class Paragraph
     public function getDOMElement()
     {
         return $this->pElement;
+    }
+
+    public function appendTo(\DOMDocument $domDocument)
+    {
+        $domElement = $domDocument->createElement('text:p');
+        if ($this->style != null) {
+            $domElement->setAttribute('text:style-name', $this->style->getStyleName());
+        }
+
+        foreach ($this->texts as $text) {
+            $content = $text['content'];
+            $style = $text['style'];
+
+            if ($style != null) {
+                $span = $domDocument->createElement('text:span', $content);
+                $span->setAttribute('text:style-name', $style->getStyleName());
+                $domElement->appendChild($span);
+            } else {
+                $domElement->appendChild($domDocument->createTextNode($content));
+            }
+        }
+
+        $domDocument->getElementsByTagName('office:text')->item(0)->appendChild($domElement);
     }
 }
 

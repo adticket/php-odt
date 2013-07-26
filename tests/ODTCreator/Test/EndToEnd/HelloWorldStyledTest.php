@@ -6,6 +6,8 @@ use ODTCreator\ODTCreator;
 use ODTCreator\Paragraph;
 use ODTCreator\Style\TextStyle;
 use ODTCreator\Test\Unit\ODTCreator\File\MetaMock;
+use ODTCreator\Value\Color;
+use ODTCreator\Value\FontSize;
 
 class HelloWorldStyledTest extends EndToEndTestCase
 {
@@ -21,12 +23,14 @@ class HelloWorldStyledTest extends EndToEndTestCase
         $odt = ODTCreator::getInstance();
 
         $textStyle = new TextStyle('t1');
-        $textStyle->setColor('#ff0000');
+        $textStyle->setColor(new Color('#ff0000'));
         $textStyle->setBold();
-        $textStyle->setFontSize(20);
+        $textStyle->setFontSize(new FontSize(20));
+        $odt->addTextStyle($textStyle);
 
         $p = new Paragraph();
         $p->addText('Hello World!', $textStyle);
+        $odt->addParagraph($p);
 
         $odt->save($this->getOutputFileInfo());
         exec("unzip {$this->getOutputFileInfo()->getPathname()} -d {$this->getOutputUnzipDirInfo()->getPathname()}");

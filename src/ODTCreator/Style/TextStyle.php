@@ -3,16 +3,82 @@
 namespace ODTCreator\Style;
 
 use ODTCreator\Common;
+use ODTCreator\Value\Color;
+use ODTCreator\Value\FontSize;
 
-class TextStyle extends Style
+class TextStyle extends AbstractStyle
 {
-    public function __construct($name = '')
+    /**
+     * @var null|Color
+     */
+    private $color = null;
+
+    /**
+     * @var FontSize
+     */
+    private $fontSize = null;
+
+    /**
+     * @var bool
+     */
+    private $isBold = false;
+
+    /**
+     * Changes the color of the text. The value passed
+     * must be a 6 character hexadecimal value, for example #FF0000
+     * or three integer (0 to 255) representing red, green, blue, for example "rgb(255, 0, 0)"
+     * or a valid color name : red, blue ...
+     * @param string $color
+     * @throws StyleException
+     */
+    public function setColor(Color $color)
     {
-        if (empty($name)) {
-            $name = 'textstyle' . rand(100, 9999999);
+        $this->color = $color;
+    }
+
+    /**
+     * @param FontSize $fontSize
+     */
+    public function setFontSize(FontSize $fontSize)
+    {
+        $this->fontSize = $fontSize;
+    }
+
+    /**
+     * Make the text bold
+     */
+    public function setBold()
+    {
+        $this->isBold = true;
+    }
+
+    /**
+     * @param \DOMElement $styleElement
+     * @param \DOMDocument $domDocument
+     * @return void
+     */
+    protected function handleStyleElement(\DOMElement $styleElement, \DOMDocument $domDocument)
+    {
+        $styleElement->setAttribute('style:family', 'text');
+
+        if (null !== $this->color) {
+            $element = $domDocument->createElement('style:text-properties');
+            $element->setAttribute('fo:color', $this->color->getHexCode());
+            $styleElement->appendChild($element);
         }
-        parent::__construct($name);
-        $this->styleElement->setAttribute('style:family', 'text');
+
+        if ($this->isBold) {
+            $element = $domDocument->createElement('style:text-properties');
+            $element->setAttribute('fo:font-weight', 'bold');
+            $styleElement->appendChild($element);
+        }
+
+        if (null !== $this->fontSize) {
+            $element = $domDocument->createElement('style:text-properties');
+            $element->setAttribute('fo:font-size', $this->fontSize->getValue());
+            $styleElement->appendChild($element);
+        }
+
     }
 
     /**
@@ -43,25 +109,6 @@ class TextStyle extends Style
         }
         $element->setAttribute('fo:text-transform', $attrTransform);
         $this->styleElement->appendChild($element);
-    }
-
-    /**
-     * Changes the color of the text. The value passed
-     * must be a 6 character hexadecimal value, for example #FF0000
-     * or three integer (0 to 255) representing red, green, blue, for example "rgb(255, 0, 0)"
-     * or a valid color name : red, blue ...
-     * @param string $color
-     * @throws StyleException
-     */
-    function setColor($color = '#000000')
-    {
-        if (Common::isColor($color)) {
-            $element = $this->styleDocument->createElement('style:text-properties');
-            $element->setAttribute('fo:color', $color);
-            $this->styleElement->appendChild($element);
-        } else {
-            throw new StyleException('Color value ' . $color . ' is not valid.');
-        }
     }
 
     /**
@@ -118,16 +165,6 @@ class TextStyle extends Style
     }
 
     /**
-     * Make the text bold
-     */
-    function setBold()
-    {
-        $element = $this->styleDocument->createElement('style:text-properties');
-        $element->setAttribute('fo:font-weight', 'bold');
-        $this->styleElement->appendChild($element);
-    }
-
-    /**
      * Sets the text position according to the baseline
      * @param integer $position
      * @throws StyleException
@@ -158,23 +195,6 @@ class TextStyle extends Style
         $element = $this->styleDocument->createElement('style:text-properties');
         $element->setAttribute('style:font-name', $fontName);
         $this->styleElement->appendChild($element);
-    }
-
-    /**
-     *
-     * @param string $fontSize The font size can be either a numeric value representing absolute length
-     * or a percentage
-     * @throws StyleException
-     */
-    function setFontSize($fontSize)
-    {
-        if (Common::isNumeric($fontSize) || Common::isPercentage($fontSize)) {
-            $element = $this->styleDocument->createElement('style:text-properties');
-            $element->setAttribute('fo:font-size', $fontSize);
-            $this->styleElement->appendChild($element);
-        } else {
-            throw new StyleException($fontSize . ' is not a valid font-size value');
-        }
     }
 
 //	/**

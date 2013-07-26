@@ -2,8 +2,15 @@
 
 namespace ODTCreator\File;
 
+use ODTCreator\Paragraph;
+
 class Content implements FileInterface
 {
+    /**
+     * @var Paragraph[]
+     */
+    private $contentElements = array();
+
     /**
      * @var \DOMDocument
      */
@@ -40,12 +47,24 @@ class Content implements FileInterface
         $officeBody->appendChild($officeText);
     }
 
+    public function addParagraph(Paragraph $paragraph)
+    {
+        $this->contentElements[] = $paragraph;
+    }
+
     /**
      * @return string The file content
      */
     public function render()
     {
-        return $this->domDocument->saveXML();
+        // TODO: Init DOMDocument here when finished refactoring
+        $domDocument = clone $this->domDocument;
+
+        foreach ($this->contentElements as $element) {
+            $element->appendTo($domDocument);
+        }
+
+        return $domDocument->saveXML();
     }
 
     /**

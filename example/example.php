@@ -2,6 +2,8 @@
 
 use ODTCreator\Paragraph;
 use ODTCreator\Style\TextStyle;
+use ODTCreator\Value\Color;
+use ODTCreator\Value\FontSize;
 use ODTToPDFRenderer\ODTToPDFRenderer;
 use PDFToPNGRenderer\PDFToPNGRenderer;
 
@@ -36,11 +38,14 @@ for ($i = 0; $i < 20; $i++) {
             $color = '#000000';
             break;
     }
-    $textStyle->setColor($color);
+    $textStyle->setColor(new Color($color));
     $textStyle->setBold();
-    $textStyle->setFontSize(($i * 2) + 6);
+    $textStyle->setFontSize(new FontSize(($i * 2) + 6));
+    $odt->addTextStyle($textStyle);
+
     $p = new Paragraph();
     $p->addText($dummyText, $textStyle);
+    $odt->addParagraph($p);
 }
 
 $odt->save($odtFile);

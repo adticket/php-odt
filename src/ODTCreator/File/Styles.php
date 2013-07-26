@@ -2,12 +2,19 @@
 
 namespace ODTCreator\File;
 
+use ODTCreator\Style\TextStyle;
+
 class Styles implements FileInterface
 {
     /**
      * @var \DOMDocument
      */
     private $domDocument;
+
+    /**
+     * @var TextStyle[]
+     */
+    private $textStyles = array();
 
     public function __construct()
     {
@@ -46,7 +53,13 @@ class Styles implements FileInterface
      */
     public function render()
     {
-        return $this->domDocument->saveXML();
+        $domDocument = clone $this->domDocument;
+
+        foreach ($this->textStyles as $textStyle) {
+            $textStyle->insertInto($domDocument);
+        }
+
+        return $domDocument->saveXML();
     }
 
     /**
@@ -111,5 +124,10 @@ class Styles implements FileInterface
         // TODO: Remove this helper method as soon as all its users are refactored
 
         return $this->domDocument;
+    }
+
+    public function addTextStyle($textStyle)
+    {
+        $this->textStyles[] = $textStyle;
     }
 }

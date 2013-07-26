@@ -6,6 +6,7 @@ use ODTCreator\File\Content;
 use ODTCreator\File\Manifest;
 use ODTCreator\File\Meta;
 use ODTCreator\File\Styles;
+use ODTCreator\Style\TextStyle;
 
 class ODTCreator
 {
@@ -91,6 +92,12 @@ class ODTCreator
         return $this->content->getDOMDocument();
     }
 
+    public function addParagraph(Paragraph $paragraph)
+    {
+        $this->content->addParagraph($paragraph);
+        // TODO: Register style?
+    }
+
     public function save(\SplFileInfo $targetFile)
     {
         $document = new \ZipArchive();
@@ -105,9 +112,15 @@ class ODTCreator
         $meta = $this->getMeta();
         $document->addFromString($meta->getRelativePath(), $meta->render());
 
+        // TODO: Check for usage of styles that were not added
         $content = $this->content;
         $document->addFromString($content->getRelativePath(), $content->render());
 
         $document->close();
+    }
+
+    public function addTextStyle(TextStyle $textStyle)
+    {
+        $this->styles->addTextStyle($textStyle);
     }
 }
