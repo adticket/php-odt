@@ -2,6 +2,8 @@
 
 namespace ODTCreator;
 
+use ODTCreator\File\Manifest;
+
 class ODTCreator
 {
     const GENERATOR = 'PHP-ODTCreator 0.1';
@@ -78,39 +80,6 @@ class ODTCreator
         $this->creationDate = new \DateTime();
         $this->createStyles();
         $this->createDocumentContent();
-    }
-
-    /**
-     * Creates the manifest document, which describes all the files contained in the odt document
-     */
-    private function createManifest()
-    {
-        $manifestDoc = new \DOMDocument('1.0', 'UTF-8');
-        $root = $manifestDoc->createElement('manifest:manifest');
-        $root->setAttribute('xmlns:manifest', 'urn:oasis:names:tc:opendocument:xmlns:manifest:1.0');
-        $manifestDoc->appendChild($root);
-
-        $fileEntryRoot = $manifestDoc->createElement('manifest:file-entry');
-        $fileEntryRoot->setAttribute('manifest:media-type', 'application/vnd.oasis.opendocument.text');
-        $fileEntryRoot->setAttribute('manifest:full-path', '/');
-        $root->appendChild($fileEntryRoot);
-
-        $fileEntryContent = $manifestDoc->createElement('manifest:file-entry');
-        $fileEntryContent->setAttribute('manifest:media-type', 'text/xml');
-        $fileEntryContent->setAttribute('manifest:full-path', 'content.xml');
-        $root->appendChild($fileEntryContent);
-
-        $fileEntryStyles = $manifestDoc->createElement('manifest:file-entry');
-        $fileEntryStyles->setAttribute('manifest:media-type', 'text/xml');
-        $fileEntryStyles->setAttribute('manifest:full-path', 'styles.xml');
-        $root->appendChild($fileEntryStyles);
-
-        $fileEntryMeta = $manifestDoc->createElement('manifest:file-entry');
-        $fileEntryMeta->setAttribute('manifest:media-type', 'text/xml');
-        $fileEntryMeta->setAttribute('manifest:full-path', 'meta.xml');
-        $root->appendChild($fileEntryMeta);
-
-        return $manifestDoc;
     }
 
     /**
@@ -339,7 +308,9 @@ class ODTCreator
         $document = new \ZipArchive();
         $document->open($targetFile->getPathname(), \ZipArchive::OVERWRITE);
 
-        $document->addFromString('META-INF/manifest.xml', $this->createManifest()->saveXML());
+        $manifest = new Manifest();
+        $document->addFromString('META-INF/manifest.xml', $manifest->render()->saveXML());
+
         $document->addFromString('styles.xml', $this->styles->saveXML());
         $document->addFromString('meta.xml', $this->createMetadata()->saveXML());
         $document->addFromString('content.xml', $this->documentContent->saveXML());
