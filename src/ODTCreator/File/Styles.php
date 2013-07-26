@@ -56,7 +56,7 @@ class Styles implements File
         $domDocument = clone $this->domDocument;
 
         foreach ($this->textStyles as $textStyle) {
-            $textStyle->insertInto($domDocument);
+            $textStyle->appendTo($domDocument);
         }
 
         return $domDocument->saveXML();
