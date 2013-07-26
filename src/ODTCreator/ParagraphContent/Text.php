@@ -4,7 +4,7 @@ namespace ODTCreator\ParagraphContent;
 
 use ODTCreator\Style\TextStyle;
 
-class Text
+class Text implements ParagraphContent
 {
     /**
      * @var string
@@ -22,19 +22,14 @@ class Text
         $this->style = $style;
     }
 
-    /**
-     * @return string
-     */
-    public function getContent()
+    public function appendTo(\DOMElement $domElement, \DOMDocument $domDocument)
     {
-        return $this->content;
-    }
-
-    /**
-     * @return null|\ODTCreator\Style\TextStyle
-     */
-    public function getStyle()
-    {
-        return $this->style;
+        if (null !== $this->style) {
+            $span = $domDocument->createElement('text:span', $this->content);
+            $span->setAttribute('text:style-name', $this->style->getStyleName());
+            $domElement->appendChild($span);
+        } else {
+            $domElement->appendChild($domDocument->createTextNode($this->content));
+        }
     }
 }

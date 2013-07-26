@@ -57,7 +57,7 @@ class ODTList
     {
         $element = $this->contentDocument->createElement('text:list-item');
         $p = new Paragraph(null, false);
-        $p->addText($item);
+        $p->addContent($item);
         $element->appendChild($p->getDOMElement());
         $this->listElement->appendChild($element);
     }

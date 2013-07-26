@@ -45,7 +45,7 @@ for ($i = 0; $i < 20; $i++) {
     $odt->addTextStyle($textStyle);
 
     $p = new Paragraph();
-    $p->addText(new Text($dummyText, $textStyle));
+    $p->addContent(new Text($dummyText, $textStyle));
     $odt->addParagraph($p);
 }
 

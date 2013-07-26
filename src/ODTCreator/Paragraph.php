@@ -2,6 +2,7 @@
 
 namespace ODTCreator;
 
+use ODTCreator\ParagraphContent\ParagraphContent;
 use ODTCreator\ParagraphContent\Text;
 use ODTCreator\Style\ParagraphStyle;
 use ODTCreator\Style\RubyStyle;
@@ -16,9 +17,9 @@ class Paragraph
     private $style;
 
     /**
-     * @var Text[]
+     * @var ParagraphContent[]
      */
-    private $texts = array();
+    private $contents = array();
 
     /**
      * @var \DOMDocument
@@ -36,11 +37,11 @@ class Paragraph
     }
 
     /**
-     * @param ParagraphContent\Text $text
+     * @param ParagraphContent $content
      */
-    public function addText(Text $text)
+    public function addContent(ParagraphContent $content)
     {
-        $this->texts[] = $text;
+        $this->contents[] = $content;
     }
 
     /**
@@ -140,7 +141,7 @@ class Paragraph
 //		}
         $note_body = $this->documentContent->createElement('text:note-body');
         $p = new Paragraph(null, FALSE);
-        $p->addText($body);
+        $p->addContent($body);
         $note_body->appendChild($p->getDOMElement());
         $note->appendChild($note_body);
         switch ($noteClass) {
@@ -199,15 +200,8 @@ class Paragraph
             $domElement->setAttribute('text:style-name', $this->style->getStyleName());
         }
 
-        foreach ($this->texts as $text) {
-            $style = $text->getStyle();
-            if (null !== $style) {
-                $span = $domDocument->createElement('text:span', $text->getContent());
-                $span->setAttribute('text:style-name', $style->getStyleName());
-                $domElement->appendChild($span);
-            } else {
-                $domElement->appendChild($domDocument->createTextNode($text->getContent()));
-            }
+        foreach ($this->contents as $text) {
+            $text->appendTo($domElement, $domDocument);
         }
 
         $domDocument->getElementsByTagName('office:text')->item(0)->appendChild($domElement);

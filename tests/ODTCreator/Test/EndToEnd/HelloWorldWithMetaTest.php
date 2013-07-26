@@ -32,7 +32,7 @@ class HelloWorldWithMetaTest extends EndToEndTestCase
         $odt->setMeta($meta);
 
         $p = new Paragraph();
-        $p->addText(new Text('Hello World!'));
+        $p->addContent(new Text('Hello World!'));
         $odt->addParagraph($p);
 
         $odt->save($this->getOutputFileInfo());

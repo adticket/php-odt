@@ -1041,7 +1041,7 @@ class PageStyle
             $date = $this->styleDocument->createElement('text:date');
             $p->getDOMElement()->appendChild($date);
         } else {
-            $p->addText($content);
+            $p->addContent($content);
         }
         $headfoot = $this->styleDocument->createElement($element);
         $headfoot->appendChild($this->styleDocument->importNode($p->getDOMElement(), true));

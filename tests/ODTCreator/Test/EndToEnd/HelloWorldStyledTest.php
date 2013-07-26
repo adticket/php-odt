@@ -30,7 +30,7 @@ class HelloWorldStyledTest extends EndToEndTestCase
         $odt->addTextStyle($textStyle);
 
         $p = new Paragraph();
-        $p->addText(new Text('Hello World!', $textStyle));
+        $p->addContent(new Text('Hello World!', $textStyle));
         $odt->addParagraph($p);
 
         $odt->save($this->getOutputFileInfo());
