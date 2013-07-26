@@ -13,7 +13,7 @@ class Color
 
     public function __construct($hexCode)
     {
-        if (!preg_match('/#[\dA-Fa-f]{6}/', $hexCode)) {
+        if (!preg_match('/^#[\dA-Fa-f]{6}$/', $hexCode)) {
             throw new StyleException("Invalid hex color code '$hexCode'");
         }
         $this->hexCode = $hexCode;
