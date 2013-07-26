@@ -2,6 +2,7 @@
 
 namespace ODTCreator\Style;
 
+use Assert\Assertion as Assert;
 use ODTCreator\ODTCreator;
 
 abstract class AbstractStyle
@@ -12,9 +13,6 @@ abstract class AbstractStyle
     protected $name;
 
     /**
-     * The constructor initializes the properties, then creates a <style:style>
-     * element representing this specific style, and add it to <office:styles> element
-     *
      * @param string $name
      */
     public function __construct($name)
