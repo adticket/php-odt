@@ -4,6 +4,7 @@ namespace ODTCreator\Test\EndToEnd;
 
 use ODTCreator\ODTCreator;
 use ODTCreator\Paragraph;
+use ODTCreator\ParagraphContent\Text;
 use ODTCreator\Test\Unit\ODTCreator\File\MetaMock;
 
 class HelloWorldWithMetaTest extends EndToEndTestCase
@@ -31,7 +32,7 @@ class HelloWorldWithMetaTest extends EndToEndTestCase
         $odt->setMeta($meta);
 
         $p = new Paragraph();
-        $p->addText('Hello World!');
+        $p->addText(new Text('Hello World!'));
         $odt->addParagraph($p);
 
         $odt->save($this->getOutputFileInfo());

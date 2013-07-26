@@ -2,6 +2,7 @@
 
 namespace ODTCreator;
 
+use ODTCreator\ParagraphContent\Text;
 use ODTCreator\Style\ParagraphStyle;
 use ODTCreator\Style\RubyStyle;
 use ODTCreator\Style\StyleConstants;
@@ -14,6 +15,9 @@ class Paragraph
      */
     private $style;
 
+    /**
+     * @var Text[]
+     */
     private $texts = array();
 
     /**
@@ -35,13 +39,10 @@ class Paragraph
      * @param string $content
      * @param \ODTCreator\Style\TextStyle $style
      */
-    public function addText($content, TextStyle $style = null)
+    public function addText(Text $text)
     {
         // TODO: Refactor text elements et al to separate classes
-        $this->texts[] = array(
-            'content' => $content,
-            'style' => $style
-        );
+        $this->texts[] = $text;
     }
 
     /**
@@ -200,15 +201,13 @@ class Paragraph
         }
 
         foreach ($this->texts as $text) {
-            $content = $text['content'];
-            $style = $text['style'];
-
-            if ($style != null) {
-                $span = $domDocument->createElement('text:span', $content);
+            $style = $text->getStyle();
+            if (null !== $style) {
+                $span = $domDocument->createElement('text:span', $text->getContent());
                 $span->setAttribute('text:style-name', $style->getStyleName());
                 $domElement->appendChild($span);
             } else {
-                $domElement->appendChild($domDocument->createTextNode($content));
+                $domElement->appendChild($domDocument->createTextNode($text->getContent()));
             }
         }
 

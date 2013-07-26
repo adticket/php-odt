@@ -1,6 +1,7 @@
 <?php
 
 use ODTCreator\Paragraph;
+use ODTCreator\ParagraphContent\Text;
 use ODTCreator\Style\TextStyle;
 use ODTCreator\Value\Color;
 use ODTCreator\Value\FontSize;
@@ -44,7 +45,7 @@ for ($i = 0; $i < 20; $i++) {
     $odt->addTextStyle($textStyle);
 
     $p = new Paragraph();
-    $p->addText($dummyText, $textStyle);
+    $p->addText(new Text($dummyText, $textStyle));
     $odt->addParagraph($p);
 }
 

@@ -4,6 +4,7 @@ namespace ODTCreator\Test\EndToEnd;
 
 use ODTCreator\ODTCreator;
 use ODTCreator\Paragraph;
+use ODTCreator\ParagraphContent\Text;
 use ODTCreator\Style\TextStyle;
 use ODTCreator\Test\Unit\ODTCreator\File\MetaMock;
 use ODTCreator\Value\Color;
@@ -29,7 +30,7 @@ class HelloWorldStyledTest extends EndToEndTestCase
         $odt->addTextStyle($textStyle);
 
         $p = new Paragraph();
-        $p->addText('Hello World!', $textStyle);
+        $p->addText(new Text('Hello World!', $textStyle));
         $odt->addParagraph($p);
 
         $odt->save($this->getOutputFileInfo());
