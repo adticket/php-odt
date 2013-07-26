@@ -43,6 +43,6 @@ class Manifest implements FileInterface
      */
     public function getRelativePath()
     {
-        return '/META-INF/manifest.xml';
+        return 'META-INF/manifest.xml';
     }
 }

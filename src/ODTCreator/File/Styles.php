@@ -100,7 +100,7 @@ class Styles implements FileInterface
      */
     public function getRelativePath()
     {
-        return '/styles.xml';
+        return 'styles.xml';
     }
 
     /**
