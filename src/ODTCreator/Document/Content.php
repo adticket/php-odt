@@ -30,7 +30,7 @@ class Content implements File
         $domDocument = $this->createDOMDocument();
 
         foreach ($this->elements as $element) {
-            $element->renderTo($domDocument);
+            $element->renderToContent($domDocument);
         }
 
         return $domDocument->saveXML();

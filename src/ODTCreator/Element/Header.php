@@ -21,7 +21,17 @@ class Header extends AbstractElementWithContent
      * @param \DOMElement|null $parentElement
      * @return void
      */
-    public function renderTo(\DOMDocument $domDocument, \DOMElement $parentElement = null)
+    public function renderToStyle(\DOMDocument $domDocument, \DOMElement $parentElement = null)
+    {
+
+    }
+
+    /**
+     * @param \DOMDocument $domDocument
+     * @param \DOMElement|null $parentElement
+     * @return void
+     */
+    public function renderToContent(\DOMDocument $domDocument, \DOMElement $parentElement = null)
     {
         $domElement = $domDocument->createElementNS(ContentFile::NAMESPACE_TEXT, 'h');
         $domElement->setAttributeNS(ContentFile::NAMESPACE_TEXT, 'outline-level', $this->outlineLevel);

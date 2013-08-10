@@ -2,18 +2,26 @@
 
 namespace ODTCreator\Document;
 
+use ODTCreator\Element\Element;
 use ODTCreator\Style\TextStyle;
 
 class Styles implements File
 {
-    /**
-     * @var TextStyle[]
-     */
-    private $textStyles = array();
+    const NAMESPACE_FO = 'urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0';
+    const NAMESPACE_NAME = 'urn:oasis:names:tc:opendocument:xmlns:office:1.0';
+    const NAMESPACE_OFFICE = 'urn:oasis:names:tc:opendocument:xmlns:office:1.0';
+    const NAMESPACE_STYLE = 'urn:oasis:names:tc:opendocument:xmlns:style:1.0';
+    const NAMESPACE_SVG = 'urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0';
+    const NAMESPACE_TEXT = 'urn:oasis:names:tc:opendocument:xmlns:text:1.0';
 
-    public function addTextStyle($textStyle)
+    /**
+     * @var Element[]
+     */
+    private $elements;
+
+    public function addElement(Element $element)
     {
-        $this->textStyles[] = $textStyle;
+        $this->elements[] = $element;
     }
 
     /**
@@ -23,8 +31,8 @@ class Styles implements File
     {
         $domDocument = $this->createDOMDocument();
 
-        foreach ($this->textStyles as $textStyle) {
-            $textStyle->renderTo($domDocument);
+        foreach ($this->elements as $element) {
+            $element->renderToStyle($domDocument);
         }
 
         return $domDocument->saveXML();
@@ -36,53 +44,6 @@ class Styles implements File
         $domDocument->load(__DIR__ . '/templates/styles.xml');
 
         return $domDocument;
-    }
-
-    /**
-     * Declare the fonts that can be used in the document
-     *
-     * @param \DOMElement $rootElement
-     * @param \DOMDocument $domDocument
-     */
-    private function declareFontFaces(\DOMElement $rootElement, \DOMDocument $domDocument)
-    {
-        $fontFaceDecl = $domDocument->createElement('office:font-face-decls');
-        $rootElement->appendChild($fontFaceDecl);
-
-        $ff = $domDocument->createElement('style:font-face');
-        $ff->setAttribute('style:name', 'Courier');
-        $ff->setAttribute('svg:font-family', 'Courier');
-        $ff->setAttribute('style:font-family-generic', 'modern');
-        $ff->setAttribute('style:font-pitch', 'fixed');
-        $fontFaceDecl->appendChild($ff);
-
-        $ff = $domDocument->createElement('style:font-face');
-        $ff->setAttribute('style:name', 'DejaVu Serif');
-        $ff->setAttribute('svg:font-family', '&apos;DejaVu Serif&apos;');
-        $ff->setAttribute('style:font-family-generic', 'roman');
-        $ff->setAttribute('style:font-pitch', 'variable');
-        $fontFaceDecl->appendChild($ff);
-
-        $ff = $domDocument->createElement('style:font-face');
-        $ff->setAttribute('style:name', 'Times New Roman');
-        $ff->setAttribute('svg:font-family', '&apos;Times New Roman&apos;');
-        $ff->setAttribute('style:font-family-generic', 'roman');
-        $ff->setAttribute('style:font-pitch', 'variable');
-        $fontFaceDecl->appendChild($ff);
-
-        $ff = $domDocument->createElement('style:font-face');
-        $ff->setAttribute('style:name', 'DejaVu Sans');
-        $ff->setAttribute('svg:font-family', '&apos;DejaVu Sans&apos;');
-        $ff->setAttribute('style:font-family-generic', 'swiss');
-        $ff->setAttribute('style:font-pitch', 'variable');
-        $fontFaceDecl->appendChild($ff);
-
-        $ff = $domDocument->createElement('style:font-face');
-        $ff->setAttribute('style:name', 'Verdana');
-        $ff->setAttribute('svg:font-family', 'Verdana');
-        $ff->setAttribute('style:font-family-generic', 'swiss');
-        $ff->setAttribute('style:font-pitch', 'variable');
-        $fontFaceDecl->appendChild($ff);
     }
 
     /**
