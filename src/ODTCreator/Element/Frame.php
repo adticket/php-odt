@@ -13,6 +13,7 @@ class Frame extends AbstractElement
     public function renderTo(\DOMDocument $domDocument)
     {
         $frameElement = $domDocument->createElementNS(ContentFile::NAMESPACE_DRAW, 'draw:frame');
+        $frameElement->setAttributeNS(ContentFile::NAMESPACE_DRAW, 'draw:style-name', 'fr1');
         $frameElement->setAttributeNS(ContentFile::NAMESPACE_TEXT, 'text:anchor-type', 'page');
         $frameElement->setAttributeNS(ContentFile::NAMESPACE_TEXT, 'text:anchor-page-number', '1');
         $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:x', '2cm');
