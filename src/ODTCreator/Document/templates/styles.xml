@@ -21,16 +21,13 @@
                         xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
                         xmlns:xlink="http://www.w3.org/1999/xlink">
     <office:styles>
-        <style:style style:name="Frame_20_contents" style:display-name="Frame contents" style:family="paragraph"
-                     style:parent-style-name="Text_20_body" style:class="extra"/>
         <style:style style:name="Frame" style:family="graphic">
-            <style:graphic-properties text:anchor-type="paragraph" svg:x="0cm" svg:y="0cm" fo:margin-left="0.201cm"
-                                      fo:margin-right="0.201cm" fo:margin-top="0.201cm" fo:margin-bottom="0.201cm"
+            <style:graphic-properties text:anchor-type="paragraph" svg:x="0cm" svg:y="0cm" fo:margin-left="0.2cm"
+                                      fo:margin-right="0.2cm" fo:margin-top="0.2cm" fo:margin-bottom="0.2cm"
                                       style:wrap="parallel" style:number-wrapped-paragraphs="no-limit"
-                                      style:wrap-contour="false" style:vertical-pos="top"
-                                      style:vertical-rel="paragraph-content" style:horizontal-pos="center"
-                                      style:horizontal-rel="paragraph-content" fo:padding="0.15cm"
-                                      fo:border="0.06pt solid #000000"/>
+                                      style:wrap-contour="false" style:vertical-pos="from-top" style:vertical-rel="page"
+                                      style:horizontal-pos="from-left" style:horizontal-rel="page" fo:padding="0cm"
+                                      fo:border="none"/>
         </style:style>
     </office:styles>
-    </office:document-styles>
+</office:document-styles>

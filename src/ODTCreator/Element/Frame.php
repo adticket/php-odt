@@ -27,7 +27,7 @@ class Frame implements Element
     public function renderTo(\DOMDocument $domDocument, \DOMElement $parentElement = null)
     {
         $frameElement = $domDocument->createElementNS(ContentFile::NAMESPACE_DRAW, 'draw:frame');
-        $frameElement->setAttributeNS(ContentFile::NAMESPACE_DRAW, 'draw:style-name', 'fr1');
+        $frameElement->setAttributeNS(ContentFile::NAMESPACE_DRAW, 'draw:style-name', 'Frame');
         $frameElement->setAttributeNS(ContentFile::NAMESPACE_TEXT, 'text:anchor-type', 'page');
         $frameElement->setAttributeNS(ContentFile::NAMESPACE_TEXT, 'text:anchor-page-number', '1');
         $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:x', '2cm');
