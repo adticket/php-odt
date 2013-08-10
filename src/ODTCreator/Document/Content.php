@@ -10,6 +10,7 @@ class Content implements File
     const NAMESPACE_OFFICE = 'urn:oasis:names:tc:opendocument:xmlns:office:1.0';
     const NAMESPACE_SVG = 'urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0';
     const NAMESPACE_TEXT = 'urn:oasis:names:tc:opendocument:xmlns:text:1.0';
+    const NAMESPACE_XLINK = 'http://www.w3.org/1999/xlink';
 
     /**
      * @var \ODTCreator\Element\Element[]
