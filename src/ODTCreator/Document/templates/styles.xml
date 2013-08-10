@@ -21,7 +21,7 @@
                         xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
                         xmlns:xlink="http://www.w3.org/1999/xlink">
     <office:styles>
-        <style:style style:name="Frame" style:family="graphic">
+        <style:style style:name="Frame-1" style:family="graphic">
             <style:graphic-properties text:anchor-type="paragraph" svg:x="0cm" svg:y="0cm" fo:margin-left="0.2cm"
                                       fo:margin-right="0.2cm" fo:margin-top="0.2cm" fo:margin-bottom="0.2cm"
                                       style:wrap="parallel" style:number-wrapped-paragraphs="no-limit"
