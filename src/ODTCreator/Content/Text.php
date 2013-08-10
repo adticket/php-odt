@@ -22,7 +22,7 @@ class Text implements Content
         $this->style = $style;
     }
 
-    public function renderTo(\DOMElement $parent, \DOMDocument $contentDocument)
+    public function renderTo(\DOMDocument $contentDocument, \DOMElement $parent)
     {
         if ($this->style) {
             $span = $contentDocument->createElement('text:span', $this->content);

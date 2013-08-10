@@ -4,7 +4,7 @@ namespace ODTCreator\Element;
 
 use ODTCreator\Content\Content;
 
-abstract class AbstractElement implements Element
+abstract class AbstractElementWithContent implements Element
 {
     /**
      * @var Content[]
@@ -18,10 +18,4 @@ abstract class AbstractElement implements Element
     {
         $this->contents[] = $content;
     }
-
-    /**
-     * @param \DOMDocument $domDocument
-     * @return void
-     */
-    abstract public function renderTo(\DOMDocument $domDocument);
 }

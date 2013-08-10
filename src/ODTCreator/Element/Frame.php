@@ -4,13 +4,27 @@ namespace ODTCreator\Element;
 
 use ODTCreator\Document\Content as ContentFile;
 
-class Frame extends AbstractElement
+class Frame implements Element
 {
     /**
+     * @var Element[]
+     */
+    protected $subElements = array();
+
+    /**
+     * @param Element $element
+     */
+    public function addSubElement(Element $element)
+    {
+        $this->subElements[] = $element;
+    }
+
+    /**
      * @param \DOMDocument $domDocument
+     * @param \DOMElement|null $parentElement
      * @return void
      */
-    public function renderTo(\DOMDocument $domDocument)
+    public function renderTo(\DOMDocument $domDocument, \DOMElement $parentElement = null)
     {
         $frameElement = $domDocument->createElementNS(ContentFile::NAMESPACE_DRAW, 'draw:frame');
         $frameElement->setAttributeNS(ContentFile::NAMESPACE_DRAW, 'draw:style-name', 'fr1');
@@ -26,7 +40,8 @@ class Frame extends AbstractElement
         $textBoxElement = $domDocument->createElementNS(ContentFile::NAMESPACE_DRAW, 'draw:text-box');
         $frameElement->appendChild($textBoxElement);
 
-        $contentElement = $domDocument->createElementNS(ContentFile::NAMESPACE_TEXT, 'text:p', 'FRAME CONTENT');
-        $textBoxElement->appendChild($contentElement);
+        foreach ($this->subElements as $subElement) {
+            $subElement->renderTo($domDocument, $textBoxElement);
+        }
     }
 }

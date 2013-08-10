@@ -6,7 +6,8 @@ interface Element
 {
     /**
      * @param \DOMDocument $domDocument
+     * @param \DOMElement|null $parentElement
      * @return void
      */
-    public function renderTo(\DOMDocument $domDocument);
+    public function renderTo(\DOMDocument $domDocument, \DOMElement $parentElement = null);
 }
