@@ -74,18 +74,6 @@ class Frame implements Element
         $graphicPropertiesElement->setAttributeNS(Styles::NAMESPACE_FO, 'fo:padding', '0cm');
         $graphicPropertiesElement->setAttributeNS(Styles::NAMESPACE_FO, 'fo:border', 'none');
         $element->appendChild($graphicPropertiesElement);
-
-        '
-        <style:style style:name="Frame-1" style:family="graphic">
-            <style:graphic-properties text:anchor-type="paragraph" svg:x="0cm" svg:y="0cm" fo:margin-left="0.2cm"
-                                      fo:margin-right="0.2cm" fo:margin-top="0.2cm" fo:margin-bottom="0.2cm"
-                                      style:wrap="parallel" style:number-wrapped-paragraphs="no-limit"
-                                      style:wrap-contour="false" style:vertical-pos="from-top" style:vertical-rel="page"
-                                      style:horizontal-pos="from-left" style:horizontal-rel="page" fo:padding="0cm"
-                                      fo:border="none"/>
-        </style:style>
-        ';
-
     }
 
     /**

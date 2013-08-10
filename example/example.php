@@ -5,6 +5,7 @@ use ODTCreator\Content\Text;
 use ODTCreator\Style\TextStyle;
 use ODTCreator\Value\Color;
 use ODTCreator\Value\FontSize;
+use ODTCreator\Value\Length;
 use ODTToPDFRenderer\ODTToPDFRenderer;
 use PDFToPNGRenderer\PDFToPNGRenderer;
 
@@ -13,19 +14,31 @@ require_once __DIR__ .'/../vendor/autoload.php';
 $outputDir = __DIR__ . '/output';
 $odtFile = new SplFileInfo($outputDir . '/hello_world.odt');
 
-exec("rm -fr $outputDir");
-mkdir($outputDir);
+//exec("rm -fr $outputDir");
+//mkdir($outputDir);
 
+
+$dummyText = file_get_contents(__DIR__ . '/dummyText.txt');
 
 // Create an ODT file
 $startTime = microtime(true);
 $odt = new \ODTCreator\ODTCreator();
 
-$frame = new \ODTCreator\Element\Frame();
+$frame = new \ODTCreator\Element\Frame('Frame-1', new Length('2cm'), new Length('2.7cm'));
+$p = new Paragraph();
+$p->addContent(new Text($dummyText));
+$frame->addSubElement($p);
+$odt->addElement($frame);
+
+$frame = new \ODTCreator\Element\Frame('Frame-2', new Length('2cm'), new Length('11.7cm'));
+$p = new Paragraph();
+$p->addContent(new Text($dummyText));
+$frame->addSubElement($p);
 $odt->addElement($frame);
 
 $p = new Paragraph();
 $p->addContent(new Text(date('Y-m-d H:i:s')));
+$p->addContent(new \ODTCreator\Content\Link('http://www.juit.de', 'JUIT Homepage'));
 $odt->addElement($p);
 
 $h = new \ODTCreator\Element\Header();
@@ -36,8 +49,7 @@ $h = new \ODTCreator\Element\Header(2);
 $h->addContent(new Text('Zweite Headline'));
 $odt->addElement($h);
 
-$dummyText = file_get_contents(__DIR__ . '/dummyText.txt');
-for ($i = 0; $i < 20; $i++) {
+for ($i = 0; $i < 1; $i++) {
 //    $textStyle = new TextStyle('t' . $i);
 //
 //    switch ($i % 4) {
