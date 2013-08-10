@@ -1,7 +1,7 @@
 <?php
 
-use ODTCreator\Paragraph;
-use ODTCreator\ParagraphContent\StyledText;
+use ODTCreator\Element\Paragraph;
+use ODTCreator\Content\Text;
 use ODTCreator\Style\TextStyle;
 use ODTCreator\Value\Color;
 use ODTCreator\Value\FontSize;
@@ -21,36 +21,54 @@ mkdir($outputDir);
 $startTime = microtime(true);
 $odt = new \ODTCreator\ODTCreator();
 
+$p = new Paragraph();
+$p->addContent(new Text(date('Y-m-d H:i:s')));
+$odt->addElement($p);
+
+$h = new \ODTCreator\Element\Header();
+$h->addContent(new Text('Lalelu'));
+$odt->addElement($h);
+
+$h = new \ODTCreator\Element\Header(2);
+$h->addContent(new Text('Zweite Headline'));
+$odt->addElement($h);
+
 $dummyText = file_get_contents(__DIR__ . '/dummyText.txt');
 for ($i = 0; $i < 20; $i++) {
-    $textStyle = new TextStyle('t' . $i);
-
-    switch ($i % 4) {
-        case 0:
-            $color = '#ff0000';
-            break;
-        case 1:
-            $color = '#00ff00';
-            break;
-        case 2:
-            $color = '#0000ff';
-            break;
-        default:
-            $color = '#000000';
-            break;
-    }
-    $textStyle->setColor(new Color($color));
-    $textStyle->setBold();
-    $textStyle->setFontSize(new FontSize(($i * 2) + 6));
-    $odt->addTextStyle($textStyle);
+//    $textStyle = new TextStyle('t' . $i);
+//
+//    switch ($i % 4) {
+//        case 0:
+//            $color = '#ff0000';
+//            break;
+//        case 1:
+//            $color = '#00ff00';
+//            break;
+//        case 2:
+//            $color = '#0000ff';
+//            break;
+//        default:
+//            $color = '#000000';
+//            break;
+//    }
+//    $textStyle->setColor(new Color($color));
+//    $textStyle->setBold();
+//    $textStyle->setFontSize(new FontSize(($i * 2) + 6));
+//    $odt->addTextStyle($textStyle);
 
     $p = new Paragraph();
-    $p->addContent(new StyledText($dummyText, $textStyle));
-    $odt->addParagraph($p);
+    $p->addContent(new Text($dummyText));
+    $odt->addElement($p);
 }
 
 $odt->save($odtFile);
 $renderTimeODT = microtime(true) - $startTime;
+
+$unzipDir = substr($odtFile->getPathname(), 0, -4);
+system("rm -fr {$unzipDir}");
+system("unzip {$odtFile->getPathname()} -d {$unzipDir}");
+
+system("cd " . __DIR__ . "/../tests/ODTCreator/Test/EndToEnd/odf-validator && ./validator --file=" . $odtFile->getPathname());
 
 // Render ODT file to PDF file
 $startTime = microtime(true);

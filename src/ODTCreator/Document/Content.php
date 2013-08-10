@@ -2,18 +2,21 @@
 
 namespace ODTCreator\Document;
 
-use ODTCreator\Paragraph;
+use ODTCreator\Element\Element;
 
 class Content implements File
 {
-    /**
-     * @var Paragraph[]
-     */
-    private $contentElements = array();
+    const NAMESPACE_OFFICE = 'urn:oasis:names:tc:opendocument:xmlns:office:1.0';
+    const NAMESPACE_TEXT = 'urn:oasis:names:tc:opendocument:xmlns:text:1.0';
 
-    public function addParagraph(Paragraph $paragraph)
+    /**
+     * @var \ODTCreator\Element\Element[]
+     */
+    private $elements = array();
+
+    public function addElement(Element $element)
     {
-        $this->contentElements[] = $paragraph;
+        $this->elements[] = $element;
     }
 
     /**
@@ -23,7 +26,7 @@ class Content implements File
     {
         $domDocument = $this->createDOMDocument();
 
-        foreach ($this->contentElements as $element) {
+        foreach ($this->elements as $element) {
             $element->renderTo($domDocument);
         }
 

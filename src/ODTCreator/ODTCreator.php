@@ -8,7 +8,7 @@ use ODTCreator\Document\Manifest;
 use ODTCreator\Document\Meta;
 use ODTCreator\Document\Settings;
 use ODTCreator\Document\Styles;
-use ODTCreator\Style\TextStyle;
+use ODTCreator\Element\Element;
 
 class ODTCreator
 {
@@ -30,9 +30,9 @@ class ODTCreator
         $this->content = new Content();
     }
 
-    public function addParagraph(Paragraph $paragraph)
+    public function addElement(Element $element)
     {
-        $this->content->addParagraph($paragraph);
+        $this->content->addElement($element);
     }
 
     public function save(\SplFileInfo $targetFile)
@@ -53,10 +53,5 @@ class ODTCreator
         }
 
         $document->close();
-    }
-
-    public function addTextStyle(TextStyle $textStyle)
-    {
-        $this->styles->addTextStyle($textStyle);
     }
 }

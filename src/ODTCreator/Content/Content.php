@@ -1,8 +1,8 @@
 <?php
 
-namespace ODTCreator\ParagraphContent;
+namespace ODTCreator\Content;
 
-interface ParagraphContent
+interface Content
 {
     /**
      * @param \DOMElement $domElement
