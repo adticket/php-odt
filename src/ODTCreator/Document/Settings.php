@@ -2,7 +2,7 @@
 
 namespace ODTCreator\Document;
 
-class Manifest implements File
+class Settings implements File
 {
     /**
      * @return string The file content
@@ -19,7 +19,7 @@ class Manifest implements File
      */
     public function getRelativePath()
     {
-        return 'META-INF/manifest.xml';
+        return 'settings.xml';
     }
 
     /**
@@ -28,7 +28,7 @@ class Manifest implements File
     private function createDocument()
     {
         $domDocument = new \DOMDocument();
-        $domDocument->load(__DIR__ . '/templates/manifest.xml');
+        $domDocument->load(__DIR__ . '/templates/settings.xml');
 
         return $domDocument;
     }

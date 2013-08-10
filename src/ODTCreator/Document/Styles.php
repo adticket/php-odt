@@ -32,29 +32,8 @@ class Styles implements File
 
     private function createDOMDocument()
     {
-        $domDocument = new \DOMDocument('1.0', 'UTF-8');
-
-        $rootElement = $domDocument->createElement('office:document-styles');
-        $rootElement->setAttribute('xmlns:office', 'urn:oasis:names:tc:opendocument:xmlns:office:1.0');
-        $rootElement->setAttribute('xmlns:style', 'urn:oasis:names:tc:opendocument:xmlns:style:1.0');
-        $rootElement->setAttribute('xmlns:text', 'urn:oasis:names:tc:opendocument:xmlns:text:1.0');
-        $rootElement->setAttribute('xmlns:fo', 'urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0');
-        $rootElement->setAttribute('xmlns:svg', 'urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0');
-        $rootElement->setAttribute('xmlns:draw', 'urn:oasis:names:tc:opendocument:xmlns:drawing:1.0');
-        $rootElement->setAttribute('xmlns:table', 'urn:oasis:names:tc:opendocument:xmlns:table:1.0');
-        $rootElement->setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-        $domDocument->appendChild($rootElement);
-
-        $this->declareFontFaces($rootElement, $domDocument);
-
-        $officeStyles = $domDocument->createElement('office:styles');
-        $rootElement->appendChild($officeStyles);
-
-        $officeAutomaticStyles = $domDocument->createElement('office:automatic-styles');
-        $rootElement->appendChild($officeAutomaticStyles);
-
-        $officeMasterStyles = $domDocument->createElement('office:master-styles');
-        $rootElement->appendChild($officeMasterStyles);
+        $domDocument = new \DOMDocument();
+        $domDocument->load(__DIR__ . '/templates/styles.xml');
 
         return $domDocument;
     }
