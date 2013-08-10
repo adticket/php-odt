@@ -5,7 +5,7 @@ namespace ODTCreator\Test\EndToEnd;
 use ODTCreator\ODTCreator;
 use ODTCreator\Paragraph;
 use ODTCreator\ParagraphContent\PlainText;
-use ODTCreator\Test\Unit\ODTCreator\File\MetaMock;
+use ODTCreator\Test\Unit\ODTCreator\Document\MetaMock;
 
 class HelloWorldWithMetaTest extends EndToEndTestCase
 {

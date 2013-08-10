@@ -1,6 +1,6 @@
 <?php
 
-namespace ODTCreator\File;
+namespace ODTCreator\Document;
 
 use ODTCreator\ODTCreator;
 

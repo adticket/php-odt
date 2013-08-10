@@ -2,10 +2,10 @@
 
 namespace ODTCreator;
 
-use ODTCreator\File\Content;
-use ODTCreator\File\Manifest;
-use ODTCreator\File\Meta;
-use ODTCreator\File\Styles;
+use ODTCreator\Document\Content;
+use ODTCreator\Document\Manifest;
+use ODTCreator\Document\Meta;
+use ODTCreator\Document\Styles;
 use ODTCreator\Style\TextStyle;
 
 class ODTCreator
