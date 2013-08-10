@@ -24,7 +24,7 @@ class Content implements File
         $domDocument = $this->createDOMDocument();
 
         foreach ($this->contentElements as $element) {
-            $element->appendTo($domDocument);
+            $element->renderTo($domDocument);
         }
 
         return $domDocument->saveXML();

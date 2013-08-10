@@ -51,7 +51,7 @@ class TextStyle extends AbstractStyle
      * @param \DOMDocument $domDocument
      * @return void
      */
-    protected function appendToStyleElement(\DOMElement $styleElement, \DOMDocument $domDocument)
+    protected function renderToStyleElement(\DOMElement $styleElement, \DOMDocument $domDocument)
     {
         $styleElement->setAttribute('style:family', 'text');
 

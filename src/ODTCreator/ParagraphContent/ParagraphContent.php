@@ -9,5 +9,5 @@ interface ParagraphContent
      * @param \DOMDocument $domDocument
      * @return void
      */
-    public function appendTo(\DOMElement $domElement, \DOMDocument $domDocument);
+    public function renderTo(\DOMElement $domElement, \DOMDocument $domDocument);
 }

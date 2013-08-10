@@ -24,7 +24,7 @@ class Styles implements File
         $domDocument = $this->createDOMDocument();
 
         foreach ($this->textStyles as $textStyle) {
-            $textStyle->appendTo($domDocument);
+            $textStyle->renderTo($domDocument);
         }
 
         return $domDocument->saveXML();

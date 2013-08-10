@@ -32,13 +32,13 @@ abstract class AbstractStyle
         return $this->name;
     }
 
-    public function appendTo(\DOMDocument $domDocument)
+    public function renderTo(\DOMDocument $domDocument)
     {
         $styleElement = $domDocument->createElement('style:style');
         $styleElement->setAttribute('style:name', $this->name);
         $domDocument->getElementsByTagName('office:styles')->item(0)->appendChild($styleElement);
 
-        $this->appendToStyleElement($styleElement, $domDocument);
+        $this->renderToStyleElement($styleElement, $domDocument);
     }
 
     /**
@@ -46,5 +46,5 @@ abstract class AbstractStyle
      * @param \DOMDocument $domDocument
      * @return void
      */
-    abstract protected function appendToStyleElement(\DOMElement $styleElement, \DOMDocument $domDocument);
+    abstract protected function renderToStyleElement(\DOMElement $styleElement, \DOMDocument $domDocument);
 }

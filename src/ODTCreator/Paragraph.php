@@ -30,7 +30,7 @@ class Paragraph
         $this->contents[] = $content;
     }
 
-    public function appendTo(\DOMDocument $domDocument)
+    public function renderTo(\DOMDocument $domDocument)
     {
         $domElement = $domDocument->createElement('text:p');
         if ($this->style != null) {
@@ -38,7 +38,7 @@ class Paragraph
         }
 
         foreach ($this->contents as $text) {
-            $text->appendTo($domElement, $domDocument);
+            $text->renderTo($domElement, $domDocument);
         }
 
         $domDocument->getElementsByTagName('office:text')->item(0)->appendChild($domElement);

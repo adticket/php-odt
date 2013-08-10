@@ -22,7 +22,7 @@ class StyledText implements ParagraphContent
         $this->style = $style;
     }
 
-    public function appendTo(\DOMElement $domElement, \DOMDocument $domDocument)
+    public function renderTo(\DOMElement $domElement, \DOMDocument $domDocument)
     {
         $span = $domDocument->createElement('text:span', $this->content);
         $span->setAttribute('text:style-name', $this->style->getStyleName());
