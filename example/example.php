@@ -21,6 +21,9 @@ mkdir($outputDir);
 $startTime = microtime(true);
 $odt = new \ODTCreator\ODTCreator();
 
+$frame = new \ODTCreator\Element\Frame();
+$odt->addElement($frame);
+
 $p = new Paragraph();
 $p->addContent(new Text(date('Y-m-d H:i:s')));
 $odt->addElement($p);
