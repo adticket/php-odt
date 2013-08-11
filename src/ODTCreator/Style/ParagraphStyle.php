@@ -5,11 +5,11 @@ namespace ODTCreator\Style;
 class ParagraphStyle extends AbstractStyle
 {
     /**
-     * @param \DOMElement $styleElement
      * @param \DOMDocument $domDocument
+     * @param \DOMElement $styleElement
      * @return void
      */
-    protected function renderToStyleElement(\DOMElement $styleElement, \DOMDocument $domDocument)
+    protected function renderToStyleElement(\DOMDocument $domDocument, \DOMElement $styleElement)
     {
         $styleElement->setAttribute('style:family', 'paragraph');
     }

@@ -3,19 +3,18 @@
 namespace ODTCreator\Element;
 
 use ODTCreator\Document\Content as ContentFile;
-use ODTCreator\Style\ParagraphStyle;
 use ODTCreator\Style;
 
 class Paragraph extends AbstractElementWithContent
 {
     /**
-     * @var Style\ParagraphStyle
+     * @var string|null
      */
-    private $style;
+    private $styleName;
 
-    public function __construct(ParagraphStyle $style = null)
+    public function __construct($styleName = null)
     {
-        $this->style = $style;
+        $this->styleName = $styleName;
     }
 
     /**
@@ -25,7 +24,6 @@ class Paragraph extends AbstractElementWithContent
      */
     public function renderToStyle(\DOMDocument $domDocument, \DOMElement $parentElement = null)
     {
-
     }
 
     /**
@@ -35,7 +33,10 @@ class Paragraph extends AbstractElementWithContent
      */
     public function renderToContent(\DOMDocument $domDocument, \DOMElement $parentElement = null)
     {
-        $domElement = $domDocument->createElementNS(ContentFile::NAMESPACE_TEXT, 'p');
+        $domElement = $domDocument->createElementNS(ContentFile::NAMESPACE_TEXT, 'text:p');
+        if ($this->styleName) {
+            $domElement->setAttributeNS(ContentFile::NAMESPACE_TEXT, 'text:style-name', $this->styleName);
+        }
 
         foreach ($this->contents as $text) {
             $text->renderTo($domDocument, $domElement);

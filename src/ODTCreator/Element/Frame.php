@@ -23,11 +23,23 @@ class Frame implements Element
      */
     private $y;
 
-    public function __construct($styleName, Length $x, Length $y)
+    /**
+     * @var \ODTCreator\Value\Length
+     */
+    private $width;
+
+    /**
+     * @var \ODTCreator\Value\Length
+     */
+    private $height;
+
+    public function __construct($styleName, Length $x, Length $y, Length $width, Length $height)
     {
         $this->styleName = $styleName;
         $this->x = $x;
         $this->y = $y;
+        $this->width = $width;
+        $this->height = $height;
     }
 
     /**
@@ -89,8 +101,8 @@ class Frame implements Element
         $frameElement->setAttributeNS(ContentFile::NAMESPACE_TEXT, 'text:anchor-page-number', '1');
         $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:x', $this->x->getValue());
         $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:y', $this->y->getValue());
-        $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:width', '8.5cm');
-        $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:height', '4.5cm');
+        $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:width', $this->width->getValue());
+        $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:height', $this->height->getValue());
         $frameElement->setAttributeNS(ContentFile::NAMESPACE_DRAW, 'draw:z-index', '0');
         $domDocument->getElementsByTagNameNS(ContentFile::NAMESPACE_OFFICE, 'text')->item(0)->appendChild($frameElement);
 

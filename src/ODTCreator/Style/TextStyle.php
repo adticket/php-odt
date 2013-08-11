@@ -2,6 +2,7 @@
 
 namespace ODTCreator\Style;
 
+use ODTCreator\Document\Styles;
 use ODTCreator\Value\Color;
 use ODTCreator\Value\FontSize;
 
@@ -47,30 +48,27 @@ class TextStyle extends AbstractStyle
     }
 
     /**
-     * @param \DOMElement $styleElement
      * @param \DOMDocument $domDocument
+     * @param \DOMElement $styleElement
      * @return void
      */
-    protected function renderToStyleElement(\DOMElement $styleElement, \DOMDocument $domDocument)
+    protected function renderToStyleElement(\DOMDocument $domDocument, \DOMElement $styleElement)
     {
-        $styleElement->setAttribute('style:family', 'text');
+        $styleElement->setAttributeNS(Styles::NAMESPACE_STYLE, 'style:family', 'text');
+
+        $element = $domDocument->createElement('style:text-properties');
+        $styleElement->appendChild($element);
 
         if (null !== $this->color) {
-            $element = $domDocument->createElement('style:text-properties');
             $element->setAttribute('fo:color', $this->color->getHexCode());
-            $styleElement->appendChild($element);
         }
 
         if ($this->isBold) {
-            $element = $domDocument->createElement('style:text-properties');
             $element->setAttribute('fo:font-weight', 'bold');
-            $styleElement->appendChild($element);
         }
 
         if (null !== $this->fontSize) {
-            $element = $domDocument->createElement('style:text-properties');
             $element->setAttribute('fo:font-size', $this->fontSize->getValue());
-            $styleElement->appendChild($element);
         }
     }
 }

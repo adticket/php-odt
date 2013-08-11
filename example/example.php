@@ -1,5 +1,7 @@
 <?php
 
+use ODTCreator\Content\LineBreak;
+use ODTCreator\Element\Frame;
 use ODTCreator\Element\Paragraph;
 use ODTCreator\Content\Text;
 use ODTCreator\Style\TextStyle;
@@ -9,7 +11,7 @@ use ODTCreator\Value\Length;
 use ODTToPDFRenderer\ODTToPDFRenderer;
 use PDFToPNGRenderer\PDFToPNGRenderer;
 
-require_once __DIR__ .'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 $outputDir = __DIR__ . '/output';
 $odtFile = new SplFileInfo($outputDir . '/hello_world.odt');
@@ -24,32 +26,71 @@ $dummyText = file_get_contents(__DIR__ . '/dummyText.txt');
 $startTime = microtime(true);
 $odt = new \ODTCreator\ODTCreator();
 
-$frame = new \ODTCreator\Element\Frame('Frame-1', new Length('2cm'), new Length('2.7cm'));
-$p = new Paragraph();
-$p->addContent(new Text($dummyText));
+
+// Adresse
+
+$frame = new Frame('Frame-1', new Length('2cm'), new Length('2.7cm'), new Length('8.5cm'), new Length('4.5cm'));
+$p = new Paragraph('FP');
+$p->addContent(new Text('AD ticket GmbH'));
+$p->addContent(new LineBreak());
+$p->addContent(new Text('Herr Dinko Bicvic'));
+$p->addContent(new LineBreak());
+$p->addContent(new Text('Kaiserstr. 69'));
+$p->addContent(new LineBreak());
+$p->addContent(new LineBreak());
+$p->addContent(new Text('60329 Frankfurt am Main'));
+
 $frame->addSubElement($p);
 $odt->addElement($frame);
 
-$frame = new \ODTCreator\Element\Frame('Frame-2', new Length('2cm'), new Length('11.7cm'));
+
+// Datum
+
+$frame = new Frame('Frame-1', new Length('13cm'), new Length('8cm'), new Length('8cm'), new Length('2cm'));
 $p = new Paragraph();
-$p->addContent(new Text($dummyText));
+$p->addContent(new Text('Frankfurt, den ' . date('d.m.Y')));
 $frame->addSubElement($p);
 $odt->addElement($frame);
 
-$p = new Paragraph();
-$p->addContent(new Text(date('Y-m-d H:i:s')));
-$p->addContent(new \ODTCreator\Content\Link('http://www.juit.de', 'JUIT Homepage'));
+
+// Betreff
+
+$p = new Paragraph('P1');
+$p->addContent(new Text('Ihr neues Serienbriefmodul'));
 $odt->addElement($p);
 
-$h = new \ODTCreator\Element\Header();
-$h->addContent(new Text('Lalelu'));
-$odt->addElement($h);
 
-$h = new \ODTCreator\Element\Header(2);
-$h->addContent(new Text('Zweite Headline'));
-$odt->addElement($h);
+// Anrede
 
-for ($i = 0; $i < 1; $i++) {
+$p = new Paragraph();
+$p->addContent(new LineBreak());
+$p->addContent(new LineBreak());
+$p->addContent(new Text('Sehr geehrter Herr Bicvic,'));
+$p->addContent(new LineBreak());
+$odt->addElement($p);
+
+
+// Inhalt
+
+$p = new Paragraph();
+
+// Convert line breaks
+
+$dummyText = str_replace("\r\n", "\n", $dummyText);
+$dummyText = str_replace("\r", "\n", $dummyText);
+$lines = explode("\n", $dummyText);
+$isFirstLine = true;
+foreach ($lines as $line) {
+    if ($isFirstLine) {
+        $isFirstLine = false;
+    } else {
+        $p->addContent(new LineBreak());
+    }
+    if ('' !== $line) {
+        $p->addContent(new Text($line));
+    }
+}
+
 //    $textStyle = new TextStyle('t' . $i);
 //
 //    switch ($i % 4) {
@@ -71,10 +112,20 @@ for ($i = 0; $i < 1; $i++) {
 //    $textStyle->setFontSize(new FontSize(($i * 2) + 6));
 //    $odt->addTextStyle($textStyle);
 
-    $p = new Paragraph();
-    $p->addContent(new Text($dummyText));
+for ($i = 0; $i < 4; $i++) {
     $odt->addElement($p);
 }
+
+
+// Grußformel
+
+$p = new Paragraph();
+$p->addContent(new LineBreak());
+$p->addContent(new Text('Mit freundlichen Grüßen'));
+$odt->addElement($p);
+
+
+// Render to ODT
 
 $odt->save($odtFile);
 $renderTimeODT = microtime(true) - $startTime;
@@ -85,7 +136,9 @@ system("unzip {$odtFile->getPathname()} -d {$unzipDir}");
 
 system("cd " . __DIR__ . "/../tests/ODTCreator/Test/EndToEnd/odf-validator && ./validator --file=" . $odtFile->getPathname());
 
+
 // Render ODT file to PDF file
+
 $startTime = microtime(true);
 $libreOfficeBinary = new SplFileInfo('/Applications/LibreOffice.app/Contents/MacOS/soffice');
 $pdfRenderer = new ODTToPDFRenderer($libreOfficeBinary);
@@ -96,6 +149,7 @@ $renderTimePDF = microtime(true) - $startTime;
 
 
 // Render PDF pages to PNG files
+
 $startTime = microtime(true);
 $ghostscriptBinary = new SplFileInfo('/usr/local/bin/gs');
 $pngRenderer = new PDFToPNGRenderer($ghostscriptBinary);
