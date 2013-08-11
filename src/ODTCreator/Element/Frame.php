@@ -9,7 +9,7 @@ use ODTCreator\Value\Length;
 class Frame implements Element
 {
     /**
-     * @var
+     * @var string
      */
     private $styleName;
 

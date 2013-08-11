@@ -3,7 +3,6 @@
 namespace ODTCreator\Document;
 
 use ODTCreator\Element\Element;
-use ODTCreator\Style\TextStyle;
 
 class Styles implements File
 {
