@@ -48,15 +48,15 @@ class TextStyle extends AbstractStyle
     }
 
     /**
-     * @param \DOMDocument $domDocument
+     * @param \DOMDocument $stylesDocument
      * @param \DOMElement $styleElement
      * @return void
      */
-    protected function renderToStyleElement(\DOMDocument $domDocument, \DOMElement $styleElement)
+    protected function renderToStyleElement(\DOMDocument $stylesDocument, \DOMElement $styleElement)
     {
         $styleElement->setAttributeNS(Styles::NAMESPACE_STYLE, 'style:family', 'text');
 
-        $element = $domDocument->createElement('style:text-properties');
+        $element = $stylesDocument->createElement('style:text-properties');
         $styleElement->appendChild($element);
 
         if (null !== $this->color) {

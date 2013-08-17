@@ -10,6 +10,11 @@ class Factory
     private $textStyles = array();
 
     /**
+     * @var ParagraphStyle[]
+     */
+    private $paragraphStyles = array();
+
+    /**
      * @return TextStyle
      */
     public function createTextStyle()
@@ -19,5 +24,17 @@ class Factory
         $this->textStyles[] = $textStyle;
 
         return $textStyle;
+    }
+
+    /**
+     * @return ParagraphStyle
+     */
+    public function createParagraphStyle()
+    {
+        $name = 'P' . (count($this->paragraphStyles) + 1);
+        $paragraphStyle = new ParagraphStyle($name);
+        $this->paragraphStyles[] = $paragraphStyle;
+
+        return $paragraphStyle;
     }
 }

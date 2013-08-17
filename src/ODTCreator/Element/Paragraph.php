@@ -24,6 +24,9 @@ class Paragraph extends AbstractElementWithContent
      */
     public function renderToStyle(\DOMDocument $domDocument, \DOMElement $parentElement = null)
     {
+        foreach ($this->contents as $content) {
+            $content->renderToStyles($domDocument, $parentElement);
+        }
     }
 
     /**

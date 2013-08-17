@@ -28,19 +28,23 @@ abstract class AbstractStyle
         return $this->name;
     }
 
-    public function renderTo(\DOMDocument $domDocument)
+    public function renderTo(\DOMDocument $stylesDocument, \DOMElement $parent = null)
     {
-        $styleElement = $domDocument->createElementNS(Styles::NAMESPACE_STYLE, 'style:style');
-        $styleElement->setAttributeNS(Styles::NAMESPACE_STYLE, 'style:name', $this->name);
-        $domDocument->getElementsByTagNameNS(Styles::NAMESPACE_OFFICE, 'styles')->item(0)->appendChild($styleElement);
+        $element = $stylesDocument->createElementNS(Styles::NAMESPACE_STYLE, 'style:style');
+        $element->setAttributeNS(Styles::NAMESPACE_STYLE, 'style:name', $this->name);
 
-        $this->renderToStyleElement($domDocument, $styleElement);
+        if (!$parent) {
+            $parent = $stylesDocument->getElementsByTagNameNS(Styles::NAMESPACE_OFFICE, 'styles')->item(0);
+        }
+        $parent->appendChild($element);
+
+        $this->renderToStyleElement($stylesDocument, $element);
     }
 
     /**
-     * @param \DOMDocument $domDocument
+     * @param \DOMDocument $stylesDocument
      * @param \DOMElement $styleElement
      * @return void
      */
-    abstract protected function renderToStyleElement(\DOMDocument $domDocument, \DOMElement $styleElement);
+    abstract protected function renderToStyleElement(\DOMDocument $stylesDocument, \DOMElement $styleElement);
 }

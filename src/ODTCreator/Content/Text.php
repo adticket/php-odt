@@ -22,6 +22,15 @@ class Text implements Content
         $this->style = $style;
     }
 
+    public function renderToStyles(\DOMDocument $stylesDocument, \DOMElement $parent = null)
+    {
+        if (!$this->style) {
+            return;
+        }
+
+        $this->style->renderTo($stylesDocument, $parent);
+    }
+
     public function renderTo(\DOMDocument $contentDocument, \DOMElement $parent)
     {
         if ($this->style) {

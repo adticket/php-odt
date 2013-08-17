@@ -4,6 +4,7 @@ use ODTCreator\Content\LineBreak;
 use ODTCreator\Element\Frame;
 use ODTCreator\Element\Paragraph;
 use ODTCreator\Content\Text;
+use ODTCreator\Style\Factory;
 use ODTCreator\Style\TextStyle;
 use ODTCreator\Value\Color;
 use ODTCreator\Value\FontSize;
@@ -56,7 +57,10 @@ $odt->addElement($frame);
 // Betreff
 
 $p = new Paragraph('P1');
-$p->addContent(new Text('Ihr neues Serienbriefmodul'));
+$style = new TextStyle('T123');
+$style->setBold();
+$text = new Text('Ihr neues Serienbriefmodul', $style);
+$p->addContent($text);
 $odt->addElement($p);
 
 
@@ -72,6 +76,9 @@ $odt->addElement($p);
 
 // Inhalt
 
+//$styleFactory = new Factory();
+//$paragraphStyle = $styleFactory->createParagraphStyle();
+//$p = new Paragraph($paragraphStyle);
 $p = new Paragraph();
 
 // Convert line breaks
@@ -120,7 +127,6 @@ for ($i = 0; $i < 4; $i++) {
 // Grußformel
 
 $p = new Paragraph();
-$p->addContent(new LineBreak());
 $p->addContent(new Text('Mit freundlichen Grüßen'));
 $odt->addElement($p);
 
