@@ -8,16 +8,6 @@ class LineBreak implements Content
 {
     /**
      * @param \DOMDocument $domDocument
-     * @param \DOMElement $parent
-     * @return void
-     */
-    public function renderToStyles(\DOMDocument $domDocument, \DOMElement $parent = null)
-    {
-        // A line break does not have any styles
-    }
-
-    /**
-     * @param \DOMDocument $domDocument
      * @param \DOMElement $domElement
      * @return void
      */

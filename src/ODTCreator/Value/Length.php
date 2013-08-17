@@ -17,7 +17,7 @@ class Length
 
     private function assertIsValid($value)
     {
-        if (!preg_match('/^\d+(\.\d+){0,1}cm$/', $value)) {
+        if (!preg_match('/^\d+(\.\d+){0,1}(cm|pt)$/', $value)) {
             throw new \InvalidArgumentException("Unrecognized length value '$value'");
         }
     }

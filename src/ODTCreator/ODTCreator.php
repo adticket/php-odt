@@ -9,10 +9,16 @@ use ODTCreator\Document\Meta;
 use ODTCreator\Document\Settings;
 use ODTCreator\Document\Styles;
 use ODTCreator\Element\Element;
+use ODTCreator\Style\StyleFactory;
 
 class ODTCreator
 {
     const GENERATOR = 'PHP-ODTCreator 0.1';
+
+    /**
+     * @var StyleFactory
+     */
+    private $styleFactory;
 
     /**
      * @var Styles
@@ -26,8 +32,17 @@ class ODTCreator
 
     public function __construct()
     {
-        $this->styles = new Styles();
+        $this->styleFactory = new StyleFactory();
+        $this->styles = new Styles($this->styleFactory);
         $this->content = new Content();
+    }
+
+    /**
+     * @return \ODTCreator\Style\StyleFactory
+     */
+    public function getStyleFactory()
+    {
+        return $this->styleFactory;
     }
 
     public function addElement(Element $element)

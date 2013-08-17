@@ -3,6 +3,7 @@
 namespace ODTCreator\Document;
 
 use ODTCreator\Element\Element;
+use ODTCreator\Style\StyleFactory;
 
 class Styles implements File
 {
@@ -18,6 +19,16 @@ class Styles implements File
      */
     private $elements;
 
+    /**
+     * @var StyleFactory
+     */
+    private $styleFactory;
+
+    public function __construct(StyleFactory $styleFactory)
+    {
+        $this->styleFactory = $styleFactory;
+    }
+
     public function addElement(Element $element)
     {
         $this->elements[] = $element;
@@ -29,10 +40,7 @@ class Styles implements File
     public function render()
     {
         $domDocument = $this->createDOMDocument();
-
-        foreach ($this->elements as $element) {
-            $element->renderToStyle($domDocument);
-        }
+        $this->styleFactory->renderAllStylesTo($domDocument);
 
         return $domDocument->saveXML();
     }

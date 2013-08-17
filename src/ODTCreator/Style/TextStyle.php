@@ -9,6 +9,11 @@ use ODTCreator\Value\FontSize;
 class TextStyle extends AbstractStyle
 {
     /**
+     * @var string|null
+     */
+    private $fontName = null;
+
+    /**
      * @var null|Color
      */
     private $color = null;
@@ -22,6 +27,14 @@ class TextStyle extends AbstractStyle
      * @var bool
      */
     private $isBold = false;
+
+    /**
+     * @param null|string $fontName
+     */
+    public function setFontName($fontName)
+    {
+        $this->fontName = $fontName;
+    }
 
     /**
      * @param \ODTCreator\Value\Color $color
@@ -50,7 +63,6 @@ class TextStyle extends AbstractStyle
     /**
      * @param \DOMDocument $stylesDocument
      * @param \DOMElement $styleElement
-     * @return void
      */
     protected function renderToStyleElement(\DOMDocument $stylesDocument, \DOMElement $styleElement)
     {
@@ -59,7 +71,11 @@ class TextStyle extends AbstractStyle
         $element = $stylesDocument->createElement('style:text-properties');
         $styleElement->appendChild($element);
 
-        if (null !== $this->color) {
+        if ($this->fontName) {
+            $element->setAttribute('style:font-name', $this->fontName);
+        }
+
+        if ($this->color) {
             $element->setAttribute('fo:color', $this->color->getHexCode());
         }
 
@@ -67,7 +83,7 @@ class TextStyle extends AbstractStyle
             $element->setAttribute('fo:font-weight', 'bold');
         }
 
-        if (null !== $this->fontSize) {
+        if ($this->fontSize) {
             $element->setAttribute('fo:font-size', $this->fontSize->getValue());
         }
     }
