@@ -9,7 +9,7 @@ use ODTCreator\Style\TextStyle;
 use ODTCreator\Value\Color;
 use ODTCreator\Value\FontSize;
 use ODTCreator\Value\Length;
-use ODTToPDFRenderer\ODTToPDFRenderer;
+use OdtToPdfRenderer\InstantRenderer;
 use PDFToPNGRenderer\PDFToPNGRenderer;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -147,7 +147,7 @@ system("cd " . __DIR__ . "/../tests/ODTCreator/Test/EndToEnd/odf-validator && ./
 
 $startTime = microtime(true);
 $libreOfficeBinary = new SplFileInfo('/Applications/LibreOffice.app/Contents/MacOS/soffice');
-$pdfRenderer = new ODTToPDFRenderer($libreOfficeBinary);
+$pdfRenderer = new InstantRenderer($libreOfficeBinary);
 $pdfFileInfo = $pdfRenderer->render($odtFile);
 
 var_dump($pdfFileInfo->getPathname());
