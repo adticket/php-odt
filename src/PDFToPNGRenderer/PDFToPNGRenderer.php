@@ -41,6 +41,18 @@ class PDFToPNGRenderer
 
     /**
      * @param \SplFileInfo $pdfFile
+     * @param int $pageNumber
+     * @return \SplFileInfo
+     */
+    public function renderSinglePage(\SplFileInfo $pdfFile, $pageNumber = 1)
+    {
+        $files = $this->render($pdfFile, $pageNumber, $pageNumber);
+
+        return $files[0];
+    }
+
+    /**
+     * @param \SplFileInfo $pdfFile
      * @param string $outputFileNamePattern
      * @param int|null $firstPage
      * @param int|null $lastPage
