@@ -50,9 +50,12 @@ class PDFToPNGRenderer
     {
         $shellCommand =
             "{$this->ghostscriptBinary->getPathname()} "
-            . "-dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m "
-            . "-sOutputFile=\"{$outputFileNamePattern}\" "
-            . "-dTextAlphaBits=4 -dMaxBitmap=500000000 ";
+            . "-dSAFER -dBATCH -dNOPAUSE "
+            . "-sDEVICE=png16m "
+            . "-dTextAlphaBits=4 "
+            . "-dGraphicsAlphaBits=4 "
+            . "-dMaxBitmap=500000000 "
+        ;
 
         if (null !== $firstPage) {
             $shellCommand .= "-dFirstPage=$firstPage ";
@@ -62,8 +65,10 @@ class PDFToPNGRenderer
         }
 
         $shellCommand .=
-            "{$pdfFile->getRealPath()} "
-            . "-r300";
+            "-r300 "
+            . "-sOutputFile=\"{$outputFileNamePattern}\" "
+            . "{$pdfFile->getRealPath()} "
+        ;
 
         return $shellCommand;
     }
