@@ -2,8 +2,6 @@
 
 namespace OdtToPdfRenderer;
 
-use Adticket\Elvis\CommunicationBundle\FormLetter\Cache;
-
 class ServiceRenderer extends AbstractOdtToPdfRenderer
 {
     /**
@@ -22,14 +20,11 @@ class ServiceRenderer extends AbstractOdtToPdfRenderer
     private $daemonPort;
 
     public function __construct(
-        Cache $cache,
         \SplFileInfo $unoconvBinaryPath = null,
         $daemonHost = '127.0.0.1',
         $daemonPort = '2200'
     )
     {
-        parent::__construct($cache);
-
         if (null === $unoconvBinaryPath) {
             $unoconvBinaryPath = new \SplFileInfo('/usr/bin/unoconv');
         }

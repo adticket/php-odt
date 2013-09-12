@@ -2,34 +2,17 @@
 
 namespace OdtToPdfRenderer;
 
-use Adticket\Elvis\CommunicationBundle\FormLetter\Cache;
 use ShellCommandExecutor\Result;
 use ShellCommandExecutor\ShellCommandExecutor;
 
 abstract class AbstractOdtToPdfRenderer
 {
     /**
-     * @var Cache
+     * @param \SplFileInfo $odtFileInfo The input file
+     * @param \SplFileInfo $pdfFileInfo The output file
      */
-    private $cache;
-
-    public function __construct(Cache $cache)
+    public function render(\SplFileInfo $odtFileInfo, \SplFileInfo $pdfFileInfo)
     {
-        $this->cache = $cache;
-    }
-
-    /**
-     * @param \SplFileInfo $odtFileInfo
-     * @throws \RuntimeException
-     * @return \SplFileInfo Info about the generated PDF file
-     */
-    public function render(\SplFileInfo $odtFileInfo)
-    {
-        $pdfFileInfo = $this->cache->getPdfFileInfo($odtFileInfo);
-        if ($pdfFileInfo->isFile()) {
-//            return $pdfFileInfo;
-        }
-
         $shellCommand = $this->createShellCommand($odtFileInfo);
 
         $shellCommandExecutor = new ShellCommandExecutor();
@@ -38,15 +21,13 @@ abstract class AbstractOdtToPdfRenderer
         $this->assertIsValid($result);
 
         // TODO: This is just a dev experiment
-        $out = new \SplFileInfo($pdfFileInfo->getPath() . '/with_background.pdf');
-        $cmd = "/usr/bin/pdftk {$pdfFileInfo->getPathname()}"
-            . " multibackground /var/www/app/doc/Briefbogen.pdf"
-            . " output {$out->getPathname()}";
-        exec($cmd);
-        unlink($pdfFileInfo->getPathname());
-        rename($out->getPathname(), $pdfFileInfo->getPathname());
-
-        return $pdfFileInfo;
+//        $out = new \SplFileInfo($pdfFileInfo->getPath() . '/with_background.pdf');
+//        $cmd = "/usr/bin/pdftk {$pdfFileInfo->getPathname()}"
+//            . " multibackground /var/www/app/doc/Briefbogen.pdf"
+//            . " output {$out->getPathname()}";
+//        exec($cmd);
+//        unlink($pdfFileInfo->getPathname());
+//        rename($out->getPathname(), $pdfFileInfo->getPathname());
     }
 
     /**

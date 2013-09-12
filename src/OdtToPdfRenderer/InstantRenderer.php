@@ -2,8 +2,6 @@
 
 namespace OdtToPdfRenderer;
 
-use Adticket\Elvis\CommunicationBundle\FormLetter\Cache;
-
 class InstantRenderer extends AbstractOdtToPdfRenderer
 {
     /**
@@ -11,10 +9,8 @@ class InstantRenderer extends AbstractOdtToPdfRenderer
      */
     private $libreOfficeBinaryPath;
 
-    public function __construct(Cache $cache, $libreOfficeBinaryPath = null)
+    public function __construct($libreOfficeBinaryPath = null)
     {
-        parent::__construct($cache);
-
         if (null === $libreOfficeBinaryPath) {
             $libreOfficeBinaryPath = '/usr/bin/soffice';
         }

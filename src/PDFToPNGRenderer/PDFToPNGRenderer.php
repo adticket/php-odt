@@ -2,26 +2,18 @@
 
 namespace PDFToPNGRenderer;
 
-use Adticket\Elvis\CommunicationBundle\FormLetter\Cache;
 use ShellCommandExecutor\Result;
 use ShellCommandExecutor\ShellCommandExecutor;
 
 class PDFToPNGRenderer
 {
     /**
-     * @var Cache
-     */
-    private $cache;
-
-    /**
      * @var string
      */
     private $ghostscriptBinaryPath;
 
-    public function __construct(Cache $cache, $ghostscriptBinaryPath = null)
+    public function __construct($ghostscriptBinaryPath = null)
     {
-        $this->cache = $cache;
-
         if (null === $ghostscriptBinaryPath) {
             $ghostscriptBinaryPath = '/usr/bin/gs';
         }
@@ -36,11 +28,6 @@ class PDFToPNGRenderer
      */
     public function render(\SplFileInfo $pdfFileInfo, $firstPage = null, $lastPage = null)
     {
-        $previewFileInfoList = $this->cache->loadPreviewFileInfoListByPdfFileInfo($pdfFileInfo);
-        if (is_array($previewFileInfoList)) {
-//            return $previewFileInfoList;
-        }
-
         $outputFileNamePattern = $this->createOutputFileNamePattern($pdfFileInfo);
         $shellCommand = $this->createShellCommand($pdfFileInfo, $outputFileNamePattern, $firstPage, $lastPage);
 

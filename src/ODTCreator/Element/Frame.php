@@ -17,12 +17,12 @@ class Frame implements Element
     /**
      * @var Length
      */
-    private $x;
+    private $xCoordinate;
 
     /**
      * @var Length
      */
-    private $y;
+    private $yCoordinate;
 
     /**
      * @var \ODTCreator\Value\Length
@@ -34,11 +34,17 @@ class Frame implements Element
      */
     private $height;
 
-    public function __construct(GraphicStyle $graphicStyle, Length $x, Length $y, Length $width, Length $height)
+    public function __construct(
+        GraphicStyle $graphicStyle,
+        Length $xCoordinate,
+        Length $yCoordinate,
+        Length $width,
+        Length $height
+    )
     {
         $this->graphicStyle = $graphicStyle;
-        $this->x = $x;
-        $this->y = $y;
+        $this->xCoordinate = $xCoordinate;
+        $this->yCoordinate = $yCoordinate;
         $this->width = $width;
         $this->height = $height;
     }
@@ -71,8 +77,8 @@ class Frame implements Element
         );
         $frameElement->setAttributeNS(ContentFile::NAMESPACE_TEXT, 'text:anchor-type', 'page');
         $frameElement->setAttributeNS(ContentFile::NAMESPACE_TEXT, 'text:anchor-page-number', '1');
-        $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:x', $this->x->getValue());
-        $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:y', $this->y->getValue());
+        $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:x', $this->xCoordinate->getValue());
+        $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:y', $this->yCoordinate->getValue());
         $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:width', $this->width->getValue());
         $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:height', $this->height->getValue());
         $frameElement->setAttributeNS(ContentFile::NAMESPACE_DRAW, 'draw:z-index', '0');
