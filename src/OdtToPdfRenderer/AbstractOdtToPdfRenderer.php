@@ -2,26 +2,51 @@
 
 namespace OdtToPdfRenderer;
 
+use Adticket\Elvis\CommunicationBundle\FormLetter\Cache;
 use ShellCommandExecutor\Result;
 use ShellCommandExecutor\ShellCommandExecutor;
 
 abstract class AbstractOdtToPdfRenderer
 {
     /**
-     * @param \SplFileInfo $odtFile
+     * @var Cache
+     */
+    private $cache;
+
+    public function __construct(Cache $cache)
+    {
+        $this->cache = $cache;
+    }
+
+    /**
+     * @param \SplFileInfo $odtFileInfo
      * @throws \RuntimeException
      * @return \SplFileInfo Info about the generated PDF file
      */
-    public function render(\SplFileInfo $odtFile)
+    public function render(\SplFileInfo $odtFileInfo)
     {
-        $shellCommand = $this->createShellCommand($odtFile);
+        $pdfFileInfo = $this->cache->getPdfFileInfo($odtFileInfo);
+        if ($pdfFileInfo->isFile()) {
+//            return $pdfFileInfo;
+        }
+
+        $shellCommand = $this->createShellCommand($odtFileInfo);
 
         $shellCommandExecutor = new ShellCommandExecutor();
         $result = $shellCommandExecutor->execute($shellCommand);
 
         $this->assertIsValid($result);
 
-        return new \SplFileInfo($odtFile->getPath() . '/' . $odtFile->getBasename('.odt') . '.pdf');
+        // TODO: This is just a dev experiment
+        $out = new \SplFileInfo($pdfFileInfo->getPath() . '/with_background.pdf');
+        $cmd = "/usr/bin/pdftk {$pdfFileInfo->getPathname()}"
+            . " multibackground /var/www/app/doc/Briefbogen.pdf"
+            . " output {$out->getPathname()}";
+        exec($cmd);
+        unlink($pdfFileInfo->getPathname());
+        rename($out->getPathname(), $pdfFileInfo->getPathname());
+
+        return $pdfFileInfo;
     }
 
     /**

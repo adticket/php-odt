@@ -2,6 +2,8 @@
 
 namespace ODTCreator;
 
+//TODO: Create Bundle for that
+
 use ODTCreator\Document\Content;
 use ODTCreator\Document\File;
 use ODTCreator\Document\Manifest;
@@ -31,6 +33,11 @@ class ODTCreator
     private $content;
 
     public function __construct()
+    {
+        $this->reset();
+    }
+
+    public function reset()
     {
         $this->styleFactory = new StyleFactory();
         $this->styles = new Styles($this->styleFactory);

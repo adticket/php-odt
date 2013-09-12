@@ -2,39 +2,50 @@
 
 namespace PDFToPNGRenderer;
 
+use Adticket\Elvis\CommunicationBundle\FormLetter\Cache;
 use ShellCommandExecutor\Result;
 use ShellCommandExecutor\ShellCommandExecutor;
 
 class PDFToPNGRenderer
 {
     /**
-     * @var \SplFileInfo
+     * @var Cache
      */
-    private $ghostscriptBinary;
+    private $cache;
 
-    public function __construct(\SplFileInfo $ghostscriptBinary = null)
+    /**
+     * @var string
+     */
+    private $ghostscriptBinaryPath;
+
+    public function __construct(Cache $cache, $ghostscriptBinaryPath = null)
     {
-        if (null === $ghostscriptBinary) {
-            $ghostscriptBinary = new \SplFileInfo('/usr/bin/gs');
+        $this->cache = $cache;
+
+        if (null === $ghostscriptBinaryPath) {
+            $ghostscriptBinaryPath = '/usr/bin/gs';
         }
-        $this->ghostscriptBinary = $ghostscriptBinary;
+        $this->ghostscriptBinaryPath = $ghostscriptBinaryPath;
     }
 
     /**
-     * @param \SplFileInfo $pdfFile
+     * @param \SplFileInfo $pdfFileInfo
      * @param int|null $firstPage
      * @param int|null $lastPage
      * @return \SplFileInfo[]
      */
-    public function render(\SplFileInfo $pdfFile, $firstPage = null, $lastPage = null)
+    public function render(\SplFileInfo $pdfFileInfo, $firstPage = null, $lastPage = null)
     {
-        $outputFileNamePattern = $this->createOutputFileNamePattern($pdfFile);
-        $shellCommand = $this->createShellCommand($pdfFile, $outputFileNamePattern, $firstPage, $lastPage);
+        $previewFileInfoList = $this->cache->loadPreviewFileInfoListByPdfFileInfo($pdfFileInfo);
+        if (is_array($previewFileInfoList)) {
+//            return $previewFileInfoList;
+        }
+
+        $outputFileNamePattern = $this->createOutputFileNamePattern($pdfFileInfo);
+        $shellCommand = $this->createShellCommand($pdfFileInfo, $outputFileNamePattern, $firstPage, $lastPage);
 
         $shellCommandExecutor = new ShellCommandExecutor();
         $result = $shellCommandExecutor->execute($shellCommand);
-
-        $this->assertIsValid($result);
 
         return $this->extractOutputFileInfos($result, $outputFileNamePattern);
     }
@@ -61,7 +72,7 @@ class PDFToPNGRenderer
     private function createShellCommand(\SplFileInfo $pdfFile, $outputFileNamePattern, $firstPage, $lastPage)
     {
         $shellCommand =
-            "{$this->ghostscriptBinary->getPathname()} "
+            "{$this->ghostscriptBinaryPath} "
             . "-dSAFER -dBATCH -dNOPAUSE "
             . "-sDEVICE=png16m "
             . "-dTextAlphaBits=4 "
@@ -103,6 +114,7 @@ class PDFToPNGRenderer
      */
     private function assertIsValid(Result $result)
     {
+        // TODO: This is currently not used
         $isReturnValueError = ($result->getReturnVar() !== 0);
         $hasErrorOutput = (count($result->getErrors()) > 0);
 
@@ -120,14 +132,17 @@ class PDFToPNGRenderer
     {
         $fileInfos = array();
 
+        $pageNumber = 1;
         foreach ($result->getOutput() as $line) {
             $matches = array();
+            // TODO: GS does NOT use the actual page number in its filenames. It starts with 1 for the first rendered page.
             if (!preg_match('/^Page (?P<page_number>\d+)$/', $line, $matches)) {
                 continue;
             }
 
-            $pageNumber = $matches['page_number'];
+//            $pageNumber = $matches['page_number'];
             $filePath = sprintf($outputFileNamePattern, $pageNumber);
+            $pageNumber++;
 
             $fileInfos[] = new \SplFileInfo($filePath);
         }

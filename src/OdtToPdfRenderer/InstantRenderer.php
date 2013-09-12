@@ -2,19 +2,23 @@
 
 namespace OdtToPdfRenderer;
 
+use Adticket\Elvis\CommunicationBundle\FormLetter\Cache;
+
 class InstantRenderer extends AbstractOdtToPdfRenderer
 {
     /**
-     * @var \SplFileInfo
+     * @var string
      */
-    private $libreOfficeBinary;
+    private $libreOfficeBinaryPath;
 
-    public function __construct(\SplFileInfo $libreOfficeBinary = null)
+    public function __construct(Cache $cache, $libreOfficeBinaryPath = null)
     {
-        if (null === $libreOfficeBinary) {
-            $libreOfficeBinary = new \SplFileInfo('/usr/bin/soffice');
+        parent::__construct($cache);
+
+        if (null === $libreOfficeBinaryPath) {
+            $libreOfficeBinaryPath = '/usr/bin/soffice';
         }
-        $this->libreOfficeBinary = $libreOfficeBinary;
+        $this->libreOfficeBinaryPath = $libreOfficeBinaryPath;
     }
 
     /**
@@ -24,7 +28,7 @@ class InstantRenderer extends AbstractOdtToPdfRenderer
     protected function createShellCommand(\SplFileInfo $odtFile)
     {
         return
-            "{$this->libreOfficeBinary->getPathname()} "
+            "{$this->libreOfficeBinaryPath} "
             . "--headless --convert-to pdf "
             . "{$odtFile->getPathname()} "
             . "--outdir {$odtFile->getPath()}";
