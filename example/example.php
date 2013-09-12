@@ -41,9 +41,12 @@ class ExampleBuilder
 
     public function build()
     {
+        $odtFileInfo = new SplFileInfo($this->outputDirInfo->getPathname() . '/example.odt');
+        $pdfFileInfo = new SplFileInfo($this->outputDirInfo->getPathname() . '/example.pdf');
+
         $this->cleanUp();
-        $odtFileInfo = $this->createOdtFile();
-        $pdfFileInfo = $this->renderPdf($odtFileInfo);
+        $this->createOdtFile($odtFileInfo);
+        $this->renderPdf($odtFileInfo, $pdfFileInfo);
         $this->renderPngs($pdfFileInfo);
     }
 
@@ -56,9 +59,9 @@ class ExampleBuilder
     }
 
     /**
-     * @return SplFileInfo
+     * @param SplFileInfo $odtFileInfo
      */
-    private function createOdtFile()
+    private function createOdtFile(SplFileInfo $odtFileInfo)
     {
         $this->addAddressFrame();
         $this->addDateFrame();
@@ -68,7 +71,6 @@ class ExampleBuilder
         $this->addRegards();
 
         // Render to ODT
-        $odtFileInfo = new SplFileInfo($this->outputDirInfo->getPathname() . '/hello_world.odt');
         $this->odtFile->save($odtFileInfo);
 
         $unzipDir = substr($odtFileInfo->getPathname(), 0, -4);
@@ -76,8 +78,6 @@ class ExampleBuilder
         system("unzip {$odtFileInfo->getPathname()} -d {$unzipDir}");
 
         $this->validateOdtFile($odtFileInfo);
-
-        return $odtFileInfo;
     }
 
     private function addAddressFrame()
@@ -121,14 +121,16 @@ class ExampleBuilder
     {
         $frameStyle = $this->styleFactory->createGraphicStyle();
 
-        $xCoordinate = new Length('13cm');
+        $xCoordinate = new Length('11cm');
         $yCoordinate = new Length('8cm');
         $width = new Length('8cm');
         $height = new Length('2cm');
         $dateFrame = new Frame($frameStyle, $xCoordinate, $yCoordinate, $width, $height);
 
         $paragraph = new Paragraph();
-        $content = new Text('Musterdorf, den ' . date('d.m.Y'), $this->createDefaultTextStyle());
+        $content = new Text(
+            'Musterdorf, den ' . date('d.m.Y') . ' um ' . date('H:i:s') . ' Uhr',
+            $this->createDefaultTextStyle());
         $paragraph->addContent($content);
 
         $dateFrame->addSubElement($paragraph);
@@ -232,17 +234,15 @@ Und was können Sie für Standards tun? Fordern Sie von Ihren Designern und Prog
 
     /**
      * @param SplFileInfo $odtFileInfo
+     * @param SplFileInfo $pdfFileInfo
      * @return \SplFileInfo
      */
-    private function renderPdf(SplFileInfo $odtFileInfo)
+    private function renderPdf(SplFileInfo $odtFileInfo, SplFileInfo $pdfFileInfo)
     {
         // TODO: Make configurable
         $libreOfficeBinary = new SplFileInfo('/usr/bin/soffice');
-        $pdfFileInfo = new SplFileInfo($this->outputDirInfo->getPathname() . '/example.pdf');
         $pdfRenderer = new InstantRenderer($libreOfficeBinary);
         $pdfRenderer->render($odtFileInfo, $pdfFileInfo);
-
-        return $pdfFileInfo;
     }
 
     /**
@@ -250,9 +250,10 @@ Und was können Sie für Standards tun? Fordern Sie von Ihren Designern und Prog
      */
     private function renderPngs(SplFileInfo $pdfFileInfo)
     {
-        $ghostscriptBinary = new SplFileInfo('/usr/local/bin/gs');
+        // TODO: Make configurable
+        $ghostscriptBinary = new SplFileInfo('/usr/bin/gs');
         $pngRenderer = new PdfToPngRenderer($ghostscriptBinary);
-        $pngFileInfos = $pngRenderer->render($pdfFileInfo, 20, 22);
+        $pngRenderer->render($pdfFileInfo);
     }
 }
 
