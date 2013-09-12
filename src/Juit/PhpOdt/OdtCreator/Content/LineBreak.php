@@ -2,6 +2,8 @@
 
 namespace Juit\PhpOdt\OdtCreator\Content;
 
+use Juit\PhpOdt\OdtCreator\Document\ContentFile;
+
 class LineBreak implements Content
 {
     /**
