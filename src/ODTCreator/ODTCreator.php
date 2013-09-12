@@ -2,8 +2,6 @@
 
 namespace OdtCreator;
 
-//TODO: Create Bundle for that
-
 use OdtCreator\Document\Content;
 use OdtCreator\Document\File;
 use OdtCreator\Document\Manifest;
