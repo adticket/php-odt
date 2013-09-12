@@ -1,6 +1,6 @@
 <?php
 
-namespace PdfToPngRenderer;
+namespace Juit\PhpOdt\PdfToPngRenderer;
 
 use ShellCommandExecutor\Result;
 use ShellCommandExecutor\ShellCommandExecutor;

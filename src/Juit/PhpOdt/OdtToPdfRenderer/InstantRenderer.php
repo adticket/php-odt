@@ -1,6 +1,6 @@
 <?php
 
-namespace OdtToPdfRenderer;
+namespace Juit\PhpOdt\OdtToPdfRenderer;
 
 class InstantRenderer extends AbstractOdtToPdfRenderer
 {
