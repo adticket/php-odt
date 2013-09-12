@@ -2,7 +2,7 @@
 
 namespace OdtCreator\Test\EndToEnd;
 
-use Juit\PhpOdt\OdtCreator\OdtCreator;
+use Juit\PhpOdt\OdtCreator\OdtFile;
 
 class EmptyDocumentTest extends EndToEndTestCase
 {
@@ -13,7 +13,7 @@ class EmptyDocumentTest extends EndToEndTestCase
 
     public function testEmptyDocument()
     {
-        $odt = new OdtCreator();
+        $odt = new OdtFile();
 
         $odt->save($this->getOutputFileInfo());
         exec("unzip {$this->getOutputFileInfo()->getPathname()} -d {$this->getOutputUnzipDirInfo()->getPathname()}");

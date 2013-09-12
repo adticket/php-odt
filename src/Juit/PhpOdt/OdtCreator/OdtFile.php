@@ -11,7 +11,7 @@ use Juit\PhpOdt\OdtCreator\Document\StylesFile;
 use Juit\PhpOdt\OdtCreator\Element\Element;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 
-class OdtCreator
+class OdtFile
 {
     const GENERATOR = 'PHP-ODTCreator 0.1';
 

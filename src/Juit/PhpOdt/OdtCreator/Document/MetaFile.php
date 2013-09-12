@@ -2,7 +2,7 @@
 
 namespace Juit\PhpOdt\OdtCreator\Document;
 
-use Juit\PhpOdt\OdtCreator\OdtCreator;
+use Juit\PhpOdt\OdtCreator\OdtFile;
 
 class MetaFile implements File
 {
@@ -56,7 +56,7 @@ class MetaFile implements File
 
         $officeMeta = $metadata->createElement('office:meta');
 
-        $generator = $metadata->createElement('meta:generator', OdtCreator::GENERATOR);
+        $generator = $metadata->createElement('meta:generator', OdtFile::GENERATOR);
         $officeMeta->appendChild($generator);
 
         $creationDate = $metadata->createElement(

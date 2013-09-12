@@ -4,7 +4,8 @@ use Juit\PhpOdt\OdtCreator\Content\LineBreak;
 use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Element\Frame;
 use Juit\PhpOdt\OdtCreator\Element\Paragraph;
-use Juit\PhpOdt\OdtCreator\OdtCreator;
+use Juit\PhpOdt\OdtCreator\OdtFile;
+use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 use Juit\PhpOdt\OdtCreator\Style\TextStyle;
 use Juit\PhpOdt\OdtCreator\Value\FontSize;
 use Juit\PhpOdt\OdtCreator\Value\Length;
@@ -16,22 +17,26 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 class ExampleBuilder
 {
+    /**
+     * @var StyleFactory
+     */
     private $styleFactory;
+
     /**
      * @var SplFileinfo
      */
     private $outputDirInfo;
 
     /**
-     * @var OdtCreator
+     * @var OdtFile
      */
-    private $odtCreator;
+    private $odtFile;
 
     public function __construct(\SplFileinfo $outputDirInfo)
     {
         $this->outputDirInfo = $outputDirInfo;
-        $this->odtCreator = new OdtCreator();
-        $this->styleFactory = $this->odtCreator->getStyleFactory();
+        $this->odtFile = new OdtFile();
+        $this->styleFactory = $this->odtFile->getStyleFactory();
     }
 
     public function build()
@@ -64,7 +69,7 @@ class ExampleBuilder
 
         // Render to ODT
         $odtFileInfo = new SplFileInfo($this->outputDirInfo->getPathname() . '/hello_world.odt');
-        $this->odtCreator->save($odtFileInfo);
+        $this->odtFile->save($odtFileInfo);
 
         $unzipDir = substr($odtFileInfo->getPathname(), 0, -4);
         system("rm -fr {$unzipDir}");
@@ -97,7 +102,7 @@ class ExampleBuilder
         $paragraph->addContent(new Text('12345 Musterstadt', $textStyle));
 
         $addressFrame->addSubElement($paragraph);
-        $this->odtCreator->addElement($addressFrame);
+        $this->odtFile->addElement($addressFrame);
     }
 
     /**
@@ -127,7 +132,7 @@ class ExampleBuilder
         $paragraph->addContent($content);
 
         $dateFrame->addSubElement($paragraph);
-        $this->odtCreator->addElement($dateFrame);
+        $this->odtFile->addElement($dateFrame);
     }
 
     private function addSubject()
@@ -143,7 +148,7 @@ class ExampleBuilder
         $text = new Text('Ihr Schreiben', $textStyle);
 
         $paragraph->addContent($text);
-        $this->odtCreator->addElement($paragraph);
+        $this->odtFile->addElement($paragraph);
     }
 
     private function addSalutation()
@@ -152,7 +157,7 @@ class ExampleBuilder
 
         $paragraph->addContent(new Text('Sehr geehrter Herr Mustermann,', $this->createDefaultTextStyle()));
 
-        $this->odtCreator->addElement($paragraph);
+        $this->odtFile->addElement($paragraph);
     }
 
     /**
@@ -172,7 +177,7 @@ class ExampleBuilder
         $paragraphs = $this->createParagraphs($dummyText);
 
         foreach ($paragraphs as $paragraph) {
-            $this->odtCreator->addElement($paragraph);
+            $this->odtFile->addElement($paragraph);
         }
     }
 
@@ -211,7 +216,7 @@ Und was können Sie für Standards tun? Fordern Sie von Ihren Designern und Prog
         $paragraph = new Paragraph();
         $paragraph->addContent(new Text('Mit freundlichen Grüßen', $this->createDefaultTextStyle()));
 
-        $this->odtCreator->addElement($paragraph);
+        $this->odtFile->addElement($paragraph);
     }
 
     /**
