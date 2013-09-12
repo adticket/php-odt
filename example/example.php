@@ -219,10 +219,10 @@ Und was können Sie für Standards tun? Fordern Sie von Ihren Designern und Prog
      */
     private function validateOdtFile(SplFileInfo $odtFileInfo)
     {
-        system(
-            "cd " . __DIR__ . "/../tests/ODTCreator/Test/EndToEnd/odf-validator && "
-            . "./validator --file=" . $odtFileInfo->getPathname()
-        );
+        $command =
+            "cd " . __DIR__ . "/../bin/odf-validator && "
+            . "./validator --file=" . $odtFileInfo->getPathname();
+        system($command);
     }
 
     /**
@@ -231,7 +231,8 @@ Und was können Sie für Standards tun? Fordern Sie von Ihren Designern und Prog
      */
     private function renderPdf(SplFileInfo $odtFileInfo)
     {
-        $libreOfficeBinary = new SplFileInfo('/Applications/LibreOffice.app/Contents/MacOS/soffice');
+        // TODO: Make configurable
+        $libreOfficeBinary = new SplFileInfo('/usr/bin/soffice');
         $pdfFileInfo = new SplFileInfo($this->outputDirInfo->getPathname() . '/example.pdf');
         $pdfRenderer = new InstantRenderer($libreOfficeBinary);
         $pdfRenderer->render($odtFileInfo, $pdfFileInfo);
