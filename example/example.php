@@ -8,8 +8,8 @@ use Juit\PhpOdt\OdtCreator\OdtCreator;
 use Juit\PhpOdt\OdtCreator\Style\TextStyle;
 use Juit\PhpOdt\OdtCreator\Value\FontSize;
 use Juit\PhpOdt\OdtCreator\Value\Length;
-use OdtToPdfRenderer\InstantRenderer;
-use PdfToPngRenderer\PdfToPngRenderer;
+use Juit\PhpOdt\OdtToPdfRenderer\InstantRenderer;
+use Juit\PhpOdt\PdfToPngRenderer\PdfToPngRenderer;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
