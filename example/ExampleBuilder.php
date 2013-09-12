@@ -12,9 +12,6 @@ use Juit\PhpOdt\OdtCreator\Value\Length;
 use Juit\PhpOdt\OdtToPdfRenderer\InstantRenderer;
 use Juit\PhpOdt\PdfToPngRenderer\PdfToPngRenderer;
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-
 class ExampleBuilder
 {
     /**
@@ -141,6 +138,7 @@ class ExampleBuilder
     {
         $paragraphStyle = $this->styleFactory->createParagraphStyle();
 
+        // TODO: This must not be required explicitely
         $paragraphStyle->setMasterPageName('First_20_Page');
         $paragraphStyle->setMarginBottom(new Length('24pt'));
         $paragraph = new Paragraph($paragraphStyle);
@@ -256,7 +254,3 @@ Und was können Sie für Standards tun? Fordern Sie von Ihren Designern und Prog
         $pngRenderer->render($pdfFileInfo);
     }
 }
-
-$outputDirInfo = new SplFileInfo(__DIR__ . '/output');
-$exampleBuilder = new ExampleBuilder($outputDirInfo);
-$exampleBuilder->build();
