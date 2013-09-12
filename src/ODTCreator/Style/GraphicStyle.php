@@ -1,8 +1,8 @@
 <?php
 
-namespace ODTCreator\Style;
+namespace OdtCreator\Style;
 
-use ODTCreator\Document\Styles;
+use OdtCreator\Document\Styles;
 
 class GraphicStyle extends AbstractStyle
 {

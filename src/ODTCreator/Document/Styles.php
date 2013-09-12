@@ -1,9 +1,9 @@
 <?php
 
-namespace ODTCreator\Document;
+namespace OdtCreator\Document;
 
-use ODTCreator\Element\Element;
-use ODTCreator\Style\StyleFactory;
+use OdtCreator\Element\Element;
+use OdtCreator\Style\StyleFactory;
 
 class Styles implements File
 {

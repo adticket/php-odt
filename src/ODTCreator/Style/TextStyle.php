@@ -1,10 +1,10 @@
 <?php
 
-namespace ODTCreator\Style;
+namespace OdtCreator\Style;
 
-use ODTCreator\Document\Styles;
-use ODTCreator\Value\Color;
-use ODTCreator\Value\FontSize;
+use OdtCreator\Document\Styles;
+use OdtCreator\Value\Color;
+use OdtCreator\Value\FontSize;
 
 class TextStyle extends AbstractStyle
 {
@@ -37,7 +37,7 @@ class TextStyle extends AbstractStyle
     }
 
     /**
-     * @param \ODTCreator\Value\Color $color
+     * @param \OdtCreator\Value\Color $color
      */
     public function setColor(Color $color)
     {

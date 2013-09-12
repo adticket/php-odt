@@ -1,8 +1,8 @@
 <?php
 
-namespace ODTCreator\Document;
+namespace OdtCreator\Document;
 
-use ODTCreator\ODTCreator;
+use OdtCreator\OdtCreator;
 
 class Meta implements File
 {
@@ -56,7 +56,7 @@ class Meta implements File
 
         $officeMeta = $metadata->createElement('office:meta');
 
-        $generator = $metadata->createElement('meta:generator', ODTCreator::GENERATOR);
+        $generator = $metadata->createElement('meta:generator', OdtCreator::GENERATOR);
         $officeMeta->appendChild($generator);
 
         $creationDate = $metadata->createElement(

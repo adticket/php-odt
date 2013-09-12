@@ -1,8 +1,8 @@
 <?php
 
-namespace ODTCreator\Style;
+namespace OdtCreator\Style;
 
-use ODTCreator\Exception;
+use OdtCreator\Exception;
 
 class StyleException extends Exception
 {}

@@ -1,6 +1,6 @@
 <?php
 
-namespace ODTCreator\Element;
+namespace OdtCreator\Element;
 
 interface Element
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace PDFToPNGRenderer;
+namespace PdfToPngRenderer;
 
 use ShellCommandExecutor\Result;
 use ShellCommandExecutor\ShellCommandExecutor;
 
-class PDFToPNGRenderer
+class PdfToPngRenderer
 {
     /**
      * @var string

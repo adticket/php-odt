@@ -1,6 +1,6 @@
 <?php
 
-namespace ODTCreator;
+namespace OdtCreator;
 
 class Exception extends \Exception
 {

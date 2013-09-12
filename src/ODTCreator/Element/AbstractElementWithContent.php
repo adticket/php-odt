@@ -1,8 +1,8 @@
 <?php
 
-namespace ODTCreator\Element;
+namespace OdtCreator\Element;
 
-use ODTCreator\Content\Content;
+use OdtCreator\Content\Content;
 
 abstract class AbstractElementWithContent implements Element
 {

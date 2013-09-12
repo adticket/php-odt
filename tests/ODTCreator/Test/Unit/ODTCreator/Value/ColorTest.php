@@ -1,8 +1,8 @@
 <?php
 
-namespace ODTCreator\Test\Unit\ODTCreator\Value;
+namespace OdtCreator\Test\Unit\ODTCreator\Value;
 
-use ODTCreator\Value\Color;
+use OdtCreator\Value\Color;
 
 class ColorTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,7 +16,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \ODTCreator\Style\StyleException
+     * @expectedException \OdtCreator\Style\StyleException
      */
     public function testCannotLeaveOutLeadingHash()
     {
@@ -26,7 +26,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \ODTCreator\Style\StyleException
+     * @expectedException \OdtCreator\Style\StyleException
      */
     public function testCannotHaveCodeWithLessThanSixChars()
     {
@@ -36,7 +36,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \ODTCreator\Style\StyleException
+     * @expectedException \OdtCreator\Style\StyleException
      */
     public function testCannotHaveCodeWithMoreThanSixChars()
     {
@@ -46,7 +46,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \ODTCreator\Style\StyleException
+     * @expectedException \OdtCreator\Style\StyleException
      */
     public function testCannotUseNonHexChars()
     {

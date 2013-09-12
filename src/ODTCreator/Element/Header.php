@@ -1,8 +1,8 @@
 <?php
 
-namespace ODTCreator\Element;
+namespace OdtCreator\Element;
 
-use ODTCreator\Document\Content as ContentFile;
+use OdtCreator\Document\Content as ContentFile;
 
 class Header extends AbstractElementWithContent
 {

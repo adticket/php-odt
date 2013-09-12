@@ -1,11 +1,11 @@
 <?php
 
-namespace ODTCreator\Element;
+namespace OdtCreator\Element;
 
-use ODTCreator\Document\Content as ContentFile;
-use ODTCreator\Document\Styles;
-use ODTCreator\Style\GraphicStyle;
-use ODTCreator\Value\Length;
+use OdtCreator\Document\Content as ContentFile;
+use OdtCreator\Document\Styles;
+use OdtCreator\Style\GraphicStyle;
+use OdtCreator\Value\Length;
 
 class Frame implements Element
 {
@@ -25,12 +25,12 @@ class Frame implements Element
     private $yCoordinate;
 
     /**
-     * @var \ODTCreator\Value\Length
+     * @var \OdtCreator\Value\Length
      */
     private $width;
 
     /**
-     * @var \ODTCreator\Value\Length
+     * @var \OdtCreator\Value\Length
      */
     private $height;
 

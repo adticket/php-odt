@@ -1,19 +1,19 @@
 <?php
 
-namespace ODTCreator;
+namespace OdtCreator;
 
 //TODO: Create Bundle for that
 
-use ODTCreator\Document\Content;
-use ODTCreator\Document\File;
-use ODTCreator\Document\Manifest;
-use ODTCreator\Document\Meta;
-use ODTCreator\Document\Settings;
-use ODTCreator\Document\Styles;
-use ODTCreator\Element\Element;
-use ODTCreator\Style\StyleFactory;
+use OdtCreator\Document\Content;
+use OdtCreator\Document\File;
+use OdtCreator\Document\Manifest;
+use OdtCreator\Document\Meta;
+use OdtCreator\Document\Settings;
+use OdtCreator\Document\Styles;
+use OdtCreator\Element\Element;
+use OdtCreator\Style\StyleFactory;
 
-class ODTCreator
+class OdtCreator
 {
     const GENERATOR = 'PHP-ODTCreator 0.1';
 
@@ -45,7 +45,7 @@ class ODTCreator
     }
 
     /**
-     * @return \ODTCreator\Style\StyleFactory
+     * @return \OdtCreator\Style\StyleFactory
      */
     public function getStyleFactory()
     {

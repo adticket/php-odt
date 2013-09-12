@@ -1,8 +1,8 @@
 <?php
 
-namespace ODTCreator\Test\Unit\ODTCreator\Document;
+namespace OdtCreator\Test\Unit\ODTCreator\Document;
 
-use ODTCreator\Document\Meta;
+use OdtCreator\Document\Meta;
 
 class MetaMock extends Meta
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace ODTCreator\Content;
+namespace OdtCreator\Content;
 
-use ODTCreator\Document\Content as ContentFile;
+use OdtCreator\Document\Content as ContentFile;
 
 class LineBreak implements Content
 {

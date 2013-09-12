@@ -1,8 +1,8 @@
 <?php
 
-namespace ODTCreator\Value;
+namespace OdtCreator\Value;
 
-use ODTCreator\Style\StyleException;
+use OdtCreator\Style\StyleException;
 
 class FontSize
 {

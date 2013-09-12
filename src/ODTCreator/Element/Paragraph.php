@@ -1,10 +1,10 @@
 <?php
 
-namespace ODTCreator\Element;
+namespace OdtCreator\Element;
 
-use ODTCreator\Document\Content as ContentFile;
-use ODTCreator\Style;
-use ODTCreator\Style\ParagraphStyle;
+use OdtCreator\Document\Content as ContentFile;
+use OdtCreator\Style;
+use OdtCreator\Style\ParagraphStyle;
 
 class Paragraph extends AbstractElementWithContent
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace ODTCreator\Test\EndToEnd;
+namespace OdtCreator\Test\EndToEnd;
 
 class EndToEndTestCase extends \PHPUnit_Framework_TestCase
 {

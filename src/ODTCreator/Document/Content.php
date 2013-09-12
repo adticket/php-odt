@@ -1,8 +1,8 @@
 <?php
 
-namespace ODTCreator\Document;
+namespace OdtCreator\Document;
 
-use ODTCreator\Element\Element;
+use OdtCreator\Element\Element;
 
 class Content implements File
 {
@@ -13,7 +13,7 @@ class Content implements File
     const NAMESPACE_XLINK = 'http://www.w3.org/1999/xlink';
 
     /**
-     * @var \ODTCreator\Element\Element[]
+     * @var \OdtCreator\Element\Element[]
      */
     private $elements = array();
 

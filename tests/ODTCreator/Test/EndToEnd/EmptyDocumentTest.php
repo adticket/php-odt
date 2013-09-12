@@ -1,8 +1,8 @@
 <?php
 
-namespace ODTCreator\Test\EndToEnd;
+namespace OdtCreator\Test\EndToEnd;
 
-use ODTCreator\ODTCreator;
+use OdtCreator\OdtCreator;
 
 class EmptyDocumentTest extends EndToEndTestCase
 {
@@ -13,7 +13,7 @@ class EmptyDocumentTest extends EndToEndTestCase
 
     public function testEmptyDocument()
     {
-        $odt = new ODTCreator();
+        $odt = new OdtCreator();
 
         $odt->save($this->getOutputFileInfo());
         exec("unzip {$this->getOutputFileInfo()->getPathname()} -d {$this->getOutputUnzipDirInfo()->getPathname()}");

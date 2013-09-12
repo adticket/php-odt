@@ -1,8 +1,8 @@
 <?php
 
-namespace ODTCreator\Content;
+namespace OdtCreator\Content;
 
-use ODTCreator\Style\TextStyle;
+use OdtCreator\Style\TextStyle;
 
 class Text implements Content
 {

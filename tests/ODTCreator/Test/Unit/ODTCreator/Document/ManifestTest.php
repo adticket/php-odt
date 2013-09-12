@@ -1,8 +1,8 @@
 <?php
 
-namespace ODTCreator\Test\Unit\ODTCreator\Document;
+namespace OdtCreator\Test\Unit\ODTCreator\Document;
 
-use ODTCreator\Document\Manifest;
+use OdtCreator\Document\Manifest;
 
 class ManifestTest extends \PHPUnit_Framework_TestCase
 {

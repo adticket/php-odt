@@ -1,9 +1,9 @@
 <?php
 
-namespace ODTCreator\Style;
+namespace OdtCreator\Style;
 
-use ODTCreator\Document\Styles;
-use ODTCreator\Value\Length;
+use OdtCreator\Document\Styles;
+use OdtCreator\Value\Length;
 
 class ParagraphStyle extends AbstractStyle
 {

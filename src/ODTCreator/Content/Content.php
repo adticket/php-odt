@@ -1,6 +1,6 @@
 <?php
 
-namespace ODTCreator\Content;
+namespace OdtCreator\Content;
 
 interface Content
 {

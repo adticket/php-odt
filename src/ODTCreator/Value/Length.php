@@ -1,6 +1,6 @@
 <?php
 
-namespace ODTCreator\Value;
+namespace OdtCreator\Value;
 
 class Length
 {

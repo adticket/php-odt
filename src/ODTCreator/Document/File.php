@@ -1,6 +1,6 @@
 <?php
 
-namespace ODTCreator\Document;
+namespace OdtCreator\Document;
 
 interface File
 {

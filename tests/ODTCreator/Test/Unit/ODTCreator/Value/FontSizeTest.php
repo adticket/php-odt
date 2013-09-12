@@ -1,8 +1,8 @@
 <?php
 
-namespace ODTCreator\Test\Unit\ODTCreator\Value;
+namespace OdtCreator\Test\Unit\ODTCreator\Value;
 
-use ODTCreator\Value\FontSize;
+use OdtCreator\Value\FontSize;
 
 class FontSizeTest extends \PHPUnit_Framework_TestCase
 {
@@ -61,7 +61,7 @@ class FontSizeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \ODTCreator\Style\StyleException
+     * @expectedException \OdtCreator\Style\StyleException
      */
     public function testCannotCreateObjectFromStringWithBlank()
     {
@@ -73,7 +73,7 @@ class FontSizeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \ODTCreator\Style\StyleException
+     * @expectedException \OdtCreator\Style\StyleException
      */
     public function testCannotCreateObjectFromStringWithPercentWithBlank()
     {
