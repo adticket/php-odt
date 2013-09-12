@@ -2,7 +2,7 @@
 
 namespace OdtCreator\Test\Unit\ODTCreator\Value;
 
-use OdtCreator\Value\FontSize;
+use Juit\PhpOdt\OdtCreator\Value\FontSize;
 
 class FontSizeTest extends \PHPUnit_Framework_TestCase
 {
@@ -10,7 +10,7 @@ class FontSizeTest extends \PHPUnit_Framework_TestCase
     {
         $value = 20;
 
-        $sut = new FontSize($value);
+        $sut = new \Juit\PhpOdt\OdtCreator\Value\FontSize($value);
 
         $this->assertEquals($value, $sut->getValue());
     }
@@ -19,7 +19,7 @@ class FontSizeTest extends \PHPUnit_Framework_TestCase
     {
         $value = 20.5;
 
-        $sut = new FontSize($value);
+        $sut = new \Juit\PhpOdt\OdtCreator\Value\FontSize($value);
 
         $this->assertEquals($value, $sut->getValue());
     }
@@ -28,7 +28,7 @@ class FontSizeTest extends \PHPUnit_Framework_TestCase
     {
         $value = '20pt';
 
-        $sut = new FontSize($value);
+        $sut = new \Juit\PhpOdt\OdtCreator\Value\FontSize($value);
 
         $this->assertEquals($value, $sut->getValue());
     }
@@ -37,7 +37,7 @@ class FontSizeTest extends \PHPUnit_Framework_TestCase
     {
         $value = '20cm';
 
-        $sut = new FontSize($value);
+        $sut = new \Juit\PhpOdt\OdtCreator\Value\FontSize($value);
 
         $this->assertEquals($value, $sut->getValue());
     }
@@ -46,7 +46,7 @@ class FontSizeTest extends \PHPUnit_Framework_TestCase
     {
         $value = '20mm';
 
-        $sut = new FontSize($value);
+        $sut = new \Juit\PhpOdt\OdtCreator\Value\FontSize($value);
 
         $this->assertEquals($value, $sut->getValue());
     }
@@ -55,31 +55,31 @@ class FontSizeTest extends \PHPUnit_Framework_TestCase
     {
         $value = '50%';
 
-        $sut = new FontSize($value);
+        $sut = new \Juit\PhpOdt\OdtCreator\Value\FontSize($value);
 
         $this->assertEquals($value, $sut->getValue());
     }
 
     /**
-     * @expectedException \OdtCreator\Style\StyleException
+     * @expectedException \Juit\PhpOdt\OdtCreator\Style\StyleException
      */
     public function testCannotCreateObjectFromStringWithBlank()
     {
         $value = '20 pt';
 
-        $sut = new FontSize($value);
+        $sut = new \Juit\PhpOdt\OdtCreator\Value\FontSize($value);
 
         $this->assertEquals($value, $sut->getValue());
     }
 
     /**
-     * @expectedException \OdtCreator\Style\StyleException
+     * @expectedException \Juit\PhpOdt\OdtCreator\Style\StyleException
      */
     public function testCannotCreateObjectFromStringWithPercentWithBlank()
     {
         $value = '50 %';
 
-        $sut = new FontSize($value);
+        $sut = new \Juit\PhpOdt\OdtCreator\Value\FontSize($value);
 
         $this->assertEquals($value, $sut->getValue());
     }

@@ -2,9 +2,9 @@
 
 namespace OdtCreator\Test\Unit\ODTCreator\Document;
 
-use OdtCreator\Document\Meta;
+use Juit\PhpOdt\OdtCreator\Document\MetaFile;
 
-class MetaMock extends Meta
+class MetaMock extends MetaFile
 {
     public function setCreationDate(\DateTime $creationDate)
     {

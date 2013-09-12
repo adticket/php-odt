@@ -1,13 +1,13 @@
 <?php
 
-use OdtCreator\Content\LineBreak;
-use OdtCreator\Content\Text;
-use OdtCreator\Element\Frame;
-use OdtCreator\Element\Paragraph;
-use OdtCreator\OdtCreator;
-use OdtCreator\Style\TextStyle;
-use OdtCreator\Value\FontSize;
-use OdtCreator\Value\Length;
+use Juit\PhpOdt\OdtCreator\Content\LineBreak;
+use Juit\PhpOdt\OdtCreator\Content\Text;
+use Juit\PhpOdt\OdtCreator\Element\Frame;
+use Juit\PhpOdt\OdtCreator\Element\Paragraph;
+use Juit\PhpOdt\OdtCreator\OdtCreator;
+use Juit\PhpOdt\OdtCreator\Style\TextStyle;
+use Juit\PhpOdt\OdtCreator\Value\FontSize;
+use Juit\PhpOdt\OdtCreator\Value\Length;
 use OdtToPdfRenderer\InstantRenderer;
 use PdfToPngRenderer\PdfToPngRenderer;
 
@@ -156,7 +156,7 @@ class ExampleBuilder
     }
 
     /**
-     * @return \OdtCreator\Style\ParagraphStyle
+     * @return \Juit\PhpOdt\OdtCreator\Style\ParagraphStyle
      */
     private function createDefaultParagraphStyle()
     {
@@ -189,7 +189,7 @@ Und was können Sie für Standards tun? Fordern Sie von Ihren Designern und Prog
 
     /**
      * @param string $dummyText
-     * @return Paragraph[]
+     * @return \Juit\PhpOdt\OdtCreator\Element\Paragraph[]
      */
     private function createParagraphs($dummyText)
     {

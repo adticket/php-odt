@@ -2,7 +2,7 @@
 
 namespace OdtCreator\Test\EndToEnd;
 
-use OdtCreator\OdtCreator;
+use Juit\PhpOdt\OdtCreator\OdtCreator;
 
 class EmptyDocumentTest extends EndToEndTestCase
 {
