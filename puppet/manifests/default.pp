@@ -47,7 +47,8 @@ package { [
     'git-core',
     'php5-apc',
     'libreoffice',
-    'unoconv'
+    'unoconv',
+    'ghostscript'
   ]:
   ensure  => 'installed',
 }
