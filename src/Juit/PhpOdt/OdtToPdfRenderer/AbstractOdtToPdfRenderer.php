@@ -2,8 +2,8 @@
 
 namespace Juit\PhpOdt\OdtToPdfRenderer;
 
-use ShellCommandExecutor\Result;
-use ShellCommandExecutor\ShellCommandExecutor;
+use Juit\ShellCommandExecutor\Result;
+use Juit\ShellCommandExecutor\ShellCommandExecutor;
 
 abstract class AbstractOdtToPdfRenderer
 {

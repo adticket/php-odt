@@ -3,48 +3,48 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "01d30e189d7d3c58611eb8cdf2c0c067",
+    "hash": "06d7f3a4bf0fbff08b819e30c4cb4543",
     "packages": [
         {
-            "name": "beberlei/assert",
-            "version": "v1.4",
+            "name": "juit/shell-command-executor",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/beberlei/assert.git",
-                "reference": "v1.4"
+                "url": "https://github.com/janunger/shell-command-executor.git",
+                "reference": "754ca095f57751d1e7b51579a41891a0d2026871"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/v1.4",
-                "reference": "v1.4",
+                "url": "https://api.github.com/repos/janunger/shell-command-executor/zipball/754ca095f57751d1e7b51579a41891a0d2026871",
+                "reference": "754ca095f57751d1e7b51579a41891a0d2026871",
                 "shasum": ""
             },
             "require": {
-                "ext-mbstring": "*"
+                "php": ">=5.3.0"
             },
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "Assert": "lib/"
+                    "": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-2-Clause"
+                "MIT"
             ],
             "authors": [
                 {
-                    "name": "Benjamin Eberlei",
-                    "email": "kontakt@beberlei.de"
+                    "name": "Jan Unger",
+                    "email": "ju@juit.de",
+                    "homepage": "http://www.juit.de",
+                    "role": "developer"
                 }
             ],
-            "description": "Thin assertion library for input validation in business models.",
-            "keywords": [
-                "assert",
-                "assertion",
-                "validation"
-            ],
-            "time": "2013-07-07 14:22:45"
+            "description": "A simple wrapper that executes shell commands and returns the output as an object",
+            "support": {
+                "source": "https://github.com/janunger/shell-command-executor/tree/master",
+                "issues": "https://github.com/janunger/shell-command-executor/issues"
+            },
+            "time": "2013-09-12 15:29:41"
         }
     ],
     "packages-dev": [
@@ -467,9 +467,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "juit/shell-command-executor": 20
+    },
     "platform": {
         "php": ">=5.3.0"
     },

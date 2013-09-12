@@ -2,8 +2,8 @@
 
 namespace Juit\PhpOdt\PdfToPngRenderer;
 
-use ShellCommandExecutor\Result;
-use ShellCommandExecutor\ShellCommandExecutor;
+use Juit\ShellCommandExecutor\Result;
+use Juit\ShellCommandExecutor\ShellCommandExecutor;
 
 class PdfToPngRenderer
 {
