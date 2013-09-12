@@ -1,5 +1,7 @@
 <?php
 
+namespace OdtCreator\Test\EndToEnd;
+
 use Juit\PhpOdt\OdtCreator\Content\LineBreak;
 use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Element\Frame;
@@ -11,6 +13,7 @@ use Juit\PhpOdt\OdtCreator\Value\FontSize;
 use Juit\PhpOdt\OdtCreator\Value\Length;
 use Juit\PhpOdt\OdtToPdfRenderer\InstantRenderer;
 use Juit\PhpOdt\PdfToPngRenderer\PdfToPngRenderer;
+use Juit\ShellCommandExecutor\ShellCommandExecutor;
 
 class ExampleBuilder
 {
@@ -20,7 +23,7 @@ class ExampleBuilder
     private $styleFactory;
 
     /**
-     * @var SplFileinfo
+     * @var \SplFileinfo
      */
     private $outputDirInfo;
 
@@ -29,17 +32,23 @@ class ExampleBuilder
      */
     private $odtFile;
 
+    /**
+     * @var ShellCommandExecutor
+     */
+    private $shellCommandExecutor;
+
     public function __construct(\SplFileinfo $outputDirInfo)
     {
         $this->outputDirInfo = $outputDirInfo;
         $this->odtFile = new OdtFile();
         $this->styleFactory = $this->odtFile->getStyleFactory();
+        $this->shellCommandExecutor = new ShellCommandExecutor();
     }
 
     public function build()
     {
-        $odtFileInfo = new SplFileInfo($this->outputDirInfo->getPathname() . '/example.odt');
-        $pdfFileInfo = new SplFileInfo($this->outputDirInfo->getPathname() . '/example.pdf');
+        $odtFileInfo = new \SplFileInfo($this->outputDirInfo->getPathname() . '/example.odt');
+        $pdfFileInfo = new \SplFileInfo($this->outputDirInfo->getPathname() . '/example.pdf');
 
         $this->cleanUp();
         $this->createOdtFile($odtFileInfo);
@@ -50,15 +59,14 @@ class ExampleBuilder
     private function cleanUp()
     {
         if ($this->outputDirInfo->isDir()) {
-            system("rm -fr {$this->outputDirInfo->getPathname()}");
+            $this->shellCommandExecutor->execute("rm -fr {$this->outputDirInfo->getPathname()}/*");
         }
-        mkdir($this->outputDirInfo->getPathname());
     }
 
     /**
-     * @param SplFileInfo $odtFileInfo
+     * @param \SplFileInfo $odtFileInfo
      */
-    private function createOdtFile(SplFileInfo $odtFileInfo)
+    private function createOdtFile(\SplFileInfo $odtFileInfo)
     {
         $this->addAddressFrame();
         $this->addDateFrame();
@@ -71,8 +79,8 @@ class ExampleBuilder
         $this->odtFile->save($odtFileInfo);
 
         $unzipDir = substr($odtFileInfo->getPathname(), 0, -4);
-        system("rm -fr {$unzipDir}");
-        system("unzip {$odtFileInfo->getPathname()} -d {$unzipDir}");
+        $this->shellCommandExecutor->execute("rm -fr {$unzipDir}");
+        $this->shellCommandExecutor->execute("unzip {$odtFileInfo->getPathname()} -d {$unzipDir}");
 
         $this->validateOdtFile($odtFileInfo);
     }
@@ -220,36 +228,37 @@ Und was können Sie für Standards tun? Fordern Sie von Ihren Designern und Prog
     }
 
     /**
-     * @param SplFileInfo $odtFileInfo
+     * @param \SplFileInfo $odtFileInfo
      */
-    private function validateOdtFile(SplFileInfo $odtFileInfo)
+    private function validateOdtFile(\SplFileInfo $odtFileInfo)
     {
+        // TODO: This
         $command =
-            "cd " . __DIR__ . "/../bin/odf-validator && "
+            "cd " . __DIR__ . "/../../../../bin/odf-validator && "
             . "./validator --file=" . $odtFileInfo->getPathname();
-        system($command);
+        $this->shellCommandExecutor->execute($command);
     }
 
     /**
-     * @param SplFileInfo $odtFileInfo
-     * @param SplFileInfo $pdfFileInfo
+     * @param \SplFileInfo $odtFileInfo
+     * @param \SplFileInfo $pdfFileInfo
      * @return \SplFileInfo
      */
-    private function renderPdf(SplFileInfo $odtFileInfo, SplFileInfo $pdfFileInfo)
+    private function renderPdf(\SplFileInfo $odtFileInfo, \SplFileInfo $pdfFileInfo)
     {
         // TODO: Make configurable
-        $libreOfficeBinary = new SplFileInfo('/usr/bin/soffice');
+        $libreOfficeBinary = new \SplFileInfo('/usr/bin/soffice');
         $pdfRenderer = new InstantRenderer($libreOfficeBinary);
         $pdfRenderer->render($odtFileInfo, $pdfFileInfo);
     }
 
     /**
-     * @param SplFileInfo $pdfFileInfo
+     * @param \SplFileInfo $pdfFileInfo
      */
-    private function renderPngs(SplFileInfo $pdfFileInfo)
+    private function renderPngs(\SplFileInfo $pdfFileInfo)
     {
         // TODO: Make configurable
-        $ghostscriptBinary = new SplFileInfo('/usr/bin/gs');
+        $ghostscriptBinary = new \SplFileInfo('/usr/bin/gs');
         $pngRenderer = new PdfToPngRenderer($ghostscriptBinary);
         $pngRenderer->render($pdfFileInfo);
     }
