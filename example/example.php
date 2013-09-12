@@ -1,15 +1,15 @@
 <?php
 
-use ODTCreator\Content\LineBreak;
-use ODTCreator\Content\Text;
-use ODTCreator\Element\Frame;
-use ODTCreator\Element\Paragraph;
-use ODTCreator\ODTCreator;
-use ODTCreator\Style\TextStyle;
-use ODTCreator\Value\FontSize;
-use ODTCreator\Value\Length;
+use OdtCreator\Content\LineBreak;
+use OdtCreator\Content\Text;
+use OdtCreator\Element\Frame;
+use OdtCreator\Element\Paragraph;
+use OdtCreator\OdtCreator;
+use OdtCreator\Style\TextStyle;
+use OdtCreator\Value\FontSize;
+use OdtCreator\Value\Length;
 use OdtToPdfRenderer\InstantRenderer;
-use PDFToPNGRenderer\PDFToPNGRenderer;
+use PdfToPngRenderer\PdfToPngRenderer;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -23,14 +23,14 @@ class ExampleBuilder
     private $outputDirInfo;
 
     /**
-     * @var ODTCreator
+     * @var OdtCreator
      */
     private $odtCreator;
 
     public function __construct(\SplFileinfo $outputDirInfo)
     {
         $this->outputDirInfo = $outputDirInfo;
-        $this->odtCreator = new ODTCreator();
+        $this->odtCreator = new OdtCreator();
         $this->styleFactory = $this->odtCreator->getStyleFactory();
     }
 
@@ -156,7 +156,7 @@ class ExampleBuilder
     }
 
     /**
-     * @return \ODTCreator\Style\ParagraphStyle
+     * @return \OdtCreator\Style\ParagraphStyle
      */
     private function createDefaultParagraphStyle()
     {
@@ -245,7 +245,7 @@ Und was können Sie für Standards tun? Fordern Sie von Ihren Designern und Prog
     private function renderPngs(SplFileInfo $pdfFileInfo)
     {
         $ghostscriptBinary = new SplFileInfo('/usr/local/bin/gs');
-        $pngRenderer = new PDFToPNGRenderer($ghostscriptBinary);
+        $pngRenderer = new PdfToPngRenderer($ghostscriptBinary);
         $pngFileInfos = $pngRenderer->render($pdfFileInfo, 20, 22);
     }
 }
