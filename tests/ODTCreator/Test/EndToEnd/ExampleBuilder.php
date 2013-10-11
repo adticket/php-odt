@@ -2,6 +2,7 @@
 
 namespace OdtCreator\Test\EndToEnd;
 
+use JUIT\PdfUtil\PdfToImageRenderer;
 use Juit\PhpOdt\OdtCreator\Content\LineBreak;
 use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Element\Frame;
@@ -12,8 +13,7 @@ use Juit\PhpOdt\OdtCreator\Style\TextStyle;
 use Juit\PhpOdt\OdtCreator\Value\FontSize;
 use Juit\PhpOdt\OdtCreator\Value\Length;
 use Juit\PhpOdt\OdtToPdfRenderer\InstantRenderer;
-use Juit\PhpOdt\PdfToPngRenderer\PdfToPngRenderer;
-use Juit\ShellCommandExecutor\ShellCommandExecutor;
+use Symfony\Component\Process\Process;
 
 class ExampleBuilder
 {
@@ -32,17 +32,11 @@ class ExampleBuilder
      */
     private $odtFile;
 
-    /**
-     * @var ShellCommandExecutor
-     */
-    private $shellCommandExecutor;
-
     public function __construct(\SplFileinfo $outputDirInfo)
     {
         $this->outputDirInfo = $outputDirInfo;
         $this->odtFile = new OdtFile();
         $this->styleFactory = $this->odtFile->getStyleFactory();
-        $this->shellCommandExecutor = new ShellCommandExecutor();
     }
 
     public function build()
@@ -59,7 +53,9 @@ class ExampleBuilder
     private function cleanUp()
     {
         if ($this->outputDirInfo->isDir()) {
-            $this->shellCommandExecutor->execute("rm -fr {$this->outputDirInfo->getPathname()}/*");
+            // TODO: Get instance from factory
+            $process = new Process("rm -fr {$this->outputDirInfo->getPathname()}/*");
+            $process->run();
         }
     }
 
@@ -68,6 +64,7 @@ class ExampleBuilder
      */
     private function createOdtFile(\SplFileInfo $odtFileInfo)
     {
+        $this->setPageBorders();
         $this->addAddressFrame();
         $this->addDateFrame();
         $this->addSubject();
@@ -79,10 +76,20 @@ class ExampleBuilder
         $this->odtFile->save($odtFileInfo);
 
         $unzipDir = substr($odtFileInfo->getPathname(), 0, -4);
-        $this->shellCommandExecutor->execute("rm -fr {$unzipDir}");
-        $this->shellCommandExecutor->execute("unzip {$odtFileInfo->getPathname()} -d {$unzipDir}");
+        // TODO: Get instance from factory
+        $process = new Process("rm -fr {$unzipDir}");
+        $process->run();
+        // TODO: Get instance from factory
+        $process = new Process("unzip {$odtFileInfo->getPathname()} -d {$unzipDir}");
+        $process->run();
 
         $this->validateOdtFile($odtFileInfo);
+    }
+
+    private function setPageBorders()
+    {
+        $firstPage = $this->odtFile->getFirstPage();
+        $firstPage->setBorderTop(new Length('12cm'));
     }
 
     private function addAddressFrame()
@@ -232,11 +239,12 @@ Und was können Sie für Standards tun? Fordern Sie von Ihren Designern und Prog
      */
     private function validateOdtFile(\SplFileInfo $odtFileInfo)
     {
-        // TODO: This
-        $command =
+        // TODO: Get instance from factory
+        $process = new Process(
             "cd " . __DIR__ . "/../../../../bin/odf-validator && "
-            . "./validator --file=" . $odtFileInfo->getPathname();
-        $this->shellCommandExecutor->execute($command);
+        . "./validator --file=" . $odtFileInfo->getPathname());
+        $process->run();
+        // TODO: Evaluate output
     }
 
     /**
@@ -257,9 +265,7 @@ Und was können Sie für Standards tun? Fordern Sie von Ihren Designern und Prog
      */
     private function renderPngs(\SplFileInfo $pdfFileInfo)
     {
-        // TODO: Make configurable
-        $ghostscriptBinary = new \SplFileInfo('/usr/bin/gs');
-        $pngRenderer = new PdfToPngRenderer($ghostscriptBinary);
+        $pngRenderer = new PdfToImageRenderer('/usr/bin/gs', $this->outputDirInfo->getPathname());
         $pngRenderer->render($pdfFileInfo);
     }
 }
