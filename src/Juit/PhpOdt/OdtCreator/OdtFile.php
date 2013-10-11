@@ -52,7 +52,6 @@ class OdtFile
 
     public function addElement(Element $element)
     {
-        $this->styles->addElement($element);
         $this->content->addElement($element);
     }
 

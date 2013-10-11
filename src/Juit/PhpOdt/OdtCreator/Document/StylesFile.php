@@ -2,7 +2,6 @@
 
 namespace Juit\PhpOdt\OdtCreator\Document;
 
-use Juit\PhpOdt\OdtCreator\Element\Element;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 
 class StylesFile implements File
@@ -15,11 +14,6 @@ class StylesFile implements File
     const NAMESPACE_TEXT = 'urn:oasis:names:tc:opendocument:xmlns:text:1.0';
 
     /**
-     * @var \Juit\PhpOdt\OdtCreator\Element\Element[]
-     */
-    private $elements;
-
-    /**
      * @var \Juit\PhpOdt\OdtCreator\Style\StyleFactory
      */
     private $styleFactory;
@@ -27,11 +21,6 @@ class StylesFile implements File
     public function __construct(StyleFactory $styleFactory)
     {
         $this->styleFactory = $styleFactory;
-    }
-
-    public function addElement(Element $element)
-    {
-        $this->elements[] = $element;
     }
 
     /**
