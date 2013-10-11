@@ -88,8 +88,7 @@ class ExampleBuilder
 
     private function setPageBorders()
     {
-        $firstPage = $this->odtFile->getFirstPage();
-        $firstPage->setBorderTop(new Length('12cm'));
+        $this->styleFactory->setMarginRight(new Length('2cm'));
     }
 
     private function addAddressFrame()
