@@ -29,23 +29,4 @@ class InstantRenderer extends AbstractOdtToPdfRenderer
             . "{$odtFile->getPathname()} "
             . "--outdir {$odtFile->getPath()}";
     }
-
-    /**
-     * @return array
-     */
-    protected function getOutputWhiteListRegexes()
-    {
-        return array(
-            '/^convert .* using writer_pdf_Export$/',
-            '/^Overwriting: /'
-        );
-    }
-
-    /**
-     * @return array
-     */
-    protected function getErrorWhiteListRegexes()
-    {
-        return array();
-    }
 }
