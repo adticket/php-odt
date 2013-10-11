@@ -1,5 +1,5 @@
 # Name of the VM
-$name = "my-vagrant-box"
+$name = "mybox"
 
 # VM IP
 $ip = "192.168.77.77"
@@ -10,3 +10,6 @@ $vm_box_url = "http://puppet-vagrant-boxes.puppetlabs.com/debian-70rc1-x64-vf503
 
 # Puppet
 $puppet_verbose = false
+
+# Apache
+$hostname = "mybox.dev"

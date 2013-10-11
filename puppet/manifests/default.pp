@@ -62,8 +62,8 @@ apache::dotconf { 'custom':
 apache::module { 'rewrite': }
 apache::module { 'ssl': }
 
-apache::vhost { 'ticketingservice.uit.dev':
-  server_name   => 'ticketingservice.uit.dev',
+apache::vhost { $hostname:
+  server_name   => $hostname,
   serveraliases => [
 ],
   docroot       => '/var/www/web/',
@@ -76,8 +76,8 @@ apache::vhost { 'ticketingservice.uit.dev':
   priority      => '1',
 }
 
-apache::vhost { 'ticketingservice.uit.dev-ssl':
-  server_name   => 'ticketingservice.uit.dev',
+apache::vhost { "${hostname}-ssl":
+  server_name   => $hostname,
   serveraliases => [
 ],
   docroot       => '/var/www/web/',
@@ -172,8 +172,8 @@ class { 'phpmyadmin':
   require => [Class['mysql::server'], Class['mysql::config'], Class['php']],
 }
 
-apache::vhost { 'pma.ticketingservice.uit.dev':
-  server_name => 'pma.ticketingservice.uit.dev',
+apache::vhost { "pma.${hostname}":
+  server_name => "pma.${hostname}",
   docroot     => '/usr/share/phpmyadmin',
   port        => 80,
   priority    => '10',
@@ -184,3 +184,4 @@ package { 'compass':
   ensure   => 'installed',
   provider => 'gem',
 }
+

@@ -50,3 +50,7 @@ alias mv='mv -iv'
 alias grep='grep --color=auto -in'
 alias v='vim'
 alias ..='cd ..'
+
+. ~/.symfony_parameters
+
+cd /var/www
