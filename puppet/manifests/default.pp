@@ -48,7 +48,9 @@ package { [
     'php5-apc',
     'libreoffice',
     'unoconv',
-    'ghostscript'
+    'ghostscript',
+    'pdftk',
+    'imagemagick'
   ]:
   ensure  => 'installed',
 }
