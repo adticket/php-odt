@@ -47,21 +47,10 @@ class ExampleBuilder
         $odt = new \SplFileInfo($this->outputDirInfo->getPathname() . '/example.odt');
         $pdf = new \SplFileInfo($this->outputDirInfo->getPathname() . '/example.pdf');
 
-        $this->cleanUp();
         $this->createOdtFile($odt);
         $this->renderPdf($odt, $pdf);
-        $this->renderPngs($pdf);
 
         return $pdf;
-    }
-
-    private function cleanUp()
-    {
-        if ($this->outputDirInfo->isDir()) {
-            // TODO: Get instance from factory
-            $process = new Process("rm -fr {$this->outputDirInfo->getPathname()}/*");
-            $process->run();
-        }
     }
 
     /**
@@ -77,18 +66,7 @@ class ExampleBuilder
         $this->addContent();
         $this->addRegards();
 
-        // Render to ODT
         $this->odtFile->save($odtFileInfo);
-
-        $unzipDir = substr($odtFileInfo->getPathname(), 0, -4);
-        // TODO: Get instance from factory
-        $process = new Process("rm -fr {$unzipDir}");
-        $process->run();
-        // TODO: Get instance from factory
-        $process = new Process("unzip {$odtFileInfo->getPathname()} -d {$unzipDir}");
-        $process->run();
-
-        $this->validateOdtFile($odtFileInfo);
     }
 
     private function setPageBorders()
@@ -240,36 +218,12 @@ Und was können Sie für Standards tun? Fordern Sie von Ihren Designern und Prog
 
     /**
      * @param \SplFileInfo $odtFileInfo
-     */
-    private function validateOdtFile(\SplFileInfo $odtFileInfo)
-    {
-        // TODO: Get instance from factory
-        $process = new Process(
-            "cd " . __DIR__ . "/../../../../bin/odf-validator && "
-        . "./validator --file=" . $odtFileInfo->getPathname());
-        $process->run();
-        // TODO: Evaluate output
-    }
-
-    /**
-     * @param \SplFileInfo $odtFileInfo
      * @param \SplFileInfo $pdfFileInfo
      * @return \SplFileInfo
      */
     private function renderPdf(\SplFileInfo $odtFileInfo, \SplFileInfo $pdfFileInfo)
     {
-        // TODO: Make configurable
-        $libreOfficeBinary = new \SplFileInfo('/usr/bin/soffice');
-        $pdfRenderer = new InstantRenderer($libreOfficeBinary);
+        $pdfRenderer = new InstantRenderer();
         $pdfRenderer->render($odtFileInfo, $pdfFileInfo);
-    }
-
-    /**
-     * @param \SplFileInfo $pdfFileInfo
-     */
-    private function renderPngs(\SplFileInfo $pdfFileInfo)
-    {
-        $pngRenderer = new PdfToImageRenderer('/usr/bin/gs', $this->outputDirInfo->getPathname());
-        $pngRenderer->render($pdfFileInfo);
     }
 }
