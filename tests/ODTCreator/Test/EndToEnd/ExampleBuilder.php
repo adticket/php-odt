@@ -132,15 +132,15 @@ class ExampleBuilder
     {
         $frameStyle = $this->styleFactory->createGraphicStyle();
 
-        $xCoordinate = new Length('11cm');
+        $xCoordinate = new Length('14cm');
         $yCoordinate = new Length('8cm');
-        $width = new Length('8cm');
+        $width = new Length('5cm');
         $height = new Length('2cm');
         $dateFrame = new Frame($frameStyle, $xCoordinate, $yCoordinate, $width, $height);
 
         $paragraph = new Paragraph();
         $content = new Text(
-            'Musterdorf, den ' . date('d.m.Y') . ' um ' . date('H:i:s') . ' Uhr',
+            'Musterdorf, den 02.05.2014',
             $this->createDefaultTextStyle());
         $paragraph->addContent($content);
 
