@@ -10,6 +10,7 @@ use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\OdtFile;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 use Juit\PhpOdt\OdtCreator\Style\TextStyle;
+use Juit\PhpOdt\OdtCreator\Value\Color;
 use Juit\PhpOdt\OdtCreator\Value\FontSize;
 use Juit\PhpOdt\OdtCreator\Value\Length;
 use Juit\PhpOdt\OdtToPdfRenderer\InstantRenderer;
@@ -65,6 +66,10 @@ class ExampleBuilder
         $this->addSubject();
         $this->addSalutation();
         $this->addContent();
+        $this->addColoredContent();
+        $this->addBoldContent();
+        $this->addBiggerContent();
+        $this->addContentWithACombinationOfFormats();
         $this->addRegards();
 
         $this->odtFile->save($odtFileInfo);
@@ -204,6 +209,52 @@ class ExampleBuilder
         }
 
         return $paragraphs;
+    }
+
+    private function addColoredContent()
+    {
+        $paragraph = new Paragraph();
+        $style = $this->createDefaultTextStyle();
+        $style->setColor(new Color('#ff0000'));
+        $paragraph->addContent(new Text("Dies ist roter Text.", $style));
+        $this->odtFile->addElement($paragraph);
+
+        $this->odtFile->addElement(new Paragraph());
+    }
+
+    private function addBoldContent()
+    {
+        $paragraph = new Paragraph();
+        $style = $this->createDefaultTextStyle();
+        $style->setBold();
+        $paragraph->addContent(new Text("Dies ist fett gedruckter Text.", $style));
+        $this->odtFile->addElement($paragraph);
+
+        $this->odtFile->addElement(new Paragraph());
+    }
+
+    private function addBiggerContent()
+    {
+        $paragraph = new Paragraph();
+        $style = $this->createDefaultTextStyle();
+        $style->setFontSize(new FontSize('16pt'));
+        $paragraph->addContent(new Text("Dies ist größerer Text.", $style));
+        $this->odtFile->addElement($paragraph);
+
+        $this->odtFile->addElement(new Paragraph());
+    }
+
+    private function addContentWithACombinationOfFormats()
+    {
+        $paragraph = new Paragraph();
+        $style = $this->createDefaultTextStyle();
+        $style->setFontSize(new FontSize('16pt'));
+        $style->setBold();
+        $style->setColor(new Color('#0000ff'));
+        $paragraph->addContent(new Text("Dies ist größerer, fett gedruckter, blauer Text.", $style));
+        $this->odtFile->addElement($paragraph);
+
+        $this->odtFile->addElement(new Paragraph());
     }
 
     private function addRegards()
