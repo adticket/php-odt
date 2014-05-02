@@ -4,6 +4,7 @@ namespace OdtCreator\Test\EndToEnd;
 
 use RuntimeException;
 use SplFileInfo;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 
 class FullFeatureTest extends \PHPUnit_Framework_TestCase
@@ -26,31 +27,14 @@ class FullFeatureTest extends \PHPUnit_Framework_TestCase
         $builder = new ExampleBuilder(new SplFileInfo(__DIR__ . '/output'));
         $builder->build();
 
-        $fixturePath = __DIR__ . '/fixtures/example.pdf';
-        $expectedPath = "{$this->baseDir}/expected_%02d.pdf";
-        $this->runShellCommand("cd {$this->baseDir} && pdftk {$fixturePath} burst output {$expectedPath}");
+        $expectedPages = $this->burstPdfInSinglePages(new SplFileInfo(__DIR__ . '/fixtures/example.pdf'), 'expected');
+        $actualPages   = $this->burstPdfInSinglePages(new SplFileInfo(__DIR__ . '/output/example.pdf'), 'actual');
 
-        $outputPath = __DIR__ . '/output/example.pdf';
-        $actualPath = "{$this->baseDir}/actual_%02d.pdf";
-        $this->runShellCommand("cd {$this->baseDir} && pdftk {$outputPath} burst output {$actualPath}");
+        $this->assertEquals(count($expectedPages), count($actualPages), 'Page count does not equal');
 
-        $expected = "{$this->baseDir}/expected_01.pdf";
-        $actual = "{$this->baseDir}/actual_01.pdf";
-        $diff = "{$this->baseDir}/diff_01.pdf";
-        $diffImg = "{$this->baseDir}/diff_01.bmp";
-        $this->runShellCommand("compare {$expected} {$actual} -compose src {$diff}");
-        $this->runShellCommand("gs -o {$diffImg} -r72 -g595x842 -sDEVICE=bmp256 {$diff}");
-
-        $result = $this->runShellCommand("md5sum {$diffImg}");
-        if (!preg_match('/^(?P<hash>\S+) /', $result, $matches)) {
-            $this->fail('Could not get hash of diff image');
+        for ($i = 0; $i < count($actualPages); $i++) {
+            $this->assertPageContentsEqual($expectedPages[$i], $actualPages[$i]);
         }
-        $md5OfDiff = $matches['hash'];
-        $this->assertEquals(
-            '74ab373396b8c6dd4ca9322fd6edae66',
-            $md5OfDiff,
-            'Unexpected hash of diff image, PDFs seem to be different'
-        );
     }
 
     /**
@@ -67,5 +51,49 @@ class FullFeatureTest extends \PHPUnit_Framework_TestCase
         }
 
         return $process->getOutput();
+    }
+
+    /**
+     * @param SplFileInfo $inputFile
+     * @param string $outputPrefix
+     * @return \Symfony\Component\Finder\SplFileInfo[]
+     */
+    private function burstPdfInSinglePages(SplFileInfo $inputFile, $outputPrefix)
+    {
+        $expectedPath = "{$outputPrefix}.%02d.pdf";
+
+        // cd baseDir because pdftk insists on writing an output file named doc_data.txt
+        $this->runShellCommand("cd {$this->baseDir} && pdftk {$inputFile} burst output {$expectedPath}");
+
+        $finder = new Finder();
+        $finder->files()->in($this->baseDir)->name('/^' . preg_quote($outputPrefix) . '\.\d+\.pdf/');
+        $files = [];
+        foreach ($finder as $file) {
+            $files[] = $file;
+        }
+
+        return $files;
+    }
+
+    /**
+     * @param SplFileInfo $expected
+     * @param SplFileInfo $actual
+     */
+    private function assertPageContentsEqual(SplFileInfo $expected, SplFileInfo $actual)
+    {
+        $diff      = "{$this->baseDir}/diff.pdf";
+        $diffImage = "{$this->baseDir}/diff.bmp";
+
+        $this->runShellCommand("compare {$expected} {$actual} -compose src {$diff}");
+        $this->runShellCommand("gs -o {$diffImage} -r72 -g595x842 -sDEVICE=bmp256 {$diff}");
+
+        $result  = $this->runShellCommand("md5sum {$diffImage}");
+        if (!preg_match('/^(?P<hash>\S+) /', $result, $matches)) {
+            $this->fail('Could not get hash of diff image');
+        }
+
+        $md5OfDiff = $matches['hash'];
+        $md5OfWhitePage = '74ab373396b8c6dd4ca9322fd6edae66';
+        $this->assertEquals($md5OfWhitePage, $md5OfDiff, 'Unexpected hash of diff image, PDFs appear to be different');
     }
 }

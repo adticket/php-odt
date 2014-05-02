@@ -17,7 +17,8 @@
         "juit/pdf-util": "dev-master"
     },
     "require-dev": {
-        "phpunit/phpunit": "@stable"
+        "phpunit/phpunit": "@stable",
+        "symfony/finder": "@stable"
     },
     "autoload": {
         "psr-0": {
