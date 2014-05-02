@@ -83,11 +83,11 @@ class FullFeatureTest extends \PHPUnit_Framework_TestCase
      */
     private function assertPageContentsEqual(SplFileInfo $expected, SplFileInfo $actual)
     {
-        $diff      = "{$this->baseDir}/diff.pdf";
+        $diffPdf   = "{$this->baseDir}/diff.pdf";
         $diffImage = "{$this->baseDir}/diff.bmp";
 
-        $this->runShellCommand("compare {$expected} {$actual} -compose src {$diff}");
-        $this->runShellCommand("gs -o {$diffImage} -r72 -g595x842 -sDEVICE=bmp256 {$diff}");
+        $this->runShellCommand("compare {$expected} {$actual} -compose src {$diffPdf}");
+        $this->runShellCommand("gs -o {$diffImage} -r72 -g595x842 -sDEVICE=bmp256 {$diffPdf}");
 
         $result = $this->runShellCommand("md5sum {$diffImage}");
         if (!preg_match('/^(?P<hash>\S+) /', $result, $matches)) {
