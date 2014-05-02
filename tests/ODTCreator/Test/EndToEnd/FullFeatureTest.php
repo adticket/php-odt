@@ -12,7 +12,7 @@ class FullFeatureTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->baseDir = "/var/www/tests/odtcreator_tests";
+        $this->baseDir = ROOT_DIR . "/tmp/odtcreator_tests";
         $this->runShellCommand("rm -fr {$this->baseDir} && mkdir {$this->baseDir}");
     }
 
