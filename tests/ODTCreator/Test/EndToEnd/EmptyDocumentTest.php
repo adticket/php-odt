@@ -4,8 +4,6 @@ namespace OdtCreator\Test\EndToEnd;
 
 use Juit\PhpOdt\OdtCreator\OdtFile;
 
-require_once __DIR__ . '/EndToEndTestCase.php';
-
 class EmptyDocumentTest extends EndToEndTestCase
 {
     protected function setUp()

@@ -23,8 +23,6 @@ class FakeTest extends \PHPUnit_Framework_TestCase
 
     public function testRunExample()
     {
-        require_once __DIR__ . '/ExampleBuilder.php';
-
         $builder = new ExampleBuilder(new SplFileInfo(__DIR__ . '/output'));
         $builder->build();
 

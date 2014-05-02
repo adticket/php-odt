@@ -3,4 +3,4 @@
 /** @var $loader \Composer\Autoload\ClassLoader */
 $loader = require __DIR__ . '/../vendor/autoload.php';
 
-$loader->add('ODTCreator\Test\\', __DIR__ . '/');
+$loader->add('OdtCreator\\Test\\', __DIR__);
