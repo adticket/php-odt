@@ -27,27 +27,21 @@ class FullFeatureTest extends \PHPUnit_Framework_TestCase
         $builder->build();
 
         $fixturePath = __DIR__ . '/fixtures/example.pdf';
-        $expectedPath = "{$this->baseDir}/example_expected_page_%03d.pdf";
-        $this->runShellCommand("cd {$this->baseDir} && pdftk $fixturePath burst output $expectedPath");
+        $expectedPath = "{$this->baseDir}/expected_%02d.pdf";
+        $this->runShellCommand("cd {$this->baseDir} && pdftk {$fixturePath} burst output {$expectedPath}");
 
         $outputPath = __DIR__ . '/output/example.pdf';
-        $this->runShellCommand("cd {$this->baseDir} && pdftk $outputPath burst output {$this->baseDir}/example_actual_page_%03d.pdf");
+        $actualPath = "{$this->baseDir}/actual_%02d.pdf";
+        $this->runShellCommand("cd {$this->baseDir} && pdftk {$outputPath} burst output {$actualPath}");
 
-        $command = "compare ";
-        $command .= "{$this->baseDir}/example_expected_page_001.pdf ";
-        $command .= "{$this->baseDir}/example_actual_page_001.pdf ";
-        $command .= "-compose src {$this->baseDir}/example_diff_page_001.pdf ";
-        $this->runShellCommand($command);
+        $expected = "{$this->baseDir}/expected_01.pdf";
+        $actual = "{$this->baseDir}/actual_01.pdf";
+        $diff = "{$this->baseDir}/diff_01.pdf";
+        $diffImg = "{$this->baseDir}/diff_01.bmp";
+        $this->runShellCommand("compare {$expected} {$actual} -compose src {$diff}");
+        $this->runShellCommand("gs -o {$diffImg} -r72 -g595x842 -sDEVICE=bmp256 {$diff}");
 
-        $command = "gs ";
-        $command .= "-o {$this->baseDir}/example_diff_page_001.bmp ";
-        $command .= "-r72 ";
-        $command .= "-g595x842 ";
-        $command .= "-sDEVICE=bmp256 ";
-        $command .= "{$this->baseDir}/example_diff_page_001.pdf ";
-        $this->runShellCommand($command);
-
-        $result = $this->runShellCommand("md5sum {$this->baseDir}/example_diff_page_001.bmp");
+        $result = $this->runShellCommand("md5sum {$diffImg}");
         if (!preg_match('/^(?P<hash>\S+) /', $result, $matches)) {
             $this->fail('Could not get hash of diff image');
         }
