@@ -19,7 +19,7 @@ class FullFeatureTest extends \PHPUnit_Framework_TestCase
 
     public function testRunExample()
     {
-        $expected = new SplFileInfo(__DIR__ . '/fixtures/example.pdf');
+        $expected = new SplFileInfo(__DIR__ . '/fixtures/full_feature.pdf');
 
         $builder = new ExampleBuilder(new SplFileInfo($this->baseDir));
         $actual  = $builder->build('actual');
