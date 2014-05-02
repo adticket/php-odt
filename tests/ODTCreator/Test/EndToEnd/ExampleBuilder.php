@@ -40,12 +40,13 @@ class ExampleBuilder
     }
 
     /**
+     * @param string $basename
      * @return \SplFileInfo
      */
-    public function build()
+    public function build($basename)
     {
-        $odt = new \SplFileInfo($this->outputDirInfo->getPathname() . '/example.odt');
-        $pdf = new \SplFileInfo($this->outputDirInfo->getPathname() . '/example.pdf');
+        $odt = new \SplFileInfo("{$this->outputDirInfo}/{$basename}.odt");
+        $pdf = new \SplFileInfo("{$this->outputDirInfo}/{$basename}.pdf");
 
         $this->createOdtFile($odt);
         $this->renderPdf($odt, $pdf);

@@ -27,7 +27,7 @@ class FullFeatureTest extends \PHPUnit_Framework_TestCase
         $expected = new SplFileInfo(__DIR__ . '/fixtures/example.pdf');
 
         $builder = new ExampleBuilder(new SplFileInfo($this->baseDir));
-        $actual  = $builder->build();
+        $actual  = $builder->build('actual');
 
         $expectedPages = $this->burstPdfInSinglePages($expected, 'expected');
         $actualPages   = $this->burstPdfInSinglePages($actual, 'actual');
