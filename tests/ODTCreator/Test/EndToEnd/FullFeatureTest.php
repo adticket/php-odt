@@ -6,7 +6,7 @@ use RuntimeException;
 use SplFileInfo;
 use Symfony\Component\Process\Process;
 
-class FakeTest extends \PHPUnit_Framework_TestCase
+class FullFeatureTest extends \PHPUnit_Framework_TestCase
 {
     private $baseDir;
 
