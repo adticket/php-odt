@@ -24,11 +24,13 @@ class FullFeatureTest extends \PHPUnit_Framework_TestCase
 
     public function testRunExample()
     {
-        $builder = new ExampleBuilder(new SplFileInfo(__DIR__ . '/output'));
-        $builder->build();
+        $expected = new SplFileInfo(__DIR__ . '/fixtures/example.pdf');
 
-        $expectedPages = $this->burstPdfInSinglePages(new SplFileInfo(__DIR__ . '/fixtures/example.pdf'), 'expected');
-        $actualPages   = $this->burstPdfInSinglePages(new SplFileInfo(__DIR__ . '/output/example.pdf'), 'actual');
+        $builder = new ExampleBuilder(new SplFileInfo(__DIR__ . '/output'));
+        $actual  = $builder->build();
+
+        $expectedPages = $this->burstPdfInSinglePages($expected, 'expected');
+        $actualPages   = $this->burstPdfInSinglePages($actual, 'actual');
 
         $this->assertEquals(count($expectedPages), count($actualPages), 'Page count does not equal');
 
@@ -87,13 +89,17 @@ class FullFeatureTest extends \PHPUnit_Framework_TestCase
         $this->runShellCommand("compare {$expected} {$actual} -compose src {$diff}");
         $this->runShellCommand("gs -o {$diffImage} -r72 -g595x842 -sDEVICE=bmp256 {$diff}");
 
-        $result  = $this->runShellCommand("md5sum {$diffImage}");
+        $result = $this->runShellCommand("md5sum {$diffImage}");
         if (!preg_match('/^(?P<hash>\S+) /', $result, $matches)) {
             $this->fail('Could not get hash of diff image');
         }
 
-        $md5OfDiff = $matches['hash'];
+        $md5OfDiff      = $matches['hash'];
         $md5OfWhitePage = '74ab373396b8c6dd4ca9322fd6edae66';
-        $this->assertEquals($md5OfWhitePage, $md5OfDiff, 'Unexpected hash of diff image, PDFs appear to be different');
+        $this->assertEquals(
+            $md5OfWhitePage,
+            $md5OfDiff,
+            "Pages appear to be different: '{$expected}' vs. '{$actual}'"
+        );
     }
 }

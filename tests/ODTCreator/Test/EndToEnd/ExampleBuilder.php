@@ -39,15 +39,20 @@ class ExampleBuilder
         $this->styleFactory = $this->odtFile->getStyleFactory();
     }
 
+    /**
+     * @return \SplFileInfo
+     */
     public function build()
     {
-        $odtFileInfo = new \SplFileInfo($this->outputDirInfo->getPathname() . '/example.odt');
-        $pdfFileInfo = new \SplFileInfo($this->outputDirInfo->getPathname() . '/example.pdf');
+        $odt = new \SplFileInfo($this->outputDirInfo->getPathname() . '/example.odt');
+        $pdf = new \SplFileInfo($this->outputDirInfo->getPathname() . '/example.pdf');
 
         $this->cleanUp();
-        $this->createOdtFile($odtFileInfo);
-        $this->renderPdf($odtFileInfo, $pdfFileInfo);
-        $this->renderPngs($pdfFileInfo);
+        $this->createOdtFile($odt);
+        $this->renderPdf($odt, $pdf);
+        $this->renderPngs($pdf);
+
+        return $pdf;
     }
 
     private function cleanUp()
