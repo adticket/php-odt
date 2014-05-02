@@ -17,11 +17,6 @@ class FullFeatureTest extends \PHPUnit_Framework_TestCase
         $this->runShellCommand("rm -fr {$this->baseDir} && mkdir {$this->baseDir}");
     }
 
-    protected function tearDown()
-    {
-        $this->runShellCommand("rm -fr {$this->baseDir}");
-    }
-
     public function testRunExample()
     {
         $expected = new SplFileInfo(__DIR__ . '/fixtures/example.pdf');
