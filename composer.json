@@ -13,8 +13,7 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "symfony/process": "@stable",
-        "juit/pdf-util": "dev-master"
+        "symfony/process": "@stable"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",

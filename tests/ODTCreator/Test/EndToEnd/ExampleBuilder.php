@@ -2,7 +2,6 @@
 
 namespace OdtCreator\Test\EndToEnd;
 
-use JUIT\PdfUtil\PdfToImageRenderer;
 use Juit\PhpOdt\OdtCreator\Content\LineBreak;
 use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Element\Frame;
@@ -14,7 +13,6 @@ use Juit\PhpOdt\OdtCreator\Value\Color;
 use Juit\PhpOdt\OdtCreator\Value\FontSize;
 use Juit\PhpOdt\OdtCreator\Value\Length;
 use Juit\PhpOdt\OdtToPdfRenderer\InstantRenderer;
-use Symfony\Component\Process\Process;
 
 class ExampleBuilder
 {
