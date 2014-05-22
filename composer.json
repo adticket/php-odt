@@ -23,9 +23,5 @@
         "psr-0": {
             "": "src/"
         }
-    },
-    "repositories": [{
-        "type": "vcs",
-        "url": "https://github.com/janunger/pdf-util.git"
-    }]
+    }
 }
