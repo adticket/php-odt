@@ -2,16 +2,17 @@
 
 namespace Juit\PhpOdt\OdtToPdfRenderer;
 
+use SplFileInfo;
 use Symfony\Component\Process\Process;
 
 abstract class AbstractOdtToPdfRenderer
 {
     /**
-     * @param \SplFileInfo $odtFileInfo The input file
-     * @param \SplFileInfo $pdfFileInfo The output file
+     * @param SplFileInfo $odtFileInfo The input file
+     * @return SplFileInfo
      * @throws \RuntimeException
      */
-    public function render(\SplFileInfo $odtFileInfo, \SplFileInfo $pdfFileInfo)
+    public function render(SplFileInfo $odtFileInfo)
     {
         $shellCommand = $this->createShellCommand($odtFileInfo);
 
@@ -33,11 +34,15 @@ abstract class AbstractOdtToPdfRenderer
 //        exec($cmd);
 //        unlink($pdfFileInfo->getPathname());
 //        rename($out->getPathname(), $pdfFileInfo->getPathname());
+
+        $outputPath = $odtFileInfo->getPath() . '/' . $odtFileInfo->getBasename('.odt') . '.pdf';
+
+        return new SplFileInfo($outputPath);
     }
 
     /**
-     * @param \SplFileInfo $odtFile
+     * @param SplFileInfo $odtFile
      * @return string
      */
-    abstract protected function createShellCommand(\SplFileInfo $odtFile);
+    abstract protected function createShellCommand(SplFileInfo $odtFile);
 }
