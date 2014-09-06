@@ -3,7 +3,8 @@ alias sfcc='rm -fr /var/www/app/cache/dev /var/www/app/cache/prod /var/www/app/c
 alias sfdmd='sf doctrine:migrations:diff'
 alias sfdmm='sf doctrine:migrations:migrate -n'
 alias sfdsv='sf doctrine:schema:validate'
-alias sfrt='rm -fr /var/www/tests/reports/coverage/* && /var/www/vendor/bin/phpunit --coverage-html /var/www/tests/reports/coverage -c /var/www/tests /var/www/tests'
+alias sfrt='/var/www/vendor/bin/phpunit -c /var/www/tests /var/www/tests'
+alias sfrtc='rm -fr /var/www/tests/reports/coverage/* && /var/www/vendor/bin/phpunit --coverage-html /var/www/tests/reports/coverage -c /var/www/tests /var/www/tests'
 alias sfdb_reset='sf doctrine:database:drop --force && sf doctrine:database:create && sf doctrine:schema:create && sf doctrine:fixtures:load -n'
 alias sfdb_load_dump='sf doctrine:database:drop --force -vvv && sf doctrine:database:create -vvv && mysql -u dev -pdev dev < ./docs/current.sql && sfdmm'
 
