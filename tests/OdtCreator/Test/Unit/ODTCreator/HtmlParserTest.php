@@ -83,7 +83,7 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(1, $paragraphs);
 
-        $contents    = $this->getContentsOfParagraph($paragraphs[0]);
+        $contents = $this->getContentsOfParagraph($paragraphs[0]);
         $this->assertCount(3, $contents);
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[0]);
@@ -109,19 +109,17 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         $contents = $this->getContentsOfParagraph($paragraphs[0]);
         $this->assertCount(3, $contents);
 
-        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[0]);
-        $this->assertTextWithContent('A text with a ', $contents[0]);
-        $this->assertNull($this->getStyleOfText($contents[0]));
+        $actual = $contents[0];
+        $this->assertTextWithContent('A text with a ', $actual);
+        $this->assertNotBold($actual);
 
-        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[1]);
-        $this->assertTextWithContent('bold', $contents[1]);
-        $textStyle = $this->getStyleOfText($contents[1]);
-        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $textStyle);
-        $this->assertIsBold($textStyle);
+        $actual = $contents[1];
+        $this->assertTextWithContent('bold', $actual);
+        $this->assertBold($actual);
 
-        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[2]);
-        $this->assertTextWithContent(' word', $contents[2]);
-        $this->assertNull($this->getStyleOfText($contents[2]));
+        $actual = $contents[2];
+        $this->assertTextWithContent(' word', $actual);
+        $this->assertNotBold($actual);
     }
 
     /**
@@ -163,13 +161,44 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         return $paragraphContents->getValue($paragraph);
     }
 
-    private function assertIsBold(TextStyle $style)
+    /**
+     * @param Text $text
+     */
+    private function assertBold($text)
     {
-        $reflection = new \ReflectionClass('\Juit\PhpOdt\OdtCreator\Style\TextStyle');
+        $style = $this->getStyleOfText($text);
+
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style);
+
+        $reflection     = new \ReflectionClass('\Juit\PhpOdt\OdtCreator\Style\TextStyle');
         $propertyIsBold = $reflection->getProperty('isBold');
         $propertyIsBold->setAccessible(true);
 
         $this->assertTrue($propertyIsBold->getValue($style));
+    }
+
+    /**
+     * @param Text $text
+     */
+    private function assertNotBold($text)
+    {
+        $style = $this->getStyleOfText($text);
+
+        if (null === $style) {
+            return;
+        }
+
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style);
+
+        $reflection     = new \ReflectionClass('\Juit\PhpOdt\OdtCreator\Style\TextStyle');
+        $propertyIsBold = $reflection->getProperty('isBold');
+        $propertyIsBold->setAccessible(true);
+
+        $value = $propertyIsBold->getValue($style);
+        if (null === $value) {
+            return;
+        }
+        $this->assertFalse($value);
     }
 
     /**
