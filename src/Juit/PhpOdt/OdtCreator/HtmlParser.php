@@ -8,6 +8,7 @@ use Juit\PhpOdt\OdtCreator\Content\LineBreak;
 use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
+use Juit\PhpOdt\OdtCreator\Style\TextStyle;
 
 class HtmlParser
 {
@@ -62,29 +63,38 @@ class HtmlParser
     }
 
     /**
-     * @param $node
+     * @param Text|Element $node
      * @param Paragraph $paragraph
+     * @param Style\TextStyle $style
      */
-    private function parseChildNode($node, Paragraph $paragraph)
+    private function parseChildNode($node, Paragraph $paragraph, TextStyle $style = null)
     {
         if ($node instanceof \FluentDOM\Text) {
-            $paragraph->addContent(new Text($node->nodeValue));
-        } elseif ($node instanceof Element) {
-            switch ($node->tagName) {
-                case 'strong':
-                    $style = $this->styleFactory->createTextStyle();
-                    $style->setBold();
-                    $paragraph->addContent(new Text($node->nodeValue, $style));
-                    break;
-                case 'em':
-                    $style = $this->styleFactory->createTextStyle();
-                    $style->setItalic();
-                    $paragraph->addContent(new Text($node->nodeValue, $style));
-                    break;
-                case 'br':
-                    $paragraph->addContent(new LineBreak());
-                    break;
-            }
+            $paragraph->addContent(new Text($node->nodeValue, $style));
+
+            return;
+        }
+
+        if ('br' === $node->tagName) {
+            $paragraph->addContent(new LineBreak());
+
+            return;
+        }
+
+        if (!$style) {
+            $style = $this->styleFactory->createTextStyle();
+        }
+        switch ($node->tagName) {
+            case 'strong':
+                $style->setBold();
+                break;
+            case 'em':
+                $style->setItalic();
+                break;
+        }
+
+        foreach ($node->childNodes as $childNode) {
+            $this->parseChildNode($childNode, $paragraph, $style);
         }
     }
 } 
