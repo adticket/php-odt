@@ -2,6 +2,7 @@
 
 namespace OdtCreator\Test\Unit\ODTCreator;
 
+use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\HtmlParser;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
@@ -33,7 +34,7 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 
         $contents = $this->getContentsOfParagraph($paragraph);
         $this->assertCount(1, $contents);
-        $this->assertEquals('I am a plain text.', $this->createTextReflection()->getValue($contents[0]));
+        $this->assertEquals('I am a plain text.', $this->getContentOfText($contents[0]));
     }
 
     /**
@@ -63,11 +64,11 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 
         $contents = $this->getContentsOfParagraph($paragraphs[0]);
         $this->assertCount(1, $contents);
-        $this->assertEquals('Some text', $this->createTextReflection()->getValue($contents[0]));
+        $this->assertEquals('Some text', $this->getContentOfText($contents[0]));
 
         $contents = $this->getContentsOfParagraph($paragraphs[1]);
         $this->assertCount(1, $contents);
-        $this->assertEquals('More text', $this->createTextReflection()->getValue($contents[0]));
+        $this->assertEquals('More text', $this->getContentOfText($contents[0]));
     }
 
     /**
@@ -82,17 +83,15 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $paragraphs);
 
         $contents    = $this->getContentsOfParagraph($paragraphs[0]);
-        $textContent = $this->createTextReflection();
-
         $this->assertCount(3, $contents);
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[0]);
-        $this->assertEquals('A text', $textContent->getValue($contents[0]));
+        $this->assertEquals('A text', $this->getContentOfText($contents[0]));
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\LineBreak', $contents[1]);
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[2]);
-        $this->assertEquals('with a line break', $textContent->getValue($contents[2]));
+        $this->assertEquals('with a line break', $this->getContentOfText($contents[2]));
     }
 
     /**
@@ -110,11 +109,11 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $contents);
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[0]);
-        $this->assertEquals('A text with a ', $this->createTextReflection()->getValue($contents[0]));
+        $this->assertEquals('A text with a ', $this->getContentOfText($contents[0]));
         $this->assertNull($this->createTextStyleReflection()->getValue($contents[0]));
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[1]);
-        $this->assertEquals('bold', $this->createTextReflection()->getValue($contents[1]));
+        $this->assertEquals('bold', $this->getContentOfText($contents[1]));
         $textStyle = $this->createTextStyleReflection()->getValue($contents[1]);
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $textStyle);
 
@@ -124,7 +123,7 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($styleReflectionBold->getValue($textStyle));
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[2]);
-        $this->assertEquals(' word', $this->createTextReflection()->getValue($contents[2]));
+        $this->assertEquals(' word', $this->getContentOfText($contents[2]));
         $this->assertNull($this->createTextStyleReflection()->getValue($contents[2]));
     }
 
@@ -140,15 +139,12 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         return $paragraphContents->getValue($paragraph);
     }
 
-    /**
-     * @return \ReflectionProperty
-     */
-    private function createTextReflection()
+    private function getContentOfText(Text $text)
     {
         $textContent = new \ReflectionProperty('\Juit\PhpOdt\OdtCreator\Content\Text', 'content');
         $textContent->setAccessible(true);
 
-        return $textContent;
+        return $textContent->getValue($text);
     }
 
     /**
