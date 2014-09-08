@@ -89,7 +89,7 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[0]);
         $this->assertTextWithContent('A text', $contents[0]);
 
-        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\LineBreak', $contents[1]);
+        $this->assertLineBreak($contents[1]);
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[2]);
         $this->assertTextWithContent('with a line break', $contents[2]);
@@ -124,6 +124,9 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->getStyleOfText($contents[2]));
     }
 
+    /**
+     * @param Paragraph $actual
+     */
     private function assertParagraph($actual)
     {
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Element\Paragraph', $actual);
@@ -141,6 +144,11 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         $textContent->setAccessible(true);
 
         $this->assertEquals($expected, $textContent->getValue($actual));
+    }
+
+    private function assertLineBreak($actual)
+    {
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\LineBreak', $actual);
     }
 
     /**
