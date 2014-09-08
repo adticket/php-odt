@@ -2,6 +2,7 @@
 
 namespace OdtCreator\Test\Unit\ODTCreator;
 
+use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\HtmlParser;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 
@@ -30,7 +31,7 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         $paragraph = $paragraphs[0];
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Element\Paragraph', $paragraph);
 
-        $contents = $this->createParagraphReflection()->getValue($paragraph);
+        $contents = $this->getContentsOfParagraph($paragraph);
         $this->assertCount(1, $contents);
         $this->assertEquals('I am a plain text.', $this->createTextReflection()->getValue($contents[0]));
     }
@@ -60,11 +61,11 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Element\Paragraph', $paragraph);
         }
 
-        $contents = $this->createParagraphReflection()->getValue($paragraphs[0]);
+        $contents = $this->getContentsOfParagraph($paragraphs[0]);
         $this->assertCount(1, $contents);
         $this->assertEquals('Some text', $this->createTextReflection()->getValue($contents[0]));
 
-        $contents = $this->createParagraphReflection()->getValue($paragraphs[1]);
+        $contents = $this->getContentsOfParagraph($paragraphs[1]);
         $this->assertCount(1, $contents);
         $this->assertEquals('More text', $this->createTextReflection()->getValue($contents[0]));
     }
@@ -80,7 +81,7 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(1, $paragraphs);
 
-        $contents = $this->createParagraphReflection()->getValue($paragraphs[0]);
+        $contents    = $this->getContentsOfParagraph($paragraphs[0]);
         $textContent = $this->createTextReflection();
 
         $this->assertCount(3, $contents);
@@ -105,7 +106,7 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(1, $paragraphs);
 
-        $contents = $this->createParagraphReflection()->getValue($paragraphs[0]);
+        $contents = $this->getContentsOfParagraph($paragraphs[0]);
         $this->assertCount(3, $contents);
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[0]);
@@ -128,14 +129,15 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \ReflectionProperty
+     * @param Paragraph $paragraph
+     * @return array
      */
-    private function createParagraphReflection()
+    private function getContentsOfParagraph(Paragraph $paragraph)
     {
         $paragraphContents = new \ReflectionProperty('\Juit\PhpOdt\OdtCreator\Element\Paragraph', 'contents');
         $paragraphContents->setAccessible(true);
 
-        return $paragraphContents;
+        return $paragraphContents->getValue($paragraph);
     }
 
     /**
