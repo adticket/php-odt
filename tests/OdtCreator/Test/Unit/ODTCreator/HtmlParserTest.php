@@ -31,7 +31,7 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(1, $paragraphs);
         $paragraph = $paragraphs[0];
-        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Element\Paragraph', $paragraph);
+        $this->assertParagraph($paragraph);
 
         $contents = $this->getContentsOfParagraph($paragraph);
         $this->assertCount(1, $contents);
@@ -60,7 +60,7 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(2, $paragraphs);
         foreach ($paragraphs as $paragraph) {
-            $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Element\Paragraph', $paragraph);
+            $this->assertParagraph($paragraph);
         }
 
         $contents = $this->getContentsOfParagraph($paragraphs[0]);
@@ -122,6 +122,11 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[2]);
         $this->assertEquals(' word', $this->getContentOfText($contents[2]));
         $this->assertNull($this->getStyleOfText($contents[2]));
+    }
+
+    private function assertParagraph($actual)
+    {
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Element\Paragraph', $actual);
     }
 
     /**
