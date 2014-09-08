@@ -35,7 +35,7 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 
         $contents = $this->getContentsOfParagraph($paragraph);
         $this->assertCount(1, $contents);
-        $this->assertEquals('I am a plain text.', $this->getContentOfText($contents[0]));
+        $this->assertTextContentEquals('I am a plain text.', $contents[0]);
     }
 
     /**
@@ -65,11 +65,11 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 
         $contents = $this->getContentsOfParagraph($paragraphs[0]);
         $this->assertCount(1, $contents);
-        $this->assertEquals('Some text', $this->getContentOfText($contents[0]));
+        $this->assertTextContentEquals('Some text', $contents[0]);
 
         $contents = $this->getContentsOfParagraph($paragraphs[1]);
         $this->assertCount(1, $contents);
-        $this->assertEquals('More text', $this->getContentOfText($contents[0]));
+        $this->assertTextContentEquals('More text', $contents[0]);
     }
 
     /**
@@ -87,12 +87,12 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $contents);
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[0]);
-        $this->assertEquals('A text', $this->getContentOfText($contents[0]));
+        $this->assertTextContentEquals('A text', $contents[0]);
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\LineBreak', $contents[1]);
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[2]);
-        $this->assertEquals('with a line break', $this->getContentOfText($contents[2]));
+        $this->assertTextContentEquals('with a line break', $contents[2]);
     }
 
     /**
@@ -110,23 +110,31 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $contents);
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[0]);
-        $this->assertEquals('A text with a ', $this->getContentOfText($contents[0]));
+        $this->assertTextContentEquals('A text with a ', $contents[0]);
         $this->assertNull($this->getStyleOfText($contents[0]));
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[1]);
-        $this->assertEquals('bold', $this->getContentOfText($contents[1]));
+        $this->assertTextContentEquals('bold', $contents[1]);
         $textStyle = $this->getStyleOfText($contents[1]);
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $textStyle);
         $this->assertIsBold($textStyle);
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[2]);
-        $this->assertEquals(' word', $this->getContentOfText($contents[2]));
+        $this->assertTextContentEquals(' word', $contents[2]);
         $this->assertNull($this->getStyleOfText($contents[2]));
     }
 
     private function assertParagraph($actual)
     {
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Element\Paragraph', $actual);
+    }
+
+    private function assertTextContentEquals($expected, Text $actual)
+    {
+        $textContent = new \ReflectionProperty('\Juit\PhpOdt\OdtCreator\Content\Text', 'content');
+        $textContent->setAccessible(true);
+
+        $this->assertEquals($expected, $textContent->getValue($actual));
     }
 
     /**
@@ -139,14 +147,6 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         $paragraphContents->setAccessible(true);
 
         return $paragraphContents->getValue($paragraph);
-    }
-
-    private function getContentOfText(Text $text)
-    {
-        $textContent = new \ReflectionProperty('\Juit\PhpOdt\OdtCreator\Content\Text', 'content');
-        $textContent->setAccessible(true);
-
-        return $textContent->getValue($text);
     }
 
     private function assertIsBold(TextStyle $style)
