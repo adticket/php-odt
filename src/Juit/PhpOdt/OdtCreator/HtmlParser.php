@@ -8,7 +8,6 @@ use Juit\PhpOdt\OdtCreator\Content\LineBreak;
 use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
-use Juit\PhpOdt\OdtCreator\Style\TextStyle;
 
 class HtmlParser
 {
@@ -30,7 +29,7 @@ class HtmlParser
     public function parse($input)
     {
         $paragraphNodes = $this->parseTopLevelNodes($input);
-        $result = [];
+        $result         = [];
 
         foreach ($paragraphNodes as $node) {
             /** @var Element $node */
@@ -40,7 +39,7 @@ class HtmlParser
 
             $paragraph = new Paragraph();
             foreach ($node->childNodes as $childNode) {
-                $this->parseChildNode($childNode, $paragraph);
+                $this->parseNode($childNode, $paragraph);
             }
 
             $result[] = $paragraph;
@@ -65,36 +64,41 @@ class HtmlParser
     /**
      * @param Text|Element $node
      * @param Paragraph $paragraph
-     * @param Style\TextStyle $style
+     * @param array $styles
      */
-    private function parseChildNode($node, Paragraph $paragraph, TextStyle $style = null)
+    private function parseNode($node, Paragraph $paragraph, array $styles = [])
     {
-        if ($node instanceof \FluentDOM\Text) {
-            $paragraph->addContent(new Text($node->nodeValue, $style));
-
-            return;
-        }
-
-        if ('br' === $node->tagName) {
+        if (isset($node->tagName) && 'br' === $node->tagName) {
             $paragraph->addContent(new LineBreak());
 
             return;
         }
 
-        if (!$style) {
+        if ($node instanceof \FluentDOM\Text) {
             $style = $this->styleFactory->createTextStyle();
+            if (isset($styles['bold'])) {
+                $style->setBold();
+            }
+            if (isset($styles['italic'])) {
+                $style->setItalic();
+            }
+
+            $paragraph->addContent(new Text($node->nodeValue, $style));
+
+            return;
         }
+
         switch ($node->tagName) {
             case 'strong':
-                $style->setBold();
+                $styles['bold'] = true;
                 break;
             case 'em':
-                $style->setItalic();
+                $styles['italic'] = true;
                 break;
         }
 
         foreach ($node->childNodes as $childNode) {
-            $this->parseChildNode($childNode, $paragraph, $style);
+            $this->parseNode($childNode, $paragraph, $styles);
         }
     }
 } 

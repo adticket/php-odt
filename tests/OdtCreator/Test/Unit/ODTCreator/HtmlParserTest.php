@@ -171,4 +171,39 @@ class HtmlParserTest extends HtmlParserTestCase
         $this->assertNotBold($actual);
         $this->assertNotItalic($actual);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_handle_more_complex_style_cascadings()
+    {
+        $SUT = $this->SUT;
+
+        $paragraphs = $SUT->parse('<p>A text with <em>emphasized and <strong>strong</strong></em> words</p>');
+
+        $this->assertCount(1, $paragraphs);
+
+        $contents = $this->getContentsOfParagraph($paragraphs[0]);
+        $this->assertCount(4, $contents);
+
+        $actual = $contents[0];
+        $this->assertTextWithContent('A text with ', $actual);
+        $this->assertNotBold($actual);
+        $this->assertNotItalic($actual);
+
+        $actual = $contents[1];
+        $this->assertTextWithContent('emphasized and ', $actual);
+        $this->assertNotBold($actual);
+        $this->assertItalic($actual);
+
+        $actual = $contents[2];
+        $this->assertTextWithContent('strong', $actual);
+        $this->assertBold($actual);
+        $this->assertItalic($actual);
+
+        $actual = $contents[3];
+        $this->assertTextWithContent(' words', $actual);
+        $this->assertNotBold($actual);
+        $this->assertNotItalic($actual);
+    }
 }
