@@ -59,8 +59,9 @@ class HtmlParserTestCase extends \PHPUnit_Framework_TestCase
     {
         $style = $this->getStyleOfText($text);
 
-        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style);
-        $this->assertPropertyTrue('isBold', $style);
+        $message = 'Failed asserting that text is bold.';
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style, $message);
+        $this->assertPropertyTrue('isBold', $style, $message);
     }
 
     /**
@@ -74,8 +75,9 @@ class HtmlParserTestCase extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style);
-        $this->assertPropertyFalsy('isBold', $style);
+        $message = 'Failed asserting that text is not bold.';
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style, $message);
+        $this->assertPropertyFalsy('isBold', $style, $message);
     }
 
     /**
@@ -85,8 +87,9 @@ class HtmlParserTestCase extends \PHPUnit_Framework_TestCase
     {
         $style = $this->getStyleOfText($text);
 
-        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style);
-        $this->assertPropertyTrue('isItalic', $style);
+        $message = 'Failed asserting that text is italic.';
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style, $message);
+        $this->assertPropertyTrue('isItalic', $style, $message);
     }
 
     /**
@@ -100,8 +103,9 @@ class HtmlParserTestCase extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style);
-        $this->assertPropertyFalsy('isItalic', $style);
+        $message = 'Failed asserting that text is not italic.';
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style, $message);
+        $this->assertPropertyFalsy('isItalic', $style, $message);
     }
 
     /**
@@ -119,21 +123,23 @@ class HtmlParserTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @param string $propertyName
      * @param object $object
+     * @param string $message
      */
-    private function assertPropertyTrue($propertyName, $object)
+    private function assertPropertyTrue($propertyName, $object, $message = '')
     {
         $reflection = new \ReflectionClass($object);
         $property   = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
 
-        $this->assertTrue($property->getValue($object));
+        $this->assertTrue($property->getValue($object), $message);
     }
 
     /**
      * @param string $propertyName
      * @param object $object
+     * @param string $message
      */
-    private function assertPropertyFalsy($propertyName, $object)
+    private function assertPropertyFalsy($propertyName, $object, $message = '')
     {
         $reflection = new \ReflectionClass($object);
         $property   = $reflection->getProperty($propertyName);
@@ -143,6 +149,6 @@ class HtmlParserTestCase extends \PHPUnit_Framework_TestCase
         if (null === $value) {
             return;
         }
-        $this->assertFalse($value);
+        $this->assertFalse($value, $message);
     }
 }
