@@ -16,21 +16,13 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 
         $paragraphs = $SUT->parse('<p>I am a plain text.</p>');
 
-        $this->assertInternalType('array', $paragraphs);
         $this->assertCount(1, $paragraphs);
-        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Element\Paragraph', $paragraphs[0]);
+        $paragraph = $paragraphs[0];
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Element\Paragraph', $paragraph);
 
-        $document = new Document();
-        $document->loadXML('<?xml version="1.0" encoding="UTF-8"?><root></root>');
-        $rootElement = $document->find('//root')->item(0);
-
-        $paragraphs[0]->renderToContent($document, $rootElement);
-
-        $expectedXml = '<?xml version="1.0" encoding="UTF-8"?>
-            <root>
-                <text:p xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">I am a plain text.</text:p>
-            </root>';
-        $this->assertXmlStringEqualsXmlString($expectedXml, $document->saveXML());
+        $contents = $this->createParagraphReflection()->getValue($paragraph);
+        $this->assertCount(1, $contents);
+        $this->assertEquals('I am a plain text.', $this->createTextReflection()->getValue($contents[0]));
     }
 
     /**
