@@ -38,27 +38,8 @@ class HtmlParser
             }
 
             $paragraph = new Paragraph();
-
             foreach ($node->childNodes as $childNode) {
-                if ($childNode instanceof \FluentDOM\Text) {
-                    $paragraph->addContent(new Text($childNode->nodeValue));
-                } elseif ($childNode instanceof Element) {
-                    switch ($childNode->tagName) {
-                        case 'strong':
-                            $style = $this->styleFactory->createTextStyle();
-                            $style->setBold();
-                            $paragraph->addContent(new Text($childNode->nodeValue, $style));
-                            break;
-                        case 'em':
-                            $style = $this->styleFactory->createTextStyle();
-                            $style->setItalic();
-                            $paragraph->addContent(new Text($childNode->nodeValue, $style));
-                            break;
-                        case 'br':
-                            $paragraph->addContent(new LineBreak());
-                            break;
-                    }
-                }
+                $this->parseChildNode($childNode, $paragraph);
             }
 
             $result[] = $paragraph;
@@ -78,5 +59,32 @@ class HtmlParser
         $body = $document->find('//body')->item(0);
 
         return $body->childNodes;
+    }
+
+    /**
+     * @param $node
+     * @param Paragraph $paragraph
+     */
+    private function parseChildNode($node, Paragraph $paragraph)
+    {
+        if ($node instanceof \FluentDOM\Text) {
+            $paragraph->addContent(new Text($node->nodeValue));
+        } elseif ($node instanceof Element) {
+            switch ($node->tagName) {
+                case 'strong':
+                    $style = $this->styleFactory->createTextStyle();
+                    $style->setBold();
+                    $paragraph->addContent(new Text($node->nodeValue, $style));
+                    break;
+                case 'em':
+                    $style = $this->styleFactory->createTextStyle();
+                    $style->setItalic();
+                    $paragraph->addContent(new Text($node->nodeValue, $style));
+                    break;
+                case 'br':
+                    $paragraph->addContent(new LineBreak());
+                    break;
+            }
+        }
     }
 } 
