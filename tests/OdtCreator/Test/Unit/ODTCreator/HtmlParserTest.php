@@ -86,12 +86,8 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         $contents = $this->getContentsOfParagraph($paragraphs[0]);
         $this->assertCount(3, $contents);
 
-        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[0]);
         $this->assertTextWithContent('A text', $contents[0]);
-
         $this->assertLineBreak($contents[1]);
-
-        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[2]);
         $this->assertTextWithContent('with a line break', $contents[2]);
     }
 
