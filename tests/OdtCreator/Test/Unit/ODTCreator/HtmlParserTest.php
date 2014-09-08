@@ -45,25 +45,18 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 
         $paragraphs = $SUT->parse('<p>Some text</p><p>More text</p>');
 
-        $this->assertInternalType('array', $paragraphs);
         $this->assertCount(2, $paragraphs);
         foreach ($paragraphs as $paragraph) {
             $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Element\Paragraph', $paragraph);
         }
 
-        $document = new Document();
-        $document->loadXML('<?xml version="1.0" encoding="UTF-8"?><root></root>');
-        $rootElement = $document->find('//root')->item(0);
+        $contents = $this->createParagraphReflection()->getValue($paragraphs[0]);
+        $this->assertCount(1, $contents);
+        $this->assertEquals('Some text', $this->createTextReflection()->getValue($contents[0]));
 
-        foreach ($paragraphs as $paragraph) {
-            $paragraph->renderToContent($document, $rootElement);
-        }
-        $expectedXml = '<?xml version="1.0" encoding="UTF-8"?>
-            <root>
-                <text:p xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">Some text</text:p>
-                <text:p xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">More text</text:p>
-            </root>';
-        $this->assertXmlStringEqualsXmlString($expectedXml, $document->saveXML());
+        $contents = $this->createParagraphReflection()->getValue($paragraphs[1]);
+        $this->assertCount(1, $contents);
+        $this->assertEquals('More text', $this->createTextReflection()->getValue($contents[0]));
     }
 
     /**
