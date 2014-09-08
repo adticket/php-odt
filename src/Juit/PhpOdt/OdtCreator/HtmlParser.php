@@ -7,9 +7,20 @@ use FluentDOM\Element;
 use Juit\PhpOdt\OdtCreator\Content\LineBreak;
 use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Element\Paragraph;
+use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 
 class HtmlParser
 {
+    /**
+     * @var StyleFactory
+     */
+    private $styleFactory;
+
+    public function __construct(StyleFactory $styleFactory)
+    {
+        $this->styleFactory = $styleFactory;
+    }
+
     /**
      * @param string $input
      * @throws \InvalidArgumentException
@@ -32,7 +43,16 @@ class HtmlParser
                 if ($childNode instanceof \FluentDOM\Text) {
                     $paragraph->addContent(new Text($childNode->nodeValue));
                 } elseif ($childNode instanceof Element) {
-                    $paragraph->addContent(new LineBreak());
+                    switch ($childNode->tagName) {
+                        case 'strong':
+                            $style = $this->styleFactory->createTextStyle();
+                            $style->setBold();
+                            $paragraph->addContent(new Text($childNode->nodeValue, $style));
+                            break;
+                        case 'br':
+                            $paragraph->addContent(new LineBreak());
+                            break;
+                    }
                 }
             }
 
