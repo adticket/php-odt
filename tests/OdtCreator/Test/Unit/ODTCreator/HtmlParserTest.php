@@ -14,17 +14,17 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
     {
         $SUT = new HtmlParser();
 
-        $parseResult = $SUT->parse('<p>I am a plain text.</p>');
+        $paragraphs = $SUT->parse('<p>I am a plain text.</p>');
 
-        $this->assertInternalType('array', $parseResult);
-        $this->assertCount(1, $parseResult);
-        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Element\Paragraph', $parseResult[0]);
+        $this->assertInternalType('array', $paragraphs);
+        $this->assertCount(1, $paragraphs);
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Element\Paragraph', $paragraphs[0]);
 
         $document = new Document();
         $document->loadXML('<?xml version="1.0" encoding="UTF-8"?><root></root>');
         $rootElement = $document->find('//root')->item(0);
 
-        $parseResult[0]->renderToContent($document, $rootElement);
+        $paragraphs[0]->renderToContent($document, $rootElement);
 
         $expectedXml = '<?xml version="1.0" encoding="UTF-8"?>
             <root>
@@ -51,20 +51,20 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
     {
         $SUT = new HtmlParser();
 
-        $parseResult = $SUT->parse('<p>Some text</p><p>More text</p>');
+        $paragraphs = $SUT->parse('<p>Some text</p><p>More text</p>');
 
-        $this->assertInternalType('array', $parseResult);
-        $this->assertCount(2, $parseResult);
-        foreach ($parseResult as $object) {
-            $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Element\Paragraph', $object);
+        $this->assertInternalType('array', $paragraphs);
+        $this->assertCount(2, $paragraphs);
+        foreach ($paragraphs as $paragraph) {
+            $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Element\Paragraph', $paragraph);
         }
 
         $document = new Document();
         $document->loadXML('<?xml version="1.0" encoding="UTF-8"?><root></root>');
         $rootElement = $document->find('//root')->item(0);
 
-        foreach ($parseResult as $object) {
-            $object->renderToContent($document, $rootElement);
+        foreach ($paragraphs as $paragraph) {
+            $paragraph->renderToContent($document, $rootElement);
         }
         $expectedXml = '<?xml version="1.0" encoding="UTF-8"?>
             <root>
@@ -81,9 +81,9 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
     {
         $SUT = new HtmlParser();
 
-        $parseResult = $SUT->parse('<p>A text<br>with a line break</p>');
+        $paragraphs = $SUT->parse('<p>A text<br>with a line break</p>');
 
-        $contents = $this->createParagraphReflection()->getValue($parseResult[0]);
+        $contents = $this->createParagraphReflection()->getValue($paragraphs[0]);
         $textContent = $this->createTextReflection();
 
         $this->assertCount(3, $contents);
@@ -115,6 +115,7 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
     {
         $textContent = new \ReflectionProperty('\Juit\PhpOdt\OdtCreator\Content\Text', 'content');
         $textContent->setAccessible(true);
+
         return $textContent;
     }
 }
