@@ -83,20 +83,38 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 
         $parseResult = $SUT->parse('<p>A text<br>with a line break</p>');
 
-        $paragraphContents = new \ReflectionProperty('\Juit\PhpOdt\OdtCreator\Element\Paragraph', 'contents');
-        $paragraphContents->setAccessible(true);
-        $contents = $paragraphContents->getValue($parseResult[0]);
+        $contents = $this->createParagraphReflection()->getValue($parseResult[0]);
+        $textContent = $this->createTextReflection();
 
         $this->assertCount(3, $contents);
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[0]);
-        $textContent = new \ReflectionProperty('\Juit\PhpOdt\OdtCreator\Content\Text', 'content');
-        $textContent->setAccessible(true);
         $this->assertEquals('A text', $textContent->getValue($contents[0]));
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\LineBreak', $contents[1]);
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[2]);
         $this->assertEquals('with a line break', $textContent->getValue($contents[2]));
+    }
+
+    /**
+     * @return \ReflectionProperty
+     */
+    private function createParagraphReflection()
+    {
+        $paragraphContents = new \ReflectionProperty('\Juit\PhpOdt\OdtCreator\Element\Paragraph', 'contents');
+        $paragraphContents->setAccessible(true);
+
+        return $paragraphContents;
+    }
+
+    /**
+     * @return \ReflectionProperty
+     */
+    private function createTextReflection()
+    {
+        $textContent = new \ReflectionProperty('\Juit\PhpOdt\OdtCreator\Content\Text', 'content');
+        $textContent->setAccessible(true);
+        return $textContent;
     }
 }
