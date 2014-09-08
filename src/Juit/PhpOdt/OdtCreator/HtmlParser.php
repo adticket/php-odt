@@ -4,6 +4,7 @@ namespace Juit\PhpOdt\OdtCreator;
 
 use FluentDOM\Document;
 use FluentDOM\Element;
+use Juit\PhpOdt\OdtCreator\Content\LineBreak;
 use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 
@@ -26,7 +27,15 @@ class HtmlParser
             }
 
             $paragraph = new Paragraph();
-            $paragraph->addContent(new Text($node->nodeValue));
+
+            foreach ($node->childNodes as $childNode) {
+                if ($childNode instanceof \FluentDOM\Text) {
+                    $paragraph->addContent(new Text($childNode->nodeValue));
+                } elseif ($childNode instanceof Element) {
+                    $paragraph->addContent(new LineBreak());
+                }
+            }
+
             $result[] = $paragraph;
         }
 
