@@ -2,6 +2,7 @@
 
 namespace OdtCreator\Test\Unit\ODTCreator;
 
+use Juit\PhpOdt\OdtCreator\Content\LineBreak;
 use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\HtmlParser;
@@ -140,6 +141,9 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $textContent->getValue($actual));
     }
 
+    /**
+     * @param LineBreak $actual
+     */
     private function assertLineBreak($actual)
     {
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\LineBreak', $actual);
@@ -165,12 +169,7 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         $style = $this->getStyleOfText($text);
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style);
-
-        $reflection     = new \ReflectionClass('\Juit\PhpOdt\OdtCreator\Style\TextStyle');
-        $propertyIsBold = $reflection->getProperty('isBold');
-        $propertyIsBold->setAccessible(true);
-
-        $this->assertTrue($propertyIsBold->getValue($style));
+        $this->assertPropertyTrue('isBold', $style);
     }
 
     /**
@@ -185,16 +184,8 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style);
+        $this->assertPropertyFalsy('isBold', $style);
 
-        $reflection     = new \ReflectionClass('\Juit\PhpOdt\OdtCreator\Style\TextStyle');
-        $propertyIsBold = $reflection->getProperty('isBold');
-        $propertyIsBold->setAccessible(true);
-
-        $value = $propertyIsBold->getValue($style);
-        if (null === $value) {
-            return;
-        }
-        $this->assertFalse($value);
     }
 
     /**
@@ -207,5 +198,35 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         $textStyle->setAccessible(true);
 
         return $textStyle->getValue($text);
+    }
+
+    /**
+     * @param string $propertyName
+     * @param object $object
+     */
+    private function assertPropertyTrue($propertyName, $object)
+    {
+        $reflection = new \ReflectionClass($object);
+        $property   = $reflection->getProperty($propertyName);
+        $property->setAccessible(true);
+
+        $this->assertTrue($property->getValue($object));
+    }
+
+    /**
+     * @param string $propertyName
+     * @param object $object
+     */
+    private function assertPropertyFalsy($propertyName, $object)
+    {
+        $reflection = new \ReflectionClass($object);
+        $property   = $reflection->getProperty($propertyName);
+        $property->setAccessible(true);
+
+        $value = $property->getValue($object);
+        if (null === $value) {
+            return;
+        }
+        $this->assertFalse($value);
     }
 }
