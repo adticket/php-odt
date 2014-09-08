@@ -6,6 +6,7 @@ use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\HtmlParser;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
+use Juit\PhpOdt\OdtCreator\Style\TextStyle;
 
 class HtmlParserTest extends \PHPUnit_Framework_TestCase
 {
@@ -110,21 +111,17 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[0]);
         $this->assertEquals('A text with a ', $this->getContentOfText($contents[0]));
-        $this->assertNull($this->createTextStyleReflection()->getValue($contents[0]));
+        $this->assertNull($this->getStyleOfText($contents[0]));
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[1]);
         $this->assertEquals('bold', $this->getContentOfText($contents[1]));
-        $textStyle = $this->createTextStyleReflection()->getValue($contents[1]);
+        $textStyle = $this->getStyleOfText($contents[1]);
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $textStyle);
-
-        $styleReflection = new \ReflectionClass($textStyle);
-        $styleReflectionBold = $styleReflection->getProperty('isBold');
-        $styleReflectionBold->setAccessible(true);
-        $this->assertTrue($styleReflectionBold->getValue($textStyle));
+        $this->assertIsBold($textStyle);
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Content\Text', $contents[2]);
         $this->assertEquals(' word', $this->getContentOfText($contents[2]));
-        $this->assertNull($this->createTextStyleReflection()->getValue($contents[2]));
+        $this->assertNull($this->getStyleOfText($contents[2]));
     }
 
     /**
@@ -147,14 +144,24 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
         return $textContent->getValue($text);
     }
 
+    private function assertIsBold(TextStyle $style)
+    {
+        $reflection = new \ReflectionClass('\Juit\PhpOdt\OdtCreator\Style\TextStyle');
+        $propertyIsBold = $reflection->getProperty('isBold');
+        $propertyIsBold->setAccessible(true);
+
+        $this->assertTrue($propertyIsBold->getValue($style));
+    }
+
     /**
-     * @return \ReflectionProperty
+     * @param Text $text
+     * @return TextStyle|null
      */
-    private function createTextStyleReflection()
+    private function getStyleOfText(Text $text)
     {
         $textStyle = new \ReflectionProperty('\Juit\PhpOdt\OdtCreator\Content\Text', 'style');
         $textStyle->setAccessible(true);
 
-        return $textStyle;
+        return $textStyle->getValue($text);
     }
 }
