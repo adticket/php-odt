@@ -49,6 +49,11 @@ class HtmlParser
                             $style->setBold();
                             $paragraph->addContent(new Text($childNode->nodeValue, $style));
                             break;
+                        case 'em':
+                            $style = $this->styleFactory->createTextStyle();
+                            $style->setItalic();
+                            $paragraph->addContent(new Text($childNode->nodeValue, $style));
+                            break;
                         case 'br':
                             $paragraph->addContent(new LineBreak());
                             break;

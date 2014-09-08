@@ -120,6 +120,33 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_handle_font_style_italic()
+    {
+        $SUT = $this->SUT;
+
+        $paragraphs = $SUT->parse('<p>A text with an <em>emphasized</em> word</p>');
+
+        $this->assertCount(1, $paragraphs);
+
+        $contents = $this->getContentsOfParagraph($paragraphs[0]);
+        $this->assertCount(3, $contents);
+
+        $actual = $contents[0];
+        $this->assertTextWithContent('A text with an ', $actual);
+        $this->assertNotItalic($actual);
+
+        $actual = $contents[1];
+        $this->assertTextWithContent('emphasized', $actual);
+        $this->assertItalic($actual);
+
+        $actual = $contents[2];
+        $this->assertTextWithContent(' word', $actual);
+        $this->assertNotItalic($actual);
+    }
+
+    /**
      * @param Paragraph $actual
      */
     private function assertParagraph($actual)
@@ -185,7 +212,32 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style);
         $this->assertPropertyFalsy('isBold', $style);
+    }
 
+    /**
+     * @param Text $text
+     */
+    private function assertItalic($text)
+    {
+        $style = $this->getStyleOfText($text);
+
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style);
+        $this->assertPropertyTrue('isItalic', $style);
+    }
+
+    /**
+     * @param Text $text
+     */
+    private function assertNotItalic($text)
+    {
+        $style = $this->getStyleOfText($text);
+
+        if (null === $style) {
+            return;
+        }
+
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style);
+        $this->assertPropertyFalsy('isItalic', $style);
     }
 
     /**

@@ -26,6 +26,11 @@ class TextStyle extends AbstractStyle
     /**
      * @var bool
      */
+    private $isItalic = false;
+
+    /**
+     * @var bool
+     */
     private $isBold = false;
 
     /**
@@ -61,6 +66,14 @@ class TextStyle extends AbstractStyle
     }
 
     /**
+     * Make the text italic
+     */
+    public function setItalic()
+    {
+        $this->isItalic = true;
+    }
+
+    /**
      * @param \DOMDocument $stylesDocument
      * @param \DOMElement $styleElement
      */
@@ -77,6 +90,10 @@ class TextStyle extends AbstractStyle
 
         if ($this->color) {
             $element->setAttribute('fo:color', $this->color->getHexCode());
+        }
+
+        if ($this->isItalic) {
+            $element->setAttribute('fo:font-style', 'italic');
         }
 
         if ($this->isBold) {
