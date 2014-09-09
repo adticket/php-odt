@@ -15,13 +15,20 @@ class TextStyleConfig
     private $isItalic;
 
     /**
+     * @var bool
+     */
+    private $isUnderline;
+
+    /**
      * @param bool $isBold
      * @param bool $isItalic
+     * @param bool $isUnderline
      */
-    public function __construct($isBold = false, $isItalic = false)
+    public function __construct($isBold = false, $isItalic = false, $isUnderline = false)
     {
         $this->isBold = $isBold;
         $this->isItalic = $isItalic;
+        $this->isUnderline = $isUnderline;
     }
 
     /**
@@ -29,7 +36,7 @@ class TextStyleConfig
      */
     public function setBold()
     {
-        return new self(true, $this->isItalic);
+        return new self(true, $this->isItalic, $this->isUnderline);
     }
 
     /**
@@ -37,7 +44,12 @@ class TextStyleConfig
      */
     public function setItalic()
     {
-        return new self($this->isBold, true);
+        return new self($this->isBold, true, $this->isUnderline);
+    }
+
+    public function setUnderline()
+    {
+        return new self($this->isBold, $this->isItalic, true);
     }
 
     /**
@@ -54,5 +66,13 @@ class TextStyleConfig
     public function isItalic()
     {
         return $this->isItalic;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isUnderline()
+    {
+        return $this->isUnderline;
     }
 }
