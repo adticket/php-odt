@@ -111,13 +111,8 @@ class HtmlParser
                 $styleConfig = $styleConfig->setUnderline();
                 break;
             case 'span':
-                $span = FluentDOM($node);
-                $styleAttribute = $span->attr('style');
-                if ($styleAttribute) {
-                    $matches = [];
-                    if (preg_match('/\bfont-size\s?:\s?(\d+)px\b/', $styleAttribute, $matches)) {
-                        $styleConfig = $styleConfig->setFontSize(new FontSize($matches[1] . 'pt'));
-                    }
+                if ($fontSize = $this->parseFontSize($node)) {
+                    $styleConfig = $styleConfig->setFontSize($fontSize);
                 }
                 break;
         }
@@ -125,5 +120,26 @@ class HtmlParser
         foreach ($node->childNodes as $childNode) {
             $this->parseNode($childNode, $paragraph, $styleConfig);
         }
+    }
+
+    /**
+     * @param Element $node
+     * @return FontSize|null
+     */
+    private function parseFontSize(Element $node)
+    {
+        $node           = FluentDOM($node);
+        $styleAttribute = $node->attr('style');
+
+        if (!$styleAttribute) {
+            return null;
+        }
+
+        $matches = [];
+        if (preg_match('/\bfont-size\s?:\s?(\d+)px\b/', $styleAttribute, $matches)) {
+            return new FontSize($matches[1] . 'pt');
+        }
+
+        return null;
     }
 } 
