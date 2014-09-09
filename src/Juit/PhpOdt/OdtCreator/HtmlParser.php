@@ -95,7 +95,9 @@ class HtmlParser
                 $style->setFontSize($styleConfig->getFontSize());
             }
 
-            $paragraph->addContent(new Text($node->nodeValue, $style));
+            $content = $node->nodeValue;
+            $content = str_replace("\xc2\xa0", ' ', $content); // Hex c2 a0 == &nbsp;
+            $paragraph->addContent(new Text($content, $style));
 
             return;
         }
