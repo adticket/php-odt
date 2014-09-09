@@ -34,6 +34,11 @@ class TextStyle extends AbstractStyle
     private $isBold = false;
 
     /**
+     * @var bool
+     */
+    private $isUnderline = false;
+
+    /**
      * @param null|string $fontName
      */
     public function setFontName($fontName)
@@ -74,6 +79,14 @@ class TextStyle extends AbstractStyle
     }
 
     /**
+     * Make the text underline
+     */
+    public function setUnderline()
+    {
+        $this->isUnderline = true;
+    }
+
+    /**
      * @param \DOMDocument $stylesDocument
      * @param \DOMElement $styleElement
      */
@@ -98,6 +111,12 @@ class TextStyle extends AbstractStyle
 
         if ($this->isBold) {
             $element->setAttribute('fo:font-weight', 'bold');
+        }
+
+        if ($this->isUnderline) {
+            $element->setAttribute('style:text-underline-style', 'solid');
+            $element->setAttribute('style:text-underline-width', 'auto');
+            $element->setAttribute('style:text-underline-color', 'font-color');
         }
 
         if ($this->fontSize) {

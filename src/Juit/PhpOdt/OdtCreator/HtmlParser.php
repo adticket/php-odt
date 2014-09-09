@@ -87,6 +87,9 @@ class HtmlParser
             if ($styleConfig->isItalic()) {
                 $style->setItalic();
             }
+            if ($styleConfig->isUnderline()) {
+                $style->setUnderline();
+            }
 
             $paragraph->addContent(new Text($node->nodeValue, $style));
 
@@ -99,6 +102,9 @@ class HtmlParser
                 break;
             case 'em':
                 $styleConfig = $styleConfig->setItalic();
+                break;
+            case 'u':
+                $styleConfig = $styleConfig->setUnderline();
                 break;
         }
 

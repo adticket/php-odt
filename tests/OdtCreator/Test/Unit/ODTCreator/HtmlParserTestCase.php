@@ -108,6 +108,31 @@ class HtmlParserTestCase extends \PHPUnit_Framework_TestCase
         $this->assertPropertyFalsy('isItalic', $style, $message);
     }
 
+    protected function assertUnderline($text)
+    {
+        $style = $this->getStyleOfText($text);
+
+        $message = 'Failed asserting that text is underlined.';
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style, $message);
+        $this->assertPropertyTrue('isUnderline', $style, $message);
+    }
+
+    /**
+     * @param Text $text
+     */
+    protected function assertNotUnderline($text)
+    {
+        $style = $this->getStyleOfText($text);
+
+        if (null === $style) {
+            return;
+        }
+
+        $message = 'Failed asserting that text is not underlined.';
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style, $message);
+        $this->assertPropertyFalsy('isUnderline', $style, $message);
+    }
+
     /**
      * @param Text $text
      * @return TextStyle|null

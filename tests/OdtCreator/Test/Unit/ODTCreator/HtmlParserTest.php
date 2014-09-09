@@ -145,6 +145,33 @@ class HtmlParserTest extends HtmlParserTestCase
     /**
      * @test
      */
+    public function it_should_handle_font_style_underline()
+    {
+        $SUT = $this->SUT;
+
+        $paragraphs = $SUT->parse('<p>A text with an <u>underlined</u> word</p>');
+
+        $this->assertCount(1, $paragraphs);
+
+        $contents = $this->getContentsOfParagraph($paragraphs[0]);
+        $this->assertCount(3, $contents);
+
+        $actual = $contents[0];
+        $this->assertTextWithContent('A text with an ', $actual);
+        $this->assertNotUnderline($actual);
+
+        $actual = $contents[1];
+        $this->assertTextWithContent('underlined', $actual);
+        $this->assertUnderline($actual);
+
+        $actual = $contents[2];
+        $this->assertTextWithContent(' word', $actual);
+        $this->assertNotUnderline($actual);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_handle_cascaded_font_styles()
     {
         $SUT = $this->SUT;
