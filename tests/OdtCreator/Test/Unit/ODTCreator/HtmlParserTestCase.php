@@ -6,6 +6,7 @@ use Juit\PhpOdt\OdtCreator\Content\LineBreak;
 use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\Style\TextStyle;
+use Juit\PhpOdt\OdtCreator\Value\FontSize;
 
 class HtmlParserTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -133,16 +134,26 @@ class HtmlParserTestCase extends \PHPUnit_Framework_TestCase
         $this->assertPropertyFalsy('isUnderline', $style, $message);
     }
 
-    /**
-     * @param Text $text
-     * @return TextStyle|null
-     */
-    private function getStyleOfText(Text $text)
+    protected function assertFontSize($expected, $text)
     {
-        $textStyle = new \ReflectionProperty('\Juit\PhpOdt\OdtCreator\Content\Text', 'style');
-        $textStyle->setAccessible(true);
+        $style = $this->getStyleOfText($text);
+        $fontSize = $this->getFontSizeOfStyle($style);
 
-        return $textStyle->getValue($text);
+        $message = 'Failed asserting that text has expected font size.';
+        $this->assertEquals(new FontSize($expected), $fontSize, $message);
+    }
+
+    protected function assertNoFontSize($text)
+    {
+        $style = $this->getStyleOfText($text);
+
+        if (null === $style) {
+            return;
+        }
+
+        $message = 'Failed asserting that text has no font size.';
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\Style\TextStyle', $style, $message);
+        $this->assertPropertyFalsy('fontSize', $style, $message);
     }
 
     /**
@@ -175,5 +186,29 @@ class HtmlParserTestCase extends \PHPUnit_Framework_TestCase
             return;
         }
         $this->assertFalse($value, $message);
+    }
+
+    /**
+     * @param Text $text
+     * @return TextStyle|null
+     */
+    private function getStyleOfText(Text $text)
+    {
+        $textStyle = new \ReflectionProperty('\Juit\PhpOdt\OdtCreator\Content\Text', 'style');
+        $textStyle->setAccessible(true);
+
+        return $textStyle->getValue($text);
+    }
+
+    /**
+     * @param TextStyle $style
+     * @return FontSize|null
+     */
+    private function getFontSizeOfStyle($style)
+    {
+        $fontSize = new \ReflectionProperty('\Juit\PhpOdt\OdtCreator\Style\TextStyle', 'fontSize');
+        $fontSize->setAccessible(true);
+
+        return $fontSize->getValue($style);
     }
 }

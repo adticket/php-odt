@@ -3,6 +3,7 @@
 namespace OdtCreator\Test\Unit\ODTCreator\HtmlParser;
 
 use Juit\PhpOdt\OdtCreator\HtmlParser\TextStyleConfig;
+use Juit\PhpOdt\OdtCreator\Value\FontSize;
 
 class TextStyleConfigTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,6 +17,7 @@ class TextStyleConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($SUT->isBold());
         $this->assertFalse($SUT->isItalic());
         $this->assertFalse($SUT->isUnderline());
+        $this->assertNull($SUT->getFontSize());
     }
 
     /**
@@ -33,6 +35,9 @@ class TextStyleConfigTest extends \PHPUnit_Framework_TestCase
 
         $SUT->setUnderline();
         $this->assertFalse($SUT->isUnderline());
+
+        $SUT->setFontSize(new FontSize('20pt'));
+        $this->assertNull($SUT->getFontSize());
     }
 
     /**
@@ -53,6 +58,23 @@ class TextStyleConfigTest extends \PHPUnit_Framework_TestCase
         $secondInstance = $firstInstance->setUnderline();
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\HtmlParser\TextStyleConfig', $secondInstance);
         $this->assertNotSame($firstInstance, $secondInstance);
+
+        $secondInstance = $firstInstance->setFontSize(new FontSize('20pt'));
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\HtmlParser\TextStyleConfig', $secondInstance);
+        $this->assertNotSame($firstInstance, $secondInstance);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_take_a_font_size()
+    {
+        $SUT = new TextStyleConfig();
+
+        $this->assertNull($SUT->getFontSize());
+
+        $SUT = $SUT->setFontSize(new FontSize('20pt'));
+        $this->assertEquals(new FontSize('20pt'), $SUT->getFontSize());
     }
 
     /**
@@ -64,10 +86,12 @@ class TextStyleConfigTest extends \PHPUnit_Framework_TestCase
         $SUT = $SUT->setBold();
         $SUT = $SUT->setItalic();
         $SUT = $SUT->setUnderline();
+        $SUT = $SUT->setFontSize(new FontSize('20pt'));
         $SUT = $SUT->setBold();
 
         $this->assertTrue($SUT->isBold());
         $this->assertTrue($SUT->isItalic());
         $this->assertTrue($SUT->isUnderline());
+        $this->assertEquals(new FontSize('20pt'), $SUT->getFontSize());
     }
 }

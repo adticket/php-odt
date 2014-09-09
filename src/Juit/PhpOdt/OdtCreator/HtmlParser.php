@@ -9,6 +9,7 @@ use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\HtmlParser\TextStyleConfig;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
+use Juit\PhpOdt\OdtCreator\Value\FontSize;
 
 class HtmlParser
 {
@@ -90,6 +91,9 @@ class HtmlParser
             if ($styleConfig->isUnderline()) {
                 $style->setUnderline();
             }
+            if ($styleConfig->getFontSize()) {
+                $style->setFontSize($styleConfig->getFontSize());
+            }
 
             $paragraph->addContent(new Text($node->nodeValue, $style));
 
@@ -105,6 +109,16 @@ class HtmlParser
                 break;
             case 'u':
                 $styleConfig = $styleConfig->setUnderline();
+                break;
+            case 'span':
+                $span = FluentDOM($node);
+                $styleAttribute = $span->attr('style');
+                if ($styleAttribute) {
+                    $matches = [];
+                    if (preg_match('/\bfont-size\s?:\s?(\d+)px\b/', $styleAttribute, $matches)) {
+                        $styleConfig = $styleConfig->setFontSize(new FontSize($matches[1] . 'pt'));
+                    }
+                }
                 break;
         }
 

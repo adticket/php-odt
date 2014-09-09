@@ -233,4 +233,30 @@ class HtmlParserTest extends HtmlParserTestCase
         $this->assertNotBold($actual);
         $this->assertNotItalic($actual);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_handle_font_sizes()
+    {
+        $SUT = $this->SUT;
+
+        $paragraphs = $SUT->parse('<p>A text with <span style="font-size: 20px;">some bigger</span> words</p>');
+
+        $this->assertCount(1, $paragraphs);
+
+        $contents = $this->getContentsOfParagraph($paragraphs[0]);
+        $this->assertCount(3, $contents);
+
+        $actual = $contents[0];
+        $this->assertTextWithContent('A text with ', $actual);
+        $this->assertNoFontSize($actual);
+
+        $actual = $contents[1];
+        $this->assertTextWithContent('some bigger', $actual);
+        $this->assertFontSize('20pt', $actual);
+
+        $actual = $contents[2];
+        $this->assertTextWithContent(' words', $actual);
+    }
 }

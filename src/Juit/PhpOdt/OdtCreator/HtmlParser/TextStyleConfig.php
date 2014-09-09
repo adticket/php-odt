@@ -2,6 +2,8 @@
 
 namespace Juit\PhpOdt\OdtCreator\HtmlParser;
 
+use Juit\PhpOdt\OdtCreator\Value\FontSize;
+
 class TextStyleConfig
 {
     /**
@@ -18,6 +20,11 @@ class TextStyleConfig
      * @var bool
      */
     private $isUnderline = false;
+
+    /**
+     * @var FontSize|null
+     */
+    private $fontSize;
 
     /**
      * @return TextStyleConfig
@@ -74,5 +81,25 @@ class TextStyleConfig
     public function isUnderline()
     {
         return $this->isUnderline;
+    }
+
+    /**
+     * @return FontSize|null
+     */
+    public function getFontSize()
+    {
+        return $this->fontSize;
+    }
+
+    /**
+     * @param FontSize $fontSize
+     * @return TextStyleConfig
+     */
+    public function setFontSize(FontSize $fontSize)
+    {
+        $newInstance = clone $this;
+        $newInstance->fontSize = $fontSize;
+
+        return $newInstance;
     }
 }
