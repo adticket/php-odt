@@ -26,8 +26,13 @@ class TextStyleConfigTest extends \PHPUnit_Framework_TestCase
         $SUT = new TextStyleConfig();
 
         $SUT->setBold();
-
         $this->assertFalse($SUT->isBold());
+
+        $SUT->setItalic();
+        $this->assertFalse($SUT->isItalic());
+
+        $SUT->setUnderline();
+        $this->assertFalse($SUT->isUnderline());
     }
 
     /**
@@ -38,7 +43,14 @@ class TextStyleConfigTest extends \PHPUnit_Framework_TestCase
         $firstInstance = new TextStyleConfig();
 
         $secondInstance = $firstInstance->setBold();
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\HtmlParser\TextStyleConfig', $secondInstance);
+        $this->assertNotSame($firstInstance, $secondInstance);
 
+        $secondInstance = $firstInstance->setItalic();
+        $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\HtmlParser\TextStyleConfig', $secondInstance);
+        $this->assertNotSame($firstInstance, $secondInstance);
+
+        $secondInstance = $firstInstance->setUnderline();
         $this->assertInstanceOf('\Juit\PhpOdt\OdtCreator\HtmlParser\TextStyleConfig', $secondInstance);
         $this->assertNotSame($firstInstance, $secondInstance);
     }
@@ -48,13 +60,14 @@ class TextStyleConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function it_should_copy_the_values_of_the_source_instance()
     {
-        $firstInstance = new TextStyleConfig();
-        $secondInstance = $firstInstance->setBold();
-        $thirdInstance = $secondInstance->setItalic();
-        $fourthInstance = $thirdInstance->setUnderline();
+        $SUT = new TextStyleConfig();
+        $SUT = $SUT->setBold();
+        $SUT = $SUT->setItalic();
+        $SUT = $SUT->setUnderline();
+        $SUT = $SUT->setBold();
 
-        $this->assertTrue($fourthInstance->isBold());
-        $this->assertTrue($fourthInstance->isItalic());
-        $this->assertTrue($fourthInstance->isUnderline());
+        $this->assertTrue($SUT->isBold());
+        $this->assertTrue($SUT->isItalic());
+        $this->assertTrue($SUT->isUnderline());
     }
 }
