@@ -259,4 +259,22 @@ class HtmlParserTest extends HtmlParserTestCase
         $actual = $contents[2];
         $this->assertTextWithContent(' words', $actual);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_handle_multiple_blanks()
+    {
+        $SUT = $this->SUT;
+
+        $paragraphs = $SUT->parse('<p>A text with &nbsp; &nbsp;blanks</p>');
+
+        $this->assertCount(1, $paragraphs);
+
+        $contents = $this->getContentsOfParagraph($paragraphs[0]);
+        $this->assertCount(1, $contents);
+
+        $actual = $contents[0];
+        $this->assertTextWithContent('A text with    blanks', $actual);
+    }
 }
