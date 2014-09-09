@@ -25,6 +25,8 @@
                          style:font-family-generic="roman" style:font-pitch="variable"/>
         <style:font-face style:name="Arial" svg:font-family="Arial" style:font-family-generic="swiss"
                          style:font-pitch="variable"/>
+        <style:font-face style:name="Verdana" svg:font-family="Verdana" style:font-family-generic="swiss"
+                         style:font-pitch="variable"/>
     </office:font-face-decls>
     <office:styles/>
     <office:automatic-styles>
