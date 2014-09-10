@@ -23,6 +23,14 @@
                          xmlns:xlink="http://www.w3.org/1999/xlink"
                          xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <office:font-face-decls>
+        <style:font-face style:name="Times New Roman" svg:font-family="&apos;Times New Roman&apos;"
+                         style:font-family-generic="roman" style:font-pitch="variable"/>
+        <style:font-face style:name="Arial" svg:font-family="Arial" style:font-family-generic="swiss"
+                         style:font-pitch="variable"/>
+        <style:font-face style:name="Verdana" svg:font-family="Verdana" style:font-family-generic="swiss"
+                         style:font-pitch="variable"/>
+    </office:font-face-decls>
     <office:body>
         <office:text/>
     </office:body>
