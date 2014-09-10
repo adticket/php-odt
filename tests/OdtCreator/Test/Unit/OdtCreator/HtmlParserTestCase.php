@@ -1,6 +1,6 @@
 <?php
 
-namespace OdtCreator\Test\Unit\ODTCreator;
+namespace OdtCreator\Test\Unit\OdtCreator;
 
 use Juit\PhpOdt\OdtCreator\Content\LineBreak;
 use Juit\PhpOdt\OdtCreator\Content\Text;

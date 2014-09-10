@@ -1,6 +1,6 @@
 <?php
 
-namespace OdtCreator\Test\Unit\ODTCreator\HtmlParser;
+namespace OdtCreator\Test\Unit\OdtCreator\HtmlParser;
 
 use Juit\PhpOdt\OdtCreator\HtmlParser\TextStyleConfig;
 use Juit\PhpOdt\OdtCreator\Value\FontSize;
