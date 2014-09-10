@@ -258,6 +258,55 @@ class HtmlParserTest extends HtmlParserTestCase
 
         $actual = $contents[2];
         $this->assertTextWithContent(' words', $actual);
+        $this->assertNoFontSize($actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_handle_font_families()
+    {
+        $SUT = $this->SUT;
+
+        $paragraphs = $SUT->parse('<p>A text with <span style="font-family: Arial">a font</span></p>');
+
+        $this->assertCount(1, $paragraphs);
+
+        $contents = $this->getContentsOfParagraph($paragraphs[0]);
+        $this->assertCount(2, $contents);
+
+        $actual = $contents[0];
+        $this->assertTextWithContent('A text with ', $actual);
+        $this->assertNoFontName($actual);
+
+        $actual = $contents[1];
+        $this->assertTextWithContent('a font', $actual);
+        $this->assertFontName('Arial', $actual);
+
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_handle_font_families_with_blanks()
+    {
+        $SUT = $this->SUT;
+
+        $paragraphs = $SUT->parse('<p>A text with <span style="font-family: \'Times New Roman\'">a font</span></p>');
+
+        $this->assertCount(1, $paragraphs);
+
+        $contents = $this->getContentsOfParagraph($paragraphs[0]);
+        $this->assertCount(2, $contents);
+
+        $actual = $contents[0];
+        $this->assertTextWithContent('A text with ', $actual);
+        $this->assertNoFontSize($actual);
+
+        $actual = $contents[1];
+        $this->assertTextWithContent('a font', $actual);
+        $this->assertFontName('Times New Roman', $actual);
+
     }
 
     /**

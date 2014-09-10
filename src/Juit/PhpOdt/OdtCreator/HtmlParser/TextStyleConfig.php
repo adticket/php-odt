@@ -24,7 +24,12 @@ class TextStyleConfig
     /**
      * @var FontSize|null
      */
-    private $fontSize;
+    private $fontSize = null;
+
+    /**
+     * @var string|null
+     */
+    private $fontName = null;
 
     /**
      * @return TextStyleConfig
@@ -99,6 +104,26 @@ class TextStyleConfig
     {
         $newInstance = clone $this;
         $newInstance->fontSize = $fontSize;
+
+        return $newInstance;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getFontName()
+    {
+        return $this->fontName;
+    }
+
+    /**
+     * @param string $fontName
+     * @return TextStyleConfig
+     */
+    public function setFontName($fontName)
+    {
+        $newInstance = clone $this;
+        $newInstance->fontName = $fontName;
 
         return $newInstance;
     }

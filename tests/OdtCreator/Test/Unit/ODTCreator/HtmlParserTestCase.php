@@ -156,6 +156,18 @@ class HtmlParserTestCase extends \PHPUnit_Framework_TestCase
         $this->assertPropertyFalsy('fontSize', $style, $message);
     }
 
+    protected function assertFontName($fontName, $text)
+    {
+        $style = $this->getStyleOfText($text);
+        $this->assertEquals($fontName, $this->getFontNameOfStyle($style));
+    }
+
+    protected function assertNoFontName($text)
+    {
+        $style = $this->getStyleOfText($text);
+        $this->assertNull($this->getFontNameOfStyle($style));
+    }
+
     /**
      * @param string $propertyName
      * @param object $object
@@ -210,5 +222,17 @@ class HtmlParserTestCase extends \PHPUnit_Framework_TestCase
         $fontSize->setAccessible(true);
 
         return $fontSize->getValue($style);
+    }
+
+    /**
+     * @param TextStyle $style
+     * @return string|null
+     */
+    private function getFontNameOfStyle($style)
+    {
+        $fontName = new \ReflectionProperty('\Juit\PhpOdt\OdtCreator\Style\TextStyle', 'fontName');
+        $fontName->setAccessible(true);
+
+        return $fontName->getValue($style);
     }
 }

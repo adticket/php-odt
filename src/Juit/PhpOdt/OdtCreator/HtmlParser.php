@@ -94,6 +94,9 @@ class HtmlParser
             if ($styleConfig->getFontSize()) {
                 $style->setFontSize($styleConfig->getFontSize());
             }
+            if ($styleConfig->getFontName()) {
+                $style->setFontName($styleConfig->getFontName());
+            }
 
             $content = $node->nodeValue;
             $content = str_replace("\xc2\xa0", ' ', $content); // Hex c2 a0 == &nbsp;
@@ -115,6 +118,9 @@ class HtmlParser
             case 'span':
                 if ($fontSize = $this->parseFontSize($node)) {
                     $styleConfig = $styleConfig->setFontSize($fontSize);
+                }
+                if ($fontName = $this->parseFontName($node)) {
+                    $styleConfig = $styleConfig->setFontName($fontName);
                 }
                 break;
         }
@@ -140,6 +146,27 @@ class HtmlParser
         $matches = [];
         if (preg_match('/\bfont-size\s?:\s?(\d+)px\b/', $styleAttribute, $matches)) {
             return new FontSize($matches[1] . 'pt');
+        }
+
+        return null;
+    }
+
+    /**
+     * @param Element $node
+     * @return string|null
+     */
+    private function parseFontName(Element $node)
+    {
+        $node = FluentDOM($node);
+        $styleAttribute = $node->attr('style');
+
+        if (!$styleAttribute) {
+            return null;
+        }
+
+        $matches = [];
+        if (preg_match('/\bfont-family\s?:\s?(\'?)(?P<fontName>.*)(\'?)\b/', $styleAttribute, $matches)) {
+            return $matches['fontName'];
         }
 
         return null;
