@@ -1,6 +1,6 @@
 <?php
 
-namespace OdtCreator\Test\Unit\ODTCreator\Document;
+namespace OdtCreator\Test\Unit\OdtCreator\Document;
 
 use Juit\PhpOdt\OdtCreator\Document\MetaFile;
 

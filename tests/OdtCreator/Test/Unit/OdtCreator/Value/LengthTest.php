@@ -1,6 +1,6 @@
 <?php
 
-namespace OdtCreator\Test\Unit\ODTCreator\Value;
+namespace OdtCreator\Test\Unit\OdtCreator\Value;
 
 use Juit\PhpOdt\OdtCreator\Value\Length;
 

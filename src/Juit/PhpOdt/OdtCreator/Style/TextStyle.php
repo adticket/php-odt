@@ -26,7 +26,17 @@ class TextStyle extends AbstractStyle
     /**
      * @var bool
      */
+    private $isItalic = false;
+
+    /**
+     * @var bool
+     */
     private $isBold = false;
+
+    /**
+     * @var bool
+     */
+    private $isUnderline = false;
 
     /**
      * @param null|string $fontName
@@ -61,6 +71,22 @@ class TextStyle extends AbstractStyle
     }
 
     /**
+     * Make the text italic
+     */
+    public function setItalic()
+    {
+        $this->isItalic = true;
+    }
+
+    /**
+     * Make the text underline
+     */
+    public function setUnderline()
+    {
+        $this->isUnderline = true;
+    }
+
+    /**
      * @param \DOMDocument $stylesDocument
      * @param \DOMElement $styleElement
      */
@@ -79,8 +105,18 @@ class TextStyle extends AbstractStyle
             $element->setAttribute('fo:color', $this->color->getHexCode());
         }
 
+        if ($this->isItalic) {
+            $element->setAttribute('fo:font-style', 'italic');
+        }
+
         if ($this->isBold) {
             $element->setAttribute('fo:font-weight', 'bold');
+        }
+
+        if ($this->isUnderline) {
+            $element->setAttribute('style:text-underline-style', 'solid');
+            $element->setAttribute('style:text-underline-width', 'auto');
+            $element->setAttribute('style:text-underline-color', 'font-color');
         }
 
         if ($this->fontSize) {
