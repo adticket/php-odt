@@ -34,8 +34,8 @@ class ExampleBuilder
     public function __construct(\SplFileinfo $outputDirInfo)
     {
         $this->outputDirInfo = $outputDirInfo;
-        $this->odtFile = new OdtFile();
-        $this->styleFactory = $this->odtFile->getStyleFactory();
+        $this->odtFile       = new OdtFile();
+        $this->styleFactory  = $this->odtFile->getStyleFactory();
     }
 
     /**
@@ -80,15 +80,13 @@ class ExampleBuilder
 
     private function addAddressFrame()
     {
-        $frameStyle = $this->styleFactory->createGraphicStyle();
+        $xCoordinate  = new Length('2cm');
+        $yCoordinate  = new Length('2.7cm');
+        $width        = new Length('8.5cm');
+        $height       = new Length('4.5cm');
+        $addressFrame = $this->odtFile->getElementFactory()->createFrame($xCoordinate, $yCoordinate, $width, $height);
+
         $textStyle = $this->createDefaultTextStyle();
-
-        $xCoordinate = new Length('2cm');
-        $yCoordinate = new Length('2.7cm');
-        $width = new Length('8.5cm');
-        $height = new Length('4.5cm');
-        $addressFrame = new Frame($frameStyle, $xCoordinate, $yCoordinate, $width, $height);
-
         $paragraph = new Paragraph();
         $paragraph->addContent(new Text('Mustermann GmbH', $textStyle));
         $paragraph->addContent(new LineBreak());
@@ -100,7 +98,6 @@ class ExampleBuilder
         $paragraph->addContent(new Text('12345 Musterstadt', $textStyle));
 
         $addressFrame->addSubElement($paragraph);
-        $this->odtFile->addElement($addressFrame);
     }
 
     /**
@@ -117,48 +114,47 @@ class ExampleBuilder
 
     private function addDateFrame()
     {
-        $frameStyle = $this->styleFactory->createGraphicStyle();
-
         $xCoordinate = new Length('14cm');
         $yCoordinate = new Length('8cm');
-        $width = new Length('5cm');
-        $height = new Length('2cm');
-        $dateFrame = new Frame($frameStyle, $xCoordinate, $yCoordinate, $width, $height);
+        $width       = new Length('5cm');
+        $height      = new Length('2cm');
+        $dateFrame   = $this->odtFile->getElementFactory()->createFrame($xCoordinate, $yCoordinate, $width, $height);
 
         $paragraph = new Paragraph();
-        $content = new Text(
+        $content   = new Text(
             'Musterdorf, den 02.05.2014',
-            $this->createDefaultTextStyle());
+            $this->createDefaultTextStyle()
+        );
         $paragraph->addContent($content);
 
         $dateFrame->addSubElement($paragraph);
-        $this->odtFile->addElement($dateFrame);
     }
 
     private function addSubject()
     {
-        $paragraphStyle = $this->styleFactory->createParagraphStyle();
-
-        // TODO: This must not be required explicitely
-        $paragraphStyle->setMasterPageName('First_20_Page');
+        $paragraphStyle = $this->createDefaultParagraphStyle();
         $paragraphStyle->setMarginBottom(new Length('24pt'));
-        $paragraph = new Paragraph($paragraphStyle);
+        $paragraph = $this->odtFile->getElementFactory()->createParagraph($paragraphStyle);
 
         $textStyle = $this->createDefaultTextStyle();
         $textStyle->setBold();
         $text = new Text('Ihr Schreiben', $textStyle);
 
         $paragraph->addContent($text);
-        $this->odtFile->addElement($paragraph);
     }
 
     private function addSalutation()
     {
-        $paragraph = new Paragraph($this->createDefaultParagraphStyle());
-
+        $paragraph = $this->createDefaultParagraph();
         $paragraph->addContent(new Text('Sehr geehrter Herr Mustermann,', $this->createDefaultTextStyle()));
+    }
 
-        $this->odtFile->addElement($paragraph);
+    /**
+     * @return Paragraph
+     */
+    private function createDefaultParagraph()
+    {
+        return $this->odtFile->getElementFactory()->createParagraph($this->createDefaultParagraphStyle());
     }
 
     /**
@@ -174,12 +170,7 @@ class ExampleBuilder
 
     private function addContent()
     {
-        $dummyText = $this->getDummyText();
-        $paragraphs = $this->createParagraphs($dummyText);
-
-        foreach ($paragraphs as $paragraph) {
-            $this->odtFile->addElement($paragraph);
-        }
+        $this->createParagraphs($this->getDummyText());
     }
 
     /**
@@ -192,75 +183,55 @@ class ExampleBuilder
 
     /**
      * @param string $dummyText
-     * @return \Juit\PhpOdt\OdtCreator\Element\Paragraph[]
      */
     private function createParagraphs($dummyText)
     {
-        $paragraphs = array();
-        $textBlocks = explode("\n", $dummyText);
+        $textBlocks       = explode("\n", $dummyText);
         $defaultTextStyle = $this->createDefaultTextStyle();
-        $paragraphStyle = $this->createDefaultParagraphStyle();
         foreach ($textBlocks as $text) {
-            $paragraph = new Paragraph($paragraphStyle);
+            $paragraph = $this->createDefaultParagraph();
             $paragraph->addContent(new Text($text, $defaultTextStyle));
-            $paragraphs[] = $paragraph;
         }
-
-        return $paragraphs;
     }
 
     private function addColoredContent()
     {
-        $paragraph = new Paragraph();
-        $style = $this->createDefaultTextStyle();
+        $paragraph = $this->createDefaultParagraph();
+        $style     = $this->createDefaultTextStyle();
         $style->setColor(new Color('#ff0000'));
         $paragraph->addContent(new Text("Dies ist roter Text.", $style));
-        $this->odtFile->addElement($paragraph);
-
-        $this->odtFile->addElement(new Paragraph());
     }
 
     private function addBoldContent()
     {
-        $paragraph = new Paragraph();
-        $style = $this->createDefaultTextStyle();
+        $paragraph = $this->createDefaultParagraph();
+        $style     = $this->createDefaultTextStyle();
         $style->setBold();
         $paragraph->addContent(new Text("Dies ist fett gedruckter Text.", $style));
-        $this->odtFile->addElement($paragraph);
-
-        $this->odtFile->addElement(new Paragraph());
     }
 
     private function addBiggerContent()
     {
-        $paragraph = new Paragraph();
+        $paragraph = $this->createDefaultParagraph();
         $style = $this->createDefaultTextStyle();
         $style->setFontSize(new FontSize('16pt'));
         $paragraph->addContent(new Text("Dies ist größerer Text.", $style));
-        $this->odtFile->addElement($paragraph);
-
-        $this->odtFile->addElement(new Paragraph());
     }
 
     private function addContentWithACombinationOfFormats()
     {
-        $paragraph = new Paragraph();
-        $style = $this->createDefaultTextStyle();
+        $paragraph = $this->createDefaultParagraph();
+        $style     = $this->createDefaultTextStyle();
         $style->setFontSize(new FontSize('16pt'));
         $style->setBold();
         $style->setColor(new Color('#0000ff'));
         $paragraph->addContent(new Text("Dies ist größerer, fett gedruckter, blauer Text.", $style));
-        $this->odtFile->addElement($paragraph);
-
-        $this->odtFile->addElement(new Paragraph());
     }
 
     private function addRegards()
     {
-        $paragraph = new Paragraph();
+        $paragraph = $this->createDefaultParagraph();
         $paragraph->addContent(new Text('Mit freundlichen Grüßen', $this->createDefaultTextStyle()));
-
-        $this->odtFile->addElement($paragraph);
     }
 
     /**

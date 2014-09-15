@@ -17,9 +17,12 @@ class ContentFile implements File
      */
     private $elements = array();
 
-    public function addElement(Element $element)
+    /**
+     * @param Element[] $elements
+     */
+    public function setElements(array $elements)
     {
-        $this->elements[] = $element;
+        $this->elements = $elements;
     }
 
     /**
