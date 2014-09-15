@@ -85,7 +85,7 @@ class ExampleBuilder
         $yCoordinate  = new Length('2.7cm');
         $width        = new Length('8.5cm');
         $height       = new Length('4.5cm');
-        $addressFrame = $this->odtFile->getElementFactory()->createFrame($xCoordinate, $yCoordinate, $width, $height);
+        $addressFrame = $this->odtFile->createFrame($xCoordinate, $yCoordinate, $width, $height);
 
         $textStyle = $this->createDefaultTextStyle();
         $paragraph = new Paragraph();
@@ -119,7 +119,7 @@ class ExampleBuilder
         $yCoordinate = new Length('8cm');
         $width       = new Length('5cm');
         $height      = new Length('2cm');
-        $dateFrame   = $this->odtFile->getElementFactory()->createFrame($xCoordinate, $yCoordinate, $width, $height);
+        $dateFrame   = $this->odtFile->createFrame($xCoordinate, $yCoordinate, $width, $height);
 
         $paragraph = new Paragraph();
         $paragraph->createTextElement(
@@ -132,7 +132,7 @@ class ExampleBuilder
 
     private function addSubject()
     {
-        $frame          = $this->odtFile->getElementFactory()->createFrame(
+        $frame     = $this->odtFile->createFrame(
             new Length('2cm'),
             new Length('10cm'),
             new Length('17cm'),
@@ -157,7 +157,7 @@ class ExampleBuilder
      */
     private function createDefaultParagraph()
     {
-        return $this->odtFile->getElementFactory()->createParagraph($this->createDefaultParagraphStyle());
+        return $this->odtFile->createParagraph($this->createDefaultParagraphStyle());
     }
 
     /**

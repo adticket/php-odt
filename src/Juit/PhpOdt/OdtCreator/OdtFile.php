@@ -8,7 +8,11 @@ use Juit\PhpOdt\OdtCreator\Document\MetaFile;
 use Juit\PhpOdt\OdtCreator\Document\SettingsFile;
 use Juit\PhpOdt\OdtCreator\Document\StylesFile;
 use Juit\PhpOdt\OdtCreator\Element\ElementFactory;
+use Juit\PhpOdt\OdtCreator\Element\Frame;
+use Juit\PhpOdt\OdtCreator\Element\Paragraph;
+use Juit\PhpOdt\OdtCreator\Style\ParagraphStyle;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
+use Juit\PhpOdt\OdtCreator\Value\Length;
 
 class OdtFile
 {
@@ -56,11 +60,24 @@ class OdtFile
     }
 
     /**
-     * @return ElementFactory
+     * @param Length $xCoordinate
+     * @param Length $yCoordinate
+     * @param Length $width
+     * @param Length $height
+     * @return Frame
      */
-    public function getElementFactory()
+    public function createFrame(Length $xCoordinate, Length $yCoordinate, Length $width, Length $height)
     {
-        return $this->elementFactory;
+        return $this->elementFactory->createFrame($xCoordinate, $yCoordinate, $width, $height);
+    }
+
+    /**
+     * @param ParagraphStyle $style
+     * @return Paragraph
+     */
+    public function createParagraph(ParagraphStyle $style = null)
+    {
+        return $this->elementFactory->createParagraph($style);
     }
 
     public function save(\SplFileInfo $targetFile)
