@@ -9,6 +9,7 @@ use Juit\PhpOdt\OdtCreator\Document\MetaFile;
 use Juit\PhpOdt\OdtCreator\Document\SettingsFile;
 use Juit\PhpOdt\OdtCreator\Document\StylesFile;
 use Juit\PhpOdt\OdtCreator\Element\Element;
+use Juit\PhpOdt\OdtCreator\Element\ElementFactory;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 
 class OdtFile
@@ -19,6 +20,11 @@ class OdtFile
      * @var StyleFactory
      */
     private $styleFactory;
+
+    /**
+     * @var ElementFactory
+     */
+    private $elementFactory;
 
     /**
      * @var \Juit\PhpOdt\OdtCreator\Document\StylesFile
@@ -38,6 +44,7 @@ class OdtFile
     public function reset()
     {
         $this->styleFactory = new StyleFactory();
+        $this->elementFactory = new ElementFactory($this->styleFactory);
         $this->styles = new StylesFile($this->styleFactory);
         $this->content = new ContentFile();
     }
@@ -50,15 +57,20 @@ class OdtFile
         return $this->styleFactory;
     }
 
-    public function addElement(Element $element)
+    /**
+     * @return ElementFactory
+     */
+    public function getElementFactory()
     {
-        $this->content->addElement($element);
+        return $this->elementFactory;
     }
 
     public function save(\SplFileInfo $targetFile)
     {
         $document = new \ZipArchive();
         $document->open($targetFile->getPathname(), \ZipArchive::OVERWRITE);
+
+        $this->content->setElements($this->elementFactory->getElements());
 
         $files = array(
             new ManifestFile(),
