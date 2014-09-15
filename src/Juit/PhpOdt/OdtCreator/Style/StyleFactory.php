@@ -30,6 +30,11 @@ class StyleFactory
     /**
      * @var null|Length
      */
+    private $marginTopOnFirstPage = null;
+
+    /**
+     * @var null|Length
+     */
     private $marginLeft = null;
 
     /**
@@ -48,6 +53,14 @@ class StyleFactory
     public function setMarginTop(Length $marginTop)
     {
         $this->marginTop = $marginTop;
+    }
+
+    /**
+     * @param \Juit\PhpOdt\OdtCreator\Value\Length $marginTopOnFirstPage
+     */
+    public function setMarginTopOnFirstPage(Length $marginTopOnFirstPage)
+    {
+        $this->marginTopOnFirstPage = $marginTopOnFirstPage;
     }
 
     /**
@@ -135,6 +148,11 @@ class StyleFactory
             $this
                 ->findPageLayoutByName($stylesDocument, 'Mpm2')
                 ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-top', $this->marginTop->getValue());
+        }
+        if (null !== $this->marginTopOnFirstPage) {
+            $this
+                ->findPageLayoutByName($stylesDocument, 'Mpm2')
+                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-top', $this->marginTopOnFirstPage->getValue());
         }
         if (null !== $this->marginLeft) {
             $this
