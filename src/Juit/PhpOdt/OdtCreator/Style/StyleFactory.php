@@ -33,6 +33,11 @@ class StyleFactory
     private $marginRight = null;
 
     /**
+     * @var null|Length
+     */
+    private $marginBottom = null;
+
+    /**
      * @param \Juit\PhpOdt\OdtCreator\Value\Length $marginLeft
      */
     public function setMarginLeft(Length $marginLeft)
@@ -46,6 +51,14 @@ class StyleFactory
     public function setMarginRight(Length $marginRight)
     {
         $this->marginRight = $marginRight;
+    }
+
+    /**
+     * @param \Juit\PhpOdt\OdtCreator\Value\Length $marginBottom
+     */
+    public function setMarginBottom(Length $marginBottom)
+    {
+        $this->marginBottom = $marginBottom;
     }
 
     /**
@@ -117,6 +130,14 @@ class StyleFactory
             $this
                 ->findPageLayoutByName($stylesDocument, 'Mpm2')
                 ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-right', $this->marginRight->getValue());
+        }
+        if (null !== $this->marginBottom) {
+            $this
+                ->findPageLayoutByName($stylesDocument, 'Mpm1')
+                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-bottom', $this->marginBottom->getValue());
+            $this
+                ->findPageLayoutByName($stylesDocument, 'Mpm2')
+                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-bottom', $this->marginBottom->getValue());
         }
     }
 
