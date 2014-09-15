@@ -76,6 +76,7 @@ class ExampleBuilder
     private function setPageBorders()
     {
         $this->styleFactory->setMarginRight(new Length('2cm'));
+        $this->styleFactory->setMarginTopOnFirstPage(new Length('11.3cm'));
     }
 
     private function addAddressFrame()
@@ -132,15 +133,22 @@ class ExampleBuilder
 
     private function addSubject()
     {
+        $frame = $this->odtFile->getElementFactory()->createFrame(
+            new Length('2cm'),
+            new Length('10cm'),
+            new Length('17cm'),
+            new Length('0.8cm')
+        );
         $paragraphStyle = $this->createDefaultParagraphStyle();
         $paragraphStyle->setMarginBottom(new Length('24pt'));
-        $paragraph = $this->odtFile->getElementFactory()->createParagraph($paragraphStyle);
+        $paragraph = new Paragraph($paragraphStyle);
 
         $textStyle = $this->createDefaultTextStyle();
         $textStyle->setBold();
         $text = new Text('Ihr Schreiben', $textStyle);
 
         $paragraph->addContent($text);
+        $frame->addSubElement($paragraph);
     }
 
     private function addSalutation()
