@@ -6,6 +6,7 @@ use FluentDOM\Document;
 use FluentDOM\Element;
 use Juit\PhpOdt\OdtCreator\Content\LineBreak;
 use Juit\PhpOdt\OdtCreator\Content\Text;
+use Juit\PhpOdt\OdtCreator\Element\ElementFactory;
 use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\HtmlParser\TextStyleConfig;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
@@ -14,13 +15,13 @@ use Juit\PhpOdt\OdtCreator\Value\FontSize;
 class HtmlParser
 {
     /**
-     * @var StyleFactory
+     * @var ElementFactory
      */
-    private $styleFactory;
+    private $elementFactory;
 
-    public function __construct(StyleFactory $styleFactory)
+    public function __construct(ElementFactory $elementFactory)
     {
-        $this->styleFactory = $styleFactory;
+        $this->elementFactory = $elementFactory;
     }
 
     /**
@@ -39,7 +40,7 @@ class HtmlParser
                 throw new \InvalidArgumentException("Unsupported top level tag '{$node->tagName}'");
             }
 
-            $paragraph = new Paragraph();
+            $paragraph = $this->elementFactory->createParagraph();
             foreach ($node->childNodes as $childNode) {
                 $this->parseNode($childNode, $paragraph);
             }
@@ -81,26 +82,25 @@ class HtmlParser
         }
 
         if ($node instanceof \FluentDOM\Text) {
-            $style = $this->styleFactory->createTextStyle();
-            if ($styleConfig->isBold()) {
-                $style->setBold();
-            }
-            if ($styleConfig->isItalic()) {
-                $style->setItalic();
-            }
-            if ($styleConfig->isUnderline()) {
-                $style->setUnderline();
-            }
-            if ($styleConfig->getFontSize()) {
-                $style->setFontSize($styleConfig->getFontSize());
-            }
-            if ($styleConfig->getFontName()) {
-                $style->setFontName($styleConfig->getFontName());
-            }
-
             $content = $node->nodeValue;
             $content = str_replace("\xc2\xa0", ' ', $content); // Hex c2 a0 == &nbsp;
-            $paragraph->createTextElement($content, $style);
+            $textElement = $paragraph->createTextElement($content);
+
+            if ($styleConfig->isBold()) {
+                $textElement->getStyle()->setBold();
+            }
+            if ($styleConfig->isItalic()) {
+                $textElement->getStyle()->setItalic();
+            }
+            if ($styleConfig->isUnderline()) {
+                $textElement->getStyle()->setUnderline();
+            }
+            if ($styleConfig->getFontSize()) {
+                $textElement->getStyle()->setFontSize($styleConfig->getFontSize());
+            }
+            if ($styleConfig->getFontName()) {
+                $textElement->getStyle()->setFontName($styleConfig->getFontName());
+            }
 
             return;
         }

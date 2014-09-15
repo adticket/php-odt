@@ -12,9 +12,16 @@ class Paragraph extends AbstractElementWithContent
      */
     private $paragraphStyle;
 
-    public function __construct(ParagraphStyle $paragraphStyle = null)
+    /**
+     * @return ParagraphStyle
+     */
+    public function getStyle()
     {
-        $this->paragraphStyle = $paragraphStyle;
+        if (null === $this->paragraphStyle) {
+            $this->paragraphStyle = $this->styleFactory->createParagraphStyle();
+        }
+
+        return $this->paragraphStyle;
     }
 
     /**
@@ -25,13 +32,9 @@ class Paragraph extends AbstractElementWithContent
     public function renderToContent(\DOMDocument $domDocument, \DOMElement $parentElement = null)
     {
         $domElement = $domDocument->createElementNS(ContentFile::NAMESPACE_TEXT, 'text:p');
-        if ($this->paragraphStyle) {
-            $domElement->setAttributeNS(
-                ContentFile::NAMESPACE_TEXT,
-                'text:style-name',
-                $this->paragraphStyle->getStyleName()
-            );
-        }
+
+        $style = $this->paragraphStyle ? $this->paragraphStyle : $this->styleFactory->getDefaultParagraphStyle();
+        $domElement->setAttributeNS(ContentFile::NAMESPACE_TEXT, 'text:style-name', $style->getStyleName());
 
         foreach ($this->contents as $text) {
             $text->renderTo($domDocument, $domElement);

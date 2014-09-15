@@ -4,6 +4,7 @@ namespace Juit\PhpOdt\OdtCreator\Element;
 
 use Juit\PhpOdt\OdtCreator\Document\ContentFile;
 use Juit\PhpOdt\OdtCreator\Style\GraphicStyle;
+use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 use Juit\PhpOdt\OdtCreator\Value\Length;
 
 class Frame implements Element
@@ -12,6 +13,11 @@ class Frame implements Element
      * @var \Juit\PhpOdt\OdtCreator\Style\GraphicStyle
      */
     private $graphicStyle;
+
+    /**
+     * @var StyleFactory
+     */
+    private $styleFactory;
 
     /**
      * @var Length
@@ -35,6 +41,7 @@ class Frame implements Element
 
     public function __construct(
         GraphicStyle $graphicStyle,
+        StyleFactory $styleFactory,
         Length $xCoordinate,
         Length $yCoordinate,
         Length $width,
@@ -42,6 +49,7 @@ class Frame implements Element
     )
     {
         $this->graphicStyle = $graphicStyle;
+        $this->styleFactory = $styleFactory;
         $this->xCoordinate = $xCoordinate;
         $this->yCoordinate = $yCoordinate;
         $this->width = $width;
@@ -54,11 +62,14 @@ class Frame implements Element
     protected $subElements = array();
 
     /**
-     * @param Element $element
+     * @return Paragraph
      */
-    public function addSubElement(Element $element)
+    public function createParagraph()
     {
-        $this->subElements[] = $element;
+        $paragraph = new Paragraph($this->styleFactory);
+        $this->subElements[] = $paragraph;
+
+        return $paragraph;
     }
 
     /**

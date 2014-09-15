@@ -23,6 +23,22 @@ class ParagraphStyle extends AbstractStyle
     private $marginBottom = null;
 
     /**
+     * @param ParagraphStyle $source
+     * @param string $destinationName
+     * @return ParagraphStyle
+     */
+    public static function copy(ParagraphStyle $source, $destinationName)
+    {
+        $destination = new self($destinationName);
+
+        $destination->masterPageName = $source->masterPageName;
+        $destination->marginTop      = $source->marginTop ? clone $source->marginTop : null;
+        $destination->marginBottom   = $source->marginBottom ? clone $source->marginBottom : null;
+
+        return $destination;
+    }
+
+    /**
      * @param string $masterPageName
      */
     public function setMasterPageName($masterPageName)
@@ -60,7 +76,10 @@ class ParagraphStyle extends AbstractStyle
             $styleElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:master-page-name', $this->masterPageName);
         }
 
-        $paragraphPropertiesElement = $stylesDocument->createElementNS(StylesFile::NAMESPACE_STYLE, 'style:paragraph-properties');
+        $paragraphPropertiesElement = $stylesDocument->createElementNS(
+            StylesFile::NAMESPACE_STYLE,
+            'style:paragraph-properties'
+        );
         $styleElement->appendChild($paragraphPropertiesElement);
 
         $paragraphPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:page-number', 'auto');

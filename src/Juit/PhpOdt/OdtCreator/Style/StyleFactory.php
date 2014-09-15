@@ -13,9 +13,19 @@ class StyleFactory
     private $textStyles = array();
 
     /**
+     * @var TextStyle|null
+     */
+    private $defaultTextStyle = null;
+
+    /**
      * @var ParagraphStyle[]
      */
     private $paragraphStyles = array();
+
+    /**
+     * @var ParagraphStyle|null
+     */
+    private $defaultParagraphStyle = null;
 
     /**
      * @var GraphicStyle[]
@@ -46,6 +56,12 @@ class StyleFactory
      * @var null|Length
      */
     private $marginBottom = null;
+    
+    public function __construct()
+    {
+        $this->defaultTextStyle = $this->createDefaultTextStyle();
+        $this->defaultParagraphStyle = $this->createDefaultParagraphStyle();
+    }
 
     /**
      * @param \Juit\PhpOdt\OdtCreator\Value\Length $marginTop
@@ -92,8 +108,15 @@ class StyleFactory
      */
     public function createTextStyle()
     {
-        $name = 'T' . (count($this->textStyles) + 1);
-        $textStyle = new TextStyle($name);
+        $textStyle = TextStyle::copy($this->defaultTextStyle, $this->getNextTextStyleName());
+        $this->textStyles[] = $textStyle;
+
+        return $textStyle;
+    }
+
+    private function createDefaultTextStyle()
+    {
+        $textStyle = new TextStyle($this->getNextTextStyleName());
         $this->textStyles[] = $textStyle;
 
         return $textStyle;
@@ -104,8 +127,15 @@ class StyleFactory
      */
     public function createParagraphStyle()
     {
-        $name = 'P' . (count($this->paragraphStyles) + 1);
-        $paragraphStyle = new ParagraphStyle($name);
+        $paragraphStyle = ParagraphStyle::copy($this->defaultParagraphStyle, $this->getNextParagraphStyleName());
+        $this->paragraphStyles[] = $paragraphStyle;
+
+        return $paragraphStyle;
+    }
+
+    private function createDefaultParagraphStyle()
+    {
+        $paragraphStyle = new ParagraphStyle($this->getNextParagraphStyleName());
         $this->paragraphStyles[] = $paragraphStyle;
 
         return $paragraphStyle;
@@ -121,6 +151,22 @@ class StyleFactory
         $this->graphicStyles[] = $graphicStyle;
 
         return $graphicStyle;
+    }
+
+    /**
+     * @return TextStyle
+     */
+    public function getDefaultTextStyle()
+    {
+        return $this->defaultTextStyle;
+    }
+
+    /**
+     * @return ParagraphStyle
+     */
+    public function getDefaultParagraphStyle()
+    {
+        return $this->defaultParagraphStyle;
     }
 
     public function renderAllStylesTo(\DOMDocument $stylesDocument)
@@ -193,5 +239,23 @@ class StyleFactory
         return $xpath
             ->query('//style:page-layout[@style:name="' . $name . '"]/style:page-layout-properties')
             ->item(0);
+    }
+
+    /**
+     * @return string
+     */
+    private function getNextTextStyleName()
+    {
+        $name = 'T' . (count($this->textStyles) + 1);
+        return $name;
+    }
+
+    /**
+     * @return string
+     */
+    private function getNextParagraphStyleName()
+    {
+        $name = 'P' . (count($this->paragraphStyles) + 1);
+        return $name;
     }
 }

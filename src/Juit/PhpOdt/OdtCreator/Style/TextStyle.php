@@ -39,6 +39,25 @@ class TextStyle extends AbstractStyle
     private $isUnderline = false;
 
     /**
+     * @param TextStyle $source
+     * @param string $destinationName
+     * @return TextStyle
+     */
+    public static function copy(TextStyle $source, $destinationName)
+    {
+        $destination = new self($destinationName);
+
+        $destination->fontName    = $source->fontName;
+        $destination->color       = $source->color ? clone $source->color : null;
+        $destination->fontSize    = $source->fontSize ? clone $source->fontSize : null;
+        $destination->isItalic    = $source->isItalic;
+        $destination->isBold      = $source->isBold;
+        $destination->isUnderline = $source->isUnderline;
+
+        return $destination;
+    }
+
+    /**
      * @param null|string $fontName
      */
     public function setFontName($fontName)

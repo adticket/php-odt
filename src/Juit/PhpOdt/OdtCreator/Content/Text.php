@@ -2,6 +2,7 @@
 
 namespace Juit\PhpOdt\OdtCreator\Content;
 
+use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 use Juit\PhpOdt\OdtCreator\Style\TextStyle;
 
 class Text implements Content
@@ -12,24 +13,39 @@ class Text implements Content
     private $content;
 
     /**
-     * @var TextStyle|null
+     * @var StyleFactory
      */
-    private $style;
+    private $styleFactory;
 
-    public function __construct($content, TextStyle $style = null)
+    /**
+     * @var null|TextStyle
+     */
+    private $style = null;
+
+    public function __construct($content, StyleFactory $styleFactory)
     {
-        $this->content = $content;
-        $this->style = $style;
+        $this->content      = $content;
+        $this->styleFactory = $styleFactory;
+    }
+
+    /**
+     * @return TextStyle
+     */
+    public function getStyle()
+    {
+        if (null === $this->style) {
+            $this->style = $this->styleFactory->createTextStyle();
+        }
+
+        return $this->style;
     }
 
     public function renderTo(\DOMDocument $contentDocument, \DOMElement $parent)
     {
-        if ($this->style) {
-            $span = $contentDocument->createElement('text:span', $this->content);
-            $span->setAttribute('text:style-name', $this->style->getStyleName());
-            $parent->appendChild($span);
-        } else {
-            $parent->appendChild($contentDocument->createTextNode($this->content));
-        }
+        $style = $this->style ? $this->style : $this->styleFactory->getDefaultTextStyle();
+
+        $span = $contentDocument->createElement('text:span', $this->content);
+        $span->setAttribute('text:style-name', $style->getStyleName());
+        $parent->appendChild($span);
     }
 }

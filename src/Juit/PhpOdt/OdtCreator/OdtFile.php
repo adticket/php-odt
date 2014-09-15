@@ -59,6 +59,31 @@ class OdtFile
         return $this->styleFactory;
     }
 
+    public function setMarginTop(Length $margin)
+    {
+        $this->styleFactory->setMarginTop($margin);
+    }
+
+    public function setMarginTopOnFirstPage(Length $margin)
+    {
+        $this->styleFactory->setMarginTopOnFirstPage($margin);
+    }
+
+    public function setMarginLeft(Length $margin)
+    {
+        $this->styleFactory->setMarginLeft($margin);
+    }
+
+    public function setMarginRight(Length $margin)
+    {
+        $this->styleFactory->setMarginRight($margin);
+    }
+
+    public function setMarginBottom(Length $margin)
+    {
+        $this->styleFactory->setMarginBottom($margin);
+    }
+
     /**
      * @param Length $xCoordinate
      * @param Length $yCoordinate
