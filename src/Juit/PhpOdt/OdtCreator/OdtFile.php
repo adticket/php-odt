@@ -3,12 +3,10 @@
 namespace Juit\PhpOdt\OdtCreator;
 
 use Juit\PhpOdt\OdtCreator\Document\ContentFile;
-use Juit\PhpOdt\OdtCreator\Document\File;
 use Juit\PhpOdt\OdtCreator\Document\ManifestFile;
 use Juit\PhpOdt\OdtCreator\Document\MetaFile;
 use Juit\PhpOdt\OdtCreator\Document\SettingsFile;
 use Juit\PhpOdt\OdtCreator\Document\StylesFile;
-use Juit\PhpOdt\OdtCreator\Element\Element;
 use Juit\PhpOdt\OdtCreator\Element\ElementFactory;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 

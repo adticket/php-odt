@@ -3,6 +3,9 @@
 namespace Juit\PhpOdt\OdtCreator\Element;
 
 use Juit\PhpOdt\OdtCreator\Content\Content;
+use Juit\PhpOdt\OdtCreator\Content\LineBreak;
+use Juit\PhpOdt\OdtCreator\Content\Text;
+use Juit\PhpOdt\OdtCreator\Style\TextStyle;
 
 abstract class AbstractElementWithContent implements Element
 {
@@ -12,10 +15,20 @@ abstract class AbstractElementWithContent implements Element
     protected $contents = array();
 
     /**
-     * @param \Juit\PhpOdt\OdtCreator\Content\Content $content
+     * @param string $content
+     * @param TextStyle $style
+     * @return Text
      */
-    public function addContent(Content $content)
+    public function createTextElement($content, TextStyle $style = null)
     {
-        $this->contents[] = $content;
+        $textElement      = new Text($content, $style);
+        $this->contents[] = $textElement;
+
+        return $textElement;
+    }
+
+    public function createLineBreak()
+    {
+        $this->contents[] = new LineBreak();
     }
 }

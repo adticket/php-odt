@@ -89,14 +89,14 @@ class ExampleBuilder
 
         $textStyle = $this->createDefaultTextStyle();
         $paragraph = new Paragraph();
-        $paragraph->addContent(new Text('Mustermann GmbH', $textStyle));
-        $paragraph->addContent(new LineBreak());
-        $paragraph->addContent(new Text('Herr Max Mustermann', $textStyle));
-        $paragraph->addContent(new LineBreak());
-        $paragraph->addContent(new Text('Musterstr. 1', $textStyle));
-        $paragraph->addContent(new LineBreak());
-        $paragraph->addContent(new LineBreak());
-        $paragraph->addContent(new Text('12345 Musterstadt', $textStyle));
+        $paragraph->createTextElement('Mustermann GmbH', $textStyle);
+        $paragraph->createLineBreak();
+        $paragraph->createTextElement('Herr Max Mustermann', $textStyle);
+        $paragraph->createLineBreak();
+        $paragraph->createTextElement('Musterstr. 1', $textStyle);
+        $paragraph->createLineBreak();
+        $paragraph->createLineBreak();
+        $paragraph->createTextElement('12345 Musterstadt', $textStyle);
 
         $addressFrame->addSubElement($paragraph);
     }
@@ -122,39 +122,34 @@ class ExampleBuilder
         $dateFrame   = $this->odtFile->getElementFactory()->createFrame($xCoordinate, $yCoordinate, $width, $height);
 
         $paragraph = new Paragraph();
-        $content   = new Text(
+        $paragraph->createTextElement(
             'Musterdorf, den 02.05.2014',
             $this->createDefaultTextStyle()
         );
-        $paragraph->addContent($content);
 
         $dateFrame->addSubElement($paragraph);
     }
 
     private function addSubject()
     {
-        $frame = $this->odtFile->getElementFactory()->createFrame(
+        $frame          = $this->odtFile->getElementFactory()->createFrame(
             new Length('2cm'),
             new Length('10cm'),
             new Length('17cm'),
             new Length('0.8cm')
         );
-        $paragraphStyle = $this->createDefaultParagraphStyle();
-        $paragraphStyle->setMarginBottom(new Length('24pt'));
-        $paragraph = new Paragraph($paragraphStyle);
+        $paragraph = new Paragraph();
 
         $textStyle = $this->createDefaultTextStyle();
         $textStyle->setBold();
-        $text = new Text('Ihr Schreiben', $textStyle);
-
-        $paragraph->addContent($text);
+        $paragraph->createTextElement('Ihr Schreiben', $textStyle);
         $frame->addSubElement($paragraph);
     }
 
     private function addSalutation()
     {
         $paragraph = $this->createDefaultParagraph();
-        $paragraph->addContent(new Text('Sehr geehrter Herr Mustermann,', $this->createDefaultTextStyle()));
+        $paragraph->createTextElement('Sehr geehrter Herr Mustermann,', $this->createDefaultTextStyle());
     }
 
     /**
@@ -198,7 +193,7 @@ class ExampleBuilder
         $defaultTextStyle = $this->createDefaultTextStyle();
         foreach ($textBlocks as $text) {
             $paragraph = $this->createDefaultParagraph();
-            $paragraph->addContent(new Text($text, $defaultTextStyle));
+            $paragraph->createTextElement($text, $defaultTextStyle);
         }
     }
 
@@ -207,7 +202,7 @@ class ExampleBuilder
         $paragraph = $this->createDefaultParagraph();
         $style     = $this->createDefaultTextStyle();
         $style->setColor(new Color('#ff0000'));
-        $paragraph->addContent(new Text("Dies ist roter Text.", $style));
+        $paragraph->createTextElement("Dies ist roter Text.", $style);
     }
 
     private function addBoldContent()
@@ -215,15 +210,15 @@ class ExampleBuilder
         $paragraph = $this->createDefaultParagraph();
         $style     = $this->createDefaultTextStyle();
         $style->setBold();
-        $paragraph->addContent(new Text("Dies ist fett gedruckter Text.", $style));
+        $paragraph->createTextElement("Dies ist fett gedruckter Text.", $style);
     }
 
     private function addBiggerContent()
     {
         $paragraph = $this->createDefaultParagraph();
-        $style = $this->createDefaultTextStyle();
+        $style     = $this->createDefaultTextStyle();
         $style->setFontSize(new FontSize('16pt'));
-        $paragraph->addContent(new Text("Dies ist größerer Text.", $style));
+        $paragraph->createTextElement("Dies ist größerer Text.", $style);
     }
 
     private function addContentWithACombinationOfFormats()
@@ -233,13 +228,13 @@ class ExampleBuilder
         $style->setFontSize(new FontSize('16pt'));
         $style->setBold();
         $style->setColor(new Color('#0000ff'));
-        $paragraph->addContent(new Text("Dies ist größerer, fett gedruckter, blauer Text.", $style));
+        $paragraph->createTextElement("Dies ist größerer, fett gedruckter, blauer Text.", $style);
     }
 
     private function addRegards()
     {
         $paragraph = $this->createDefaultParagraph();
-        $paragraph->addContent(new Text('Mit freundlichen Grüßen', $this->createDefaultTextStyle()));
+        $paragraph->createTextElement('Mit freundlichen Grüßen', $this->createDefaultTextStyle());
     }
 
     /**

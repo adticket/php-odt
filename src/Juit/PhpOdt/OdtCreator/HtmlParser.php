@@ -71,7 +71,7 @@ class HtmlParser
     private function parseNode($node, Paragraph $paragraph, TextStyleConfig $styleConfig = null)
     {
         if (isset($node->tagName) && 'br' === $node->tagName) {
-            $paragraph->addContent(new LineBreak());
+            $paragraph->createLineBreak();
 
             return;
         }
@@ -100,7 +100,7 @@ class HtmlParser
 
             $content = $node->nodeValue;
             $content = str_replace("\xc2\xa0", ' ', $content); // Hex c2 a0 == &nbsp;
-            $paragraph->addContent(new Text($content, $style));
+            $paragraph->createTextElement($content, $style);
 
             return;
         }
