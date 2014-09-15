@@ -25,6 +25,11 @@ class StyleFactory
     /**
      * @var null|Length
      */
+    private $marginTop = null;
+
+    /**
+     * @var null|Length
+     */
     private $marginLeft = null;
 
     /**
@@ -36,6 +41,14 @@ class StyleFactory
      * @var null|Length
      */
     private $marginBottom = null;
+
+    /**
+     * @param \Juit\PhpOdt\OdtCreator\Value\Length $marginTop
+     */
+    public function setMarginTop(Length $marginTop)
+    {
+        $this->marginTop = $marginTop;
+    }
 
     /**
      * @param \Juit\PhpOdt\OdtCreator\Value\Length $marginLeft
@@ -115,6 +128,14 @@ class StyleFactory
      */
     private function renderMarginsTo(\DOMDocument $stylesDocument)
     {
+        if (null !== $this->marginTop) {
+            $this
+                ->findPageLayoutByName($stylesDocument, 'Mpm1')
+                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-top', $this->marginTop->getValue());
+            $this
+                ->findPageLayoutByName($stylesDocument, 'Mpm2')
+                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-top', $this->marginTop->getValue());
+        }
         if (null !== $this->marginLeft) {
             $this
                 ->findPageLayoutByName($stylesDocument, 'Mpm1')
