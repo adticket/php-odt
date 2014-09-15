@@ -25,7 +25,20 @@ class StyleFactory
     /**
      * @var null|Length
      */
+    private $marginLeft = null;
+
+    /**
+     * @var null|Length
+     */
     private $marginRight = null;
+
+    /**
+     * @param \Juit\PhpOdt\OdtCreator\Value\Length $marginLeft
+     */
+    public function setMarginLeft(Length $marginLeft)
+    {
+        $this->marginLeft = $marginLeft;
+    }
 
     /**
      * @param \Juit\PhpOdt\OdtCreator\Value\Length $marginRight
@@ -89,16 +102,22 @@ class StyleFactory
      */
     private function renderMarginsTo(\DOMDocument $stylesDocument)
     {
-        if (null === $this->marginRight) {
-            return;
+        if (null !== $this->marginLeft) {
+            $this
+                ->findPageLayoutByName($stylesDocument, 'Mpm1')
+                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-left', $this->marginLeft->getValue());
+            $this
+                ->findPageLayoutByName($stylesDocument, 'Mpm2')
+                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-left', $this->marginLeft->getValue());
         }
-
-        $this
-            ->findPageLayoutByName($stylesDocument, 'Mpm1')
-            ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-right', $this->marginRight->getValue());
-        $this
-            ->findPageLayoutByName($stylesDocument, 'Mpm2')
-            ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-right', $this->marginRight->getValue());
+        if (null !== $this->marginRight) {
+            $this
+                ->findPageLayoutByName($stylesDocument, 'Mpm1')
+                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-right', $this->marginRight->getValue());
+            $this
+                ->findPageLayoutByName($stylesDocument, 'Mpm2')
+                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-right', $this->marginRight->getValue());
+        }
     }
 
     /**
