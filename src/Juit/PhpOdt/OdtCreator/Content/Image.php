@@ -4,6 +4,7 @@ namespace Juit\PhpOdt\OdtCreator\Content;
 
 use DOMDocument;
 use DOMElement;
+use Juit\PhpOdt\OdtCreator\Style\ImageStyle;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 
 class Image implements Content
@@ -18,13 +19,24 @@ class Image implements Content
      */
     private $styleFactory;
 
+    /**
+     * @var ImageStyle
+     */
     private $style;
 
     public function __construct(\SplFileInfo $imagePath, StyleFactory $styleFactory)
     {
         $this->imagePath    = $imagePath;
         $this->styleFactory = $styleFactory;
-        $this->style = $styleFactory->createImageStyle();
+        $this->style        = $styleFactory->createImageStyle();
+    }
+
+    /**
+     * @return ImageStyle
+     */
+    public function getStyle()
+    {
+        return $this->style;
     }
 
     /**
