@@ -7,6 +7,9 @@ use Juit\PhpOdt\OdtCreator\Value\Length;
 
 class ImageStyle extends AbstractStyle
 {
+    const ALIGN_LEFT = 'left';
+    const ALIGN_CENTER = 'center';
+    const ALIGN_RIGHT = 'right';
     const WRAP_NONE = 'none';
     const WRAP_PARALLEL = 'parallel';
 
@@ -29,6 +32,11 @@ class ImageStyle extends AbstractStyle
      * @var Length
      */
     private $marginBottom;
+
+    /**
+     * @var string
+     */
+    private $alignment = self::ALIGN_LEFT;
 
     /**
      * @var string
@@ -77,6 +85,21 @@ class ImageStyle extends AbstractStyle
         $this->marginBottom = $marginBottom;
     }
 
+    public function setAlignLeft()
+    {
+        $this->alignment = self::ALIGN_LEFT;
+    }
+
+    public function setAlignCenter()
+    {
+        $this->alignment = self::ALIGN_CENTER;
+    }
+
+    public function setAlignRight()
+    {
+        $this->alignment = self::ALIGN_RIGHT;
+    }
+
     public function setWrapNone()
     {
         $this->wrap = self::WRAP_NONE;
@@ -113,7 +136,7 @@ class ImageStyle extends AbstractStyle
             $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'wrap', 'none');
         }
 
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:horizontal-pos', 'left');
+        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:horizontal-pos', $this->alignment);
         $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:horizontal-rel', 'paragraph');
         $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:vertical-pos', 'top');
         $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:vertical-rel', 'paragraph');
