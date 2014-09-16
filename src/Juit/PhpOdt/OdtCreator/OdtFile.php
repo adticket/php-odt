@@ -87,13 +87,9 @@ class OdtFile
         return $this->elementFactory->createFrame($xCoordinate, $yCoordinate, $width, $height);
     }
 
-    /**
-     * @param ParagraphStyle $style
-     * @return Paragraph
-     */
-    public function createParagraph(ParagraphStyle $style = null)
+    public function createParagraph()
     {
-        return $this->elementFactory->createParagraph($style);
+        return $this->elementFactory->createParagraph();
     }
 
     public function save(\SplFileInfo $targetFile)

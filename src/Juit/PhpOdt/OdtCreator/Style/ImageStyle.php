@@ -7,6 +7,9 @@ use Juit\PhpOdt\OdtCreator\Value\Length;
 
 class ImageStyle extends AbstractStyle
 {
+    const WRAP_NONE = 'none';
+    const WRAP_PARALLEL = 'parallel';
+
     /**
      * @var Length
      */
@@ -26,6 +29,11 @@ class ImageStyle extends AbstractStyle
      * @var Length
      */
     private $marginBottom;
+
+    /**
+     * @var string
+     */
+    private $wrap = self::WRAP_NONE;
 
     public function __construct($name)
     {
@@ -69,6 +77,16 @@ class ImageStyle extends AbstractStyle
         $this->marginBottom = $marginBottom;
     }
 
+    public function setWrapNone()
+    {
+        $this->wrap = self::WRAP_NONE;
+    }
+
+    public function setWrapParallel()
+    {
+        $this->wrap = self::WRAP_PARALLEL;
+    }
+
     /**
      * @param \DOMDocument $stylesDocument
      * @param \DOMElement $styleElement
@@ -86,6 +104,14 @@ class ImageStyle extends AbstractStyle
         $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-right', $this->marginRight->getValue());
         $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-top', $this->marginTop->getValue());
         $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-bottom', $this->marginBottom->getValue());
+
+        if (self::WRAP_PARALLEL === $this->wrap) {
+            $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'wrap', 'parallel');
+            $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'number-wrapped-paragraphs', 'no-limit');
+            $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'wrap-contour', 'false');
+        } else {
+            $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'wrap', 'none');
+        }
 
         $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:horizontal-pos', 'left');
         $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:horizontal-rel', 'paragraph');
