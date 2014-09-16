@@ -2,6 +2,7 @@
 
 namespace Juit\PhpOdt\OdtCreator\Style;
 
+use Juit\PhpOdt\OdtCreator\Document\ContentFile;
 use Juit\PhpOdt\OdtCreator\Document\StylesFile;
 
 class StyleFactory
@@ -35,6 +36,11 @@ class StyleFactory
      * @var GraphicStyle[]
      */
     private $graphicStyles = array();
+
+    /**
+     * @var ImageStyle[]
+     */
+    private $imageStyles = array();
 
     public function __construct()
     {
@@ -94,6 +100,18 @@ class StyleFactory
     }
 
     /**
+     * @return ImageStyle
+     */
+    public function createImageStyle()
+    {
+        $name = 'fr' . (count($this->imageStyles) + 1);
+        $imageStyle = new ImageStyle($name);
+        $this->imageStyles[] = $imageStyle;
+
+        return $imageStyle;
+    }
+
+    /**
      * @return TextStyle
      */
     public function getDefaultTextStyle()
@@ -120,6 +138,15 @@ class StyleFactory
         }
 
         $this->pageStyle->renderMarginsTo($stylesDocument);
+    }
+
+    public function renderToContentFile(\DOMDocument $contentDocument)
+    {
+        $parentElement = $contentDocument->getElementsByTagNameNS(ContentFile::NAMESPACE_OFFICE, 'automatic-styles')->item(0);
+
+        foreach ($this->imageStyles as $style) {
+            $style->renderTo($contentDocument, $parentElement);
+        }
     }
 
     /**

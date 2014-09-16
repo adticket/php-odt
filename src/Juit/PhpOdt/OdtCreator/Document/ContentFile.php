@@ -3,6 +3,7 @@
 namespace Juit\PhpOdt\OdtCreator\Document;
 
 use Juit\PhpOdt\OdtCreator\Element\Element;
+use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 
 class ContentFile implements File
 {
@@ -16,6 +17,16 @@ class ContentFile implements File
      * @var \Juit\PhpOdt\OdtCreator\Element\Element[]
      */
     private $elements = array();
+
+    /**
+     * @var StyleFactory
+     */
+    private $styleFactory;
+
+    public function __construct(StyleFactory $styleFactory)
+    {
+        $this->styleFactory = $styleFactory;
+    }
 
     /**
      * @param Element[] $elements
@@ -35,6 +46,8 @@ class ContentFile implements File
         foreach ($this->elements as $element) {
             $element->renderToContent($domDocument);
         }
+
+        $this->styleFactory->renderToContentFile($domDocument);
 
         return $domDocument->saveXML();
     }

@@ -48,7 +48,7 @@ class OdtFile
         $this->styleFactory   = new StyleFactory();
         $this->elementFactory = new ElementFactory($this->styleFactory);
         $this->styles         = new StylesFile($this->styleFactory);
-        $this->content        = new ContentFile();
+        $this->content        = new ContentFile($this->styleFactory);
     }
 
     /**
