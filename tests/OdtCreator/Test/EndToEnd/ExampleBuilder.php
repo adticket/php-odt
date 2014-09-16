@@ -70,15 +70,15 @@ class ExampleBuilder
 
     private function setDefaultStyles()
     {
-        $this->odtFile->getStyleFactory()->getDefaultTextStyle()->setFontName('Arial');
-        $this->odtFile->getStyleFactory()->getDefaultTextStyle()->setFontSize(new FontSize('11pt'));
-        $this->odtFile->getStyleFactory()->getDefaultParagraphStyle()->setMarginBottom(new Length('12pt'));
+        $this->odtFile->getDefaultTextStyle()->setFontName('Arial');
+        $this->odtFile->getDefaultTextStyle()->setFontSize(new FontSize('11pt'));
+        $this->odtFile->getDefaultParagraphStyle()->setMarginBottom(new Length('12pt'));
     }
 
     private function setPageBorders()
     {
-        $this->odtFile->setMarginRight(new Length('2cm'));
-        $this->odtFile->setMarginTopOnFirstPage(new Length('11.3cm'));
+        $this->odtFile->getPageStyle()->setMarginRight(new Length('2cm'));
+        $this->odtFile->getPageStyle()->setMarginTopOnFirstPage(new Length('11.3cm'));
     }
 
     private function addAddressFrame()
@@ -98,18 +98,6 @@ class ExampleBuilder
         $paragraph->createLineBreak();
         $paragraph->createLineBreak();
         $paragraph->createTextElement('12345 Musterstadt');
-    }
-
-    /**
-     * @return TextStyle
-     */
-    private function createDefaultTextStyle()
-    {
-        $textStyle = $this->odtFile->getStyleFactory()->createTextStyle();
-        $textStyle->setFontSize(new FontSize('11pt'));
-        $textStyle->setFontName('Arial');
-
-        return $textStyle;
     }
 
     private function addDateFrame()

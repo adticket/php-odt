@@ -45,43 +45,34 @@ class OdtFile
 
     public function reset()
     {
-        $this->styleFactory = new StyleFactory();
+        $this->styleFactory   = new StyleFactory();
         $this->elementFactory = new ElementFactory($this->styleFactory);
-        $this->styles = new StylesFile($this->styleFactory);
-        $this->content = new ContentFile();
+        $this->styles         = new StylesFile($this->styleFactory);
+        $this->content        = new ContentFile();
     }
 
     /**
-     * @return \Juit\PhpOdt\OdtCreator\Style\StyleFactory
+     * @return Style\PageStyle
      */
-    public function getStyleFactory()
+    public function getPageStyle()
     {
-        return $this->styleFactory;
+        return $this->styleFactory->getPageStyle();
     }
 
-    public function setMarginTop(Length $margin)
+    /**
+     * @return Style\TextStyle
+     */
+    public function getDefaultTextStyle()
     {
-        $this->styleFactory->setMarginTop($margin);
+        return $this->styleFactory->getDefaultTextStyle();
     }
 
-    public function setMarginTopOnFirstPage(Length $margin)
+    /**
+     * @return ParagraphStyle
+     */
+    public function getDefaultParagraphStyle()
     {
-        $this->styleFactory->setMarginTopOnFirstPage($margin);
-    }
-
-    public function setMarginLeft(Length $margin)
-    {
-        $this->styleFactory->setMarginLeft($margin);
-    }
-
-    public function setMarginRight(Length $margin)
-    {
-        $this->styleFactory->setMarginRight($margin);
-    }
-
-    public function setMarginBottom(Length $margin)
-    {
-        $this->styleFactory->setMarginBottom($margin);
+        return $this->styleFactory->getDefaultParagraphStyle();
     }
 
     /**
