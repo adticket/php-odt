@@ -30,7 +30,7 @@ class LengthTest extends \PHPUnit_Framework_TestCase
     public function it_should_accept_decimal_input()
     {
         $SUT = new Length('1.50cm');
-        $this->assertEquals('1.50cm', $SUT->getValue());
+        $this->assertEquals('1.5cm', $SUT->getValue());
     }
 
     /**
@@ -41,4 +41,34 @@ class LengthTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('InvalidArgumentException', "Unrecognized length value '1'");
         $SUT = new Length('1');
     }
-} 
+
+    /**
+     * @test
+     */
+    public function it_should_multiply_itself_by_an_integer()
+    {
+        $SUT = new Length('2cm');
+
+        $this->assertEquals('4cm', $SUT->multiplyBy(2)->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_multiply_itself_by_a_float_and_round_to_three_digits()
+    {
+        $SUT = new Length('2cm');
+
+        $this->assertEquals('2.714cm', $SUT->multiplyBy(1.35678)->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_respect_the_unit_when_multiplying()
+    {
+        $SUT = new Length('2pt');
+
+        $this->assertEquals('2.714pt', $SUT->multiplyBy(1.35678)->getValue());
+    }
+}
