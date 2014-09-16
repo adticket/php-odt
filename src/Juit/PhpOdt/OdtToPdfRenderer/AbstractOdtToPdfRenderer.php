@@ -12,9 +12,15 @@ abstract class AbstractOdtToPdfRenderer
      */
     private $backgroundPdfPath;
 
-    public function __construct(SplFileInfo $backgroundPdfPath = null)
+    /**
+     * @var SplFileInfo|null
+     */
+    private $stampPdfPath;
+
+    public function __construct(SplFileInfo $backgroundPdfPath = null, SplFileInfo $stampPdfPath = null)
     {
         $this->backgroundPdfPath = $backgroundPdfPath;
+        $this->stampPdfPath = $stampPdfPath;
     }
 
     /**
@@ -26,6 +32,7 @@ abstract class AbstractOdtToPdfRenderer
     {
         $pdfOutput = $this->renderOdtToPdf($odtFileInfo);
         $this->applyBackground($pdfOutput);
+        $this->applyStamp($pdfOutput);
 
         return $pdfOutput;
     }
@@ -68,11 +75,41 @@ abstract class AbstractOdtToPdfRenderer
             return;
         }
 
-        $tmpFilePath = $plainPdf->getPath() . '/' . $plainPdf->getBasename('.pdf') . '.with_background.pdf';
+        $tmpFilePath = $plainPdf->getPath() . '/' . $plainPdf->getBasename('.pdf') . '.pdftk.pdf';
         $tmpFile = new \SplFileInfo($tmpFilePath);
 
         $shellCommand = "/usr/bin/pdftk {$plainPdf}"
             . " multibackground {$this->backgroundPdfPath}"
+            . " output {$tmpFile}";
+
+        $process = new Process($shellCommand);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new \RuntimeException(
+                "Unexpected result ({$process->getExitCode()}) from pdftk: "
+                . $process->getErrorOutput()
+            );
+        }
+
+        unlink($plainPdf);
+        rename($tmpFile, $plainPdf);
+    }
+
+    /**
+     * @param SplFileInfo $plainPdf
+     */
+    private function applyStamp(SplFileInfo $plainPdf)
+    {
+        if (null === $this->stampPdfPath) {
+            return;
+        }
+
+        $tmpFilePath = $plainPdf->getPath() . '/' . $plainPdf->getBasename('.pdf') . '.pdftk.pdf';
+        $tmpFile = new \SplFileInfo($tmpFilePath);
+
+        $shellCommand = "/usr/bin/pdftk {$plainPdf}"
+            . " stamp {$this->stampPdfPath}"
             . " output {$tmpFile}";
 
         $process = new Process($shellCommand);
