@@ -22,6 +22,11 @@ class ParagraphStyle extends AbstractStyle
     private $marginBottom = null;
 
     /**
+     * @var bool
+     */
+    private $pageBreakBefore = false;
+
+    /**
      * @param ParagraphStyle $source
      * @param string $destinationName
      * @return ParagraphStyle
@@ -61,6 +66,14 @@ class ParagraphStyle extends AbstractStyle
         $this->marginBottom = $marginBottom;
     }
 
+    /**
+     * @param boolean $pageBreakBefore
+     */
+    public function setPageBreakBefore($pageBreakBefore)
+    {
+        $this->pageBreakBefore = $pageBreakBefore;
+    }
+
     public function renderStyles(\DOMDocument $document, \DOMElement $parent)
     {
         $style = $this->createDefaultStyleElement($document, $parent);
@@ -78,6 +91,9 @@ class ParagraphStyle extends AbstractStyle
         }
         if ($this->marginBottom) {
             $paragraphProperties->setAttribute('fo:margin-bottom', $this->marginBottom->getValue());
+        }
+        if ($this->pageBreakBefore) {
+            $paragraphProperties->setAttribute('fo:break-before', 'page');
         }
     }
 }
