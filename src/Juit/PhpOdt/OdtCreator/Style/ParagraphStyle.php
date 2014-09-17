@@ -62,36 +62,27 @@ class ParagraphStyle extends AbstractStyle
         $this->marginBottom = $marginBottom;
     }
 
-    /**
-     * @param \DOMDocument $stylesDocument
-     * @param \DOMElement $styleElement
-     * @return void
-     */
-    protected function renderToStyleElement(\DOMDocument $stylesDocument, \DOMElement $styleElement)
+    public function renderStyles(\DOMDocument $document, \DOMElement $parent)
     {
-        $styleElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:family', 'paragraph');
-        $styleElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:parent-style-name', 'Standard');
-
+        $style = $this->createDefaultStyleElement($document, $parent);
+        $style->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:family', 'paragraph');
+        $style->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:parent-style-name', 'Standard');
         if ($this->masterPageName) {
-            $styleElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:master-page-name', $this->masterPageName);
+            $style->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:master-page-name', $this->masterPageName);
         }
 
-        $paragraphPropertiesElement = $stylesDocument->createElementNS(
-            StylesFile::NAMESPACE_STYLE,
-            'style:paragraph-properties'
-        );
-        $styleElement->appendChild($paragraphPropertiesElement);
-
-        $paragraphPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:page-number', 'auto');
+        $paragraphProperties = $document->createElementNS(StylesFile::NAMESPACE_STYLE, 'style:paragraph-properties');
+        $style->appendChild($paragraphProperties);
+        $paragraphProperties->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:page-number', 'auto');
         if ($this->marginTop) {
-            $paragraphPropertiesElement->setAttributeNS(
+            $paragraphProperties->setAttributeNS(
                 StylesFile::NAMESPACE_FO,
                 'fo:margin-top',
                 $this->marginTop->getValue()
             );
         }
         if ($this->marginBottom) {
-            $paragraphPropertiesElement->setAttributeNS(
+            $paragraphProperties->setAttributeNS(
                 StylesFile::NAMESPACE_FO,
                 'fo:margin-bottom',
                 $this->marginBottom->getValue()

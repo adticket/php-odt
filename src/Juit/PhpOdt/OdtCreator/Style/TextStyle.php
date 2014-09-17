@@ -2,6 +2,8 @@
 
 namespace Juit\PhpOdt\OdtCreator\Style;
 
+use DOMDocument;
+use DOMElement;
 use Juit\PhpOdt\OdtCreator\Document\StylesFile;
 use Juit\PhpOdt\OdtCreator\Value\Color;
 use Juit\PhpOdt\OdtCreator\Value\FontSize;
@@ -105,39 +107,30 @@ class TextStyle extends AbstractStyle
         $this->isUnderline = true;
     }
 
-    /**
-     * @param \DOMDocument $stylesDocument
-     * @param \DOMElement $styleElement
-     */
-    protected function renderToStyleElement(\DOMDocument $stylesDocument, \DOMElement $styleElement)
+    public function renderStyles(DOMDocument $document, DOMElement $parent)
     {
-        $styleElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:family', 'text');
+        $style = $this->createDefaultStyleElement($document, $parent);
+        $style->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:family', 'text');
 
-        $element = $stylesDocument->createElement('style:text-properties');
-        $styleElement->appendChild($element);
-
+        $element = $document->createElement('style:text-properties');
+        $style->appendChild($element);
         if ($this->fontName) {
             $element->setAttribute('style:font-name', $this->fontName);
         }
-
         if ($this->color) {
             $element->setAttribute('fo:color', $this->color->getHexCode());
         }
-
         if ($this->isItalic) {
             $element->setAttribute('fo:font-style', 'italic');
         }
-
         if ($this->isBold) {
             $element->setAttribute('fo:font-weight', 'bold');
         }
-
         if ($this->isUnderline) {
             $element->setAttribute('style:text-underline-style', 'solid');
             $element->setAttribute('style:text-underline-width', 'auto');
             $element->setAttribute('style:text-underline-color', 'font-color');
         }
-
         if ($this->fontSize) {
             $element->setAttribute('fo:font-size', $this->fontSize->getValue());
         }

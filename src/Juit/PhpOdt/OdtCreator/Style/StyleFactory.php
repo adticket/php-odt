@@ -2,6 +2,7 @@
 
 namespace Juit\PhpOdt\OdtCreator\Style;
 
+use DOMDocument;
 use Juit\PhpOdt\OdtCreator\Document\ContentFile;
 use Juit\PhpOdt\OdtCreator\Document\StylesFile;
 
@@ -127,25 +128,23 @@ class StyleFactory
         return $this->defaultParagraphStyle;
     }
 
-    public function renderAllStylesTo(\DOMDocument $stylesDocument)
+    public function renderStyles(DOMDocument $stylesDocument)
     {
-        $styles = array_merge($this->textStyles, $this->paragraphStyles, $this->graphicStyles);
         $parentElement = $stylesDocument->getElementsByTagNameNS(StylesFile::NAMESPACE_OFFICE, 'styles')->item(0);
 
-        foreach ($styles as $style) {
-            /** @var $style AbstractStyle */
-            $style->renderTo($stylesDocument, $parentElement);
+        foreach ($this->getAllStyles() as $style) {
+            $style->renderStyles($stylesDocument, $parentElement);
         }
 
         $this->pageStyle->renderMarginsTo($stylesDocument);
     }
 
-    public function renderToContentFile(\DOMDocument $contentDocument)
+    public function renderAutomaticStyles(DOMDocument $contentDocument)
     {
         $parentElement = $contentDocument->getElementsByTagNameNS(ContentFile::NAMESPACE_OFFICE, 'automatic-styles')->item(0);
 
-        foreach ($this->imageStyles as $style) {
-            $style->renderTo($contentDocument, $parentElement);
+        foreach ($this->getAllStyles() as $style) {
+            $style->renderAutomaticStyles($contentDocument, $parentElement);
         }
     }
 
@@ -154,8 +153,7 @@ class StyleFactory
      */
     private function getNextTextStyleName()
     {
-        $name = 'T' . (count($this->textStyles) + 1);
-        return $name;
+        return 'T' . (count($this->textStyles) + 1);
     }
 
     /**
@@ -163,8 +161,7 @@ class StyleFactory
      */
     private function getNextParagraphStyleName()
     {
-        $name = 'P' . (count($this->paragraphStyles) + 1);
-        return $name;
+        return 'P' . (count($this->paragraphStyles) + 1);
     }
 
     /**
@@ -173,5 +170,18 @@ class StyleFactory
     public function getPageStyle()
     {
         return $this->pageStyle;
+    }
+
+    /**
+     * @return AbstractStyle[]
+     */
+    private function getAllStyles()
+    {
+        return array_merge(
+            $this->textStyles,
+            $this->paragraphStyles,
+            $this->graphicStyles,
+            $this->imageStyles
+        );
     }
 }

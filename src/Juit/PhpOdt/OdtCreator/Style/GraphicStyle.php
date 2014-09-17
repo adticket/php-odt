@@ -2,21 +2,19 @@
 
 namespace Juit\PhpOdt\OdtCreator\Style;
 
+use DOMDocument;
+use DOMElement;
 use Juit\PhpOdt\OdtCreator\Document\StylesFile;
 
 class GraphicStyle extends AbstractStyle
 {
-    /**
-     * @param \DOMDocument $stylesDocument
-     * @param \DOMElement $styleElement
-     * @return void
-     */
-    protected function renderToStyleElement(\DOMDocument $stylesDocument, \DOMElement $styleElement)
+    public function renderStyles(DOMDocument $document, DOMElement $parent)
     {
-        $styleElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:family', 'graphic');
+        $style = $this->createDefaultStyleElement($document, $parent);
+        $style->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:family', 'graphic');
 
-        $graphicPropertiesElement = $stylesDocument->createElementNS(StylesFile::NAMESPACE_STYLE, 'style:graphic-properties');
-
+        $graphicPropertiesElement = $document->createElementNS(StylesFile::NAMESPACE_STYLE, 'style:graphic-properties');
+        $style->appendChild($graphicPropertiesElement);
         $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_TEXT, 'text:anchor-type', 'paragraph');
         $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_SVG, 'svg:anchor-type', 'paragraph');
         $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_SVG, 'svg:x', '0cm');
@@ -34,7 +32,5 @@ class GraphicStyle extends AbstractStyle
         $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:horizontal-rel', 'page');
         $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_FO, 'fo:padding', '0cm');
         $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_FO, 'fo:border', 'none');
-
-        $styleElement->appendChild($graphicPropertiesElement);
     }
 }

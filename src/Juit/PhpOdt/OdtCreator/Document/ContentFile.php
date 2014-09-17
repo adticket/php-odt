@@ -2,6 +2,7 @@
 
 namespace Juit\PhpOdt\OdtCreator\Document;
 
+use DOMDocument;
 use Juit\PhpOdt\OdtCreator\Element\Element;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 
@@ -10,6 +11,7 @@ class ContentFile implements File
     const NAMESPACE_DRAW = 'urn:oasis:names:tc:opendocument:xmlns:drawing:1.0';
     const NAMESPACE_OFFICE = 'urn:oasis:names:tc:opendocument:xmlns:office:1.0';
     const NAMESPACE_SVG = 'urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0';
+    const NAMESPACE_STYLE = 'urn:oasis:names:tc:opendocument:xmlns:style:1.0';
     const NAMESPACE_TEXT = 'urn:oasis:names:tc:opendocument:xmlns:text:1.0';
     const NAMESPACE_XLINK = 'http://www.w3.org/1999/xlink';
 
@@ -41,26 +43,26 @@ class ContentFile implements File
      */
     public function render()
     {
-        $domDocument = $this->createDOMDocument();
+        $document = $this->createDOMDocument();
 
         foreach ($this->elements as $element) {
-            $element->renderToContent($domDocument);
+            $element->renderToContent($document);
         }
 
-        $this->styleFactory->renderToContentFile($domDocument);
+        $this->styleFactory->renderAutomaticStyles($document);
 
-        return $domDocument->saveXML();
+        return $document->saveXML();
     }
 
     /**
-     * @return \DOMDocument
+     * @return DOMDocument
      */
     private function createDOMDocument()
     {
-        $domDocument = new \DOMDocument('1.0', 'UTF-8');
-        $domDocument->load(__DIR__ . '/templates/content.xml');
+        $document = new DOMDocument('1.0', 'UTF-8');
+        $document->load(__DIR__ . '/templates/content.xml');
 
-        return $domDocument;
+        return $document;
     }
 
     /**

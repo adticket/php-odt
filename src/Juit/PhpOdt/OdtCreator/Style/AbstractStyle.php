@@ -2,6 +2,8 @@
 
 namespace Juit\PhpOdt\OdtCreator\Style;
 
+use DOMDocument;
+use DOMElement;
 use Juit\PhpOdt\OdtCreator\Document\StylesFile;
 
 abstract class AbstractStyle
@@ -28,19 +30,23 @@ abstract class AbstractStyle
         return $this->name;
     }
 
-    public function renderTo(\DOMDocument $stylesDocument, \DOMElement $parentElement)
-    {
-        $element = $stylesDocument->createElementNS(StylesFile::NAMESPACE_STYLE, 'style:style');
-        $element->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:name', $this->name);
-        $parentElement->appendChild($element);
+    public function renderStyles(\DOMDocument $document, \DOMElement $parent)
+    {}
 
-        $this->renderToStyleElement($stylesDocument, $element);
-    }
+    public function renderAutomaticStyles(\DOMDocument $contentDocument, \DOMElement $parentELement)
+    {}
 
     /**
-     * @param \DOMDocument $stylesDocument
-     * @param \DOMElement $styleElement
-     * @return void
+     * @param DOMDocument $document
+     * @param DOMElement $parent
+     * @return DOMElement
      */
-    abstract protected function renderToStyleElement(\DOMDocument $stylesDocument, \DOMElement $styleElement);
+    protected function createDefaultStyleElement(DOMDocument $document, DOMElement $parent)
+    {
+        $style = $document->createElementNS(StylesFile::NAMESPACE_STYLE, 'style:style');
+        $style->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:name', $this->name);
+        $parent->appendChild($style);
+
+        return $style;
+    }
 }

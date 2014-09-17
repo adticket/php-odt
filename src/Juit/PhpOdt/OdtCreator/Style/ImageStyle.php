@@ -2,6 +2,8 @@
 
 namespace Juit\PhpOdt\OdtCreator\Style;
 
+use DOMDocument;
+use DOMElement;
 use Juit\PhpOdt\OdtCreator\Document\StylesFile;
 use Juit\PhpOdt\OdtCreator\Value\Length;
 
@@ -110,48 +112,41 @@ class ImageStyle extends AbstractStyle
         $this->wrap = self::WRAP_PARALLEL;
     }
 
-    /**
-     * @param \DOMDocument $stylesDocument
-     * @param \DOMElement $styleElement
-     * @return void
-     */
-    protected function renderToStyleElement(\DOMDocument $stylesDocument, \DOMElement $styleElement)
+    public function renderAutomaticStyles(DOMDocument $document, DOMElement $parent)
     {
-        $styleElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:family', 'graphic');
-        $styleElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:parent-style-name', 'Graphics');
+        $style = $this->createDefaultStyleElement($document, $parent);
+        $style->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:family', 'graphic');
+        $style->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:parent-style-name', 'Graphics');
 
-        $propertiesElement = $stylesDocument->createElementNS(StylesFile::NAMESPACE_STYLE, 'style:graphic-properties');
-        $styleElement->appendChild($propertiesElement);
-
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-left', $this->marginLeft->getValue());
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-right', $this->marginRight->getValue());
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-top', $this->marginTop->getValue());
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-bottom', $this->marginBottom->getValue());
-
+        $graphicProperties = $document->createElementNS(StylesFile::NAMESPACE_STYLE, 'style:graphic-properties');
+        $style->appendChild($graphicProperties);
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-left', $this->marginLeft->getValue());
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-right', $this->marginRight->getValue());
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-top', $this->marginTop->getValue());
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-bottom', $this->marginBottom->getValue());
         if (self::WRAP_PARALLEL === $this->wrap) {
-            $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'wrap', 'parallel');
-            $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'number-wrapped-paragraphs', 'no-limit');
-            $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'wrap-contour', 'false');
+            $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'wrap', 'parallel');
+            $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'number-wrapped-paragraphs', 'no-limit');
+            $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'wrap-contour', 'false');
         } else {
-            $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'wrap', 'none');
+            $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'wrap', 'none');
         }
-
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:horizontal-pos', $this->alignment);
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:horizontal-rel', 'paragraph');
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:vertical-pos', 'top');
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:vertical-rel', 'paragraph');
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:shadow', 'none');
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:shadow-opacity', '100%');
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:mirror', 'none');
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_FO, 'fo:clip', 'rect(0cm, 0cm, 0cm, 0cm)');
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:luminance', '0%');
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:contrast', '0%');
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:red', '0%');
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:green', '0%');
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:blue', '0%');
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:gamma', '100%');
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:color-inversion', 'false');
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:image-opacity', '100%');
-        $propertiesElement->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:color-mode', 'standard');
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:horizontal-pos', $this->alignment);
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:horizontal-rel', 'paragraph');
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:vertical-pos', 'top');
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:vertical-rel', 'paragraph');
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:shadow', 'none');
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:shadow-opacity', '100%');
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:mirror', 'none');
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_FO, 'fo:clip', 'rect(0cm, 0cm, 0cm, 0cm)');
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:luminance', '0%');
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:contrast', '0%');
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:red', '0%');
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:green', '0%');
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:blue', '0%');
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:gamma', '100%');
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:color-inversion', 'false');
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:image-opacity', '100%');
+        $graphicProperties->setAttributeNS(StylesFile::NAMESPACE_DRAW, 'draw:color-mode', 'standard');
     }
 }

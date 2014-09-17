@@ -30,7 +30,7 @@ class StylesFile implements File
     public function render()
     {
         $domDocument = $this->createDOMDocument();
-        $this->styleFactory->renderAllStylesTo($domDocument);
+        $this->styleFactory->renderStyles($domDocument);
 
         return $domDocument->saveXML();
     }
