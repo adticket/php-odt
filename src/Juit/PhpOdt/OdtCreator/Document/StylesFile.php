@@ -6,6 +6,7 @@ use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 
 class StylesFile implements File
 {
+    const NAMESPACE_DRAW = 'urn:oasis:names:tc:opendocument:xmlns:drawing:1.0';
     const NAMESPACE_FO = 'urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0';
     const NAMESPACE_NAME = 'urn:oasis:names:tc:opendocument:xmlns:office:1.0';
     const NAMESPACE_OFFICE = 'urn:oasis:names:tc:opendocument:xmlns:office:1.0';
@@ -29,7 +30,7 @@ class StylesFile implements File
     public function render()
     {
         $domDocument = $this->createDOMDocument();
-        $this->styleFactory->renderAllStylesTo($domDocument);
+        $this->styleFactory->renderStyles($domDocument);
 
         return $domDocument->saveXML();
     }

@@ -2,13 +2,7 @@
 
 namespace OdtCreator\Test\EndToEnd;
 
-use Juit\PhpOdt\OdtCreator\Content\LineBreak;
-use Juit\PhpOdt\OdtCreator\Content\Text;
-use Juit\PhpOdt\OdtCreator\Element\Frame;
-use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\OdtFile;
-use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
-use Juit\PhpOdt\OdtCreator\Style\TextStyle;
 use Juit\PhpOdt\OdtCreator\Value\Color;
 use Juit\PhpOdt\OdtCreator\Value\FontSize;
 use Juit\PhpOdt\OdtCreator\Value\Length;
@@ -63,6 +57,7 @@ class ExampleBuilder
         $this->addBoldContent();
         $this->addBiggerContent();
         $this->addContentWithACombinationOfFormats();
+        $this->addImages();
         $this->addRegards();
 
         $this->odtFile->save($odtFileInfo);
@@ -189,6 +184,51 @@ class ExampleBuilder
         $textStyle->setFontSize(new FontSize('16pt'));
         $textStyle->setBold();
         $textStyle->setColor(new Color('#0000ff'));
+    }
+
+    private function addImages()
+    {
+        $paragraph = $this->odtFile->createParagraph();
+        $image = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
+        $image->setWidth(new Length('7cm'));
+        $image->getStyle()->setMarginTop(new Length('0.5cm'));
+        $image->getStyle()->setMarginLeft(new Length('1cm'));
+        $image->getStyle()->setMarginRight(new Length('1.5cm'));
+        $image->getStyle()->setMarginBottom(new Length('2cm'));
+        $paragraph->createTextElement('This text should not be wrapped.');
+
+        $paragraph = $this->odtFile->createParagraph();
+        $image = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
+        $image->getStyle()->setAlignCenter();
+        $paragraph->createTextElement('This text should not be wrapped.');
+
+        $paragraph = $this->odtFile->createParagraph();
+        $image = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
+        $image->setHeight(new Length('0.5cm'));
+        $image->getStyle()->setAlignRight();
+        $paragraph->createTextElement('This text should not be wrapped.');
+
+        $paragraph = $this->odtFile->createParagraph();
+        $image = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
+        $image->getStyle()->setWrapParallel();
+        $image->getStyle()->setMarginRight(new Length('0.5cm'));
+        $paragraph->createTextElement('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.');
+
+        $paragraph = $this->odtFile->createParagraph();
+        $image = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
+        $image->getStyle()->setWrapParallel();
+        $image->getStyle()->setAlignCenter();
+        $image->getStyle()->setMarginLeft(new Length('0.5cm'));
+        $image->getStyle()->setMarginRight(new Length('0.5cm'));
+        $paragraph->createTextElement('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.');
+
+        $paragraph = $this->odtFile->createParagraph();
+        $image = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
+        $image->getStyle()->setWrapParallel();
+        $image->getStyle()->setAlignRight();
+        $image->getStyle()->setMarginLeft(new Length('0.5cm'));
+        $image->getStyle()->setMarginRight(new Length('0.5cm'));
+        $paragraph->createTextElement('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.');
     }
 
     private function addRegards()

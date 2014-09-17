@@ -2,7 +2,9 @@
 
 namespace Juit\PhpOdt\OdtCreator\Element;
 
-use Juit\PhpOdt\OdtCreator\Document\ContentFile;
+use DOMDocument;
+use DOMElement;
+use DOMXPath;
 use Juit\PhpOdt\OdtCreator\Style\ParagraphStyle;
 
 class Paragraph extends AbstractElementWithContent
@@ -25,25 +27,26 @@ class Paragraph extends AbstractElementWithContent
     }
 
     /**
-     * @param \DOMDocument $domDocument
-     * @param \DOMElement|null $parentElement
+     * @param DOMDocument $document
+     * @param DOMElement|null $parent
      * @return void
      */
-    public function renderToContent(\DOMDocument $domDocument, \DOMElement $parentElement = null)
+    public function renderToContent(DOMDocument $document, DOMElement $parent = null)
     {
-        $domElement = $domDocument->createElementNS(ContentFile::NAMESPACE_TEXT, 'text:p');
+        $paragraph = $document->createElement('text:p');
 
         $style = $this->paragraphStyle ? $this->paragraphStyle : $this->styleFactory->getDefaultParagraphStyle();
-        $domElement->setAttributeNS(ContentFile::NAMESPACE_TEXT, 'text:style-name', $style->getStyleName());
+        $paragraph->setAttribute('text:style-name', $style->getStyleName());
 
         foreach ($this->contents as $text) {
-            $text->renderTo($domDocument, $domElement);
+            $text->renderTo($document, $paragraph);
         }
 
-        if (!$parentElement) {
-            $parentElement = $domDocument->getElementsByTagNameNS(ContentFile::NAMESPACE_OFFICE, 'text')->item(0);
+        if (!$parent) {
+            $xPath = new DOMXPath($document);
+            $parent = $xPath->query('//office:text')->item(0);
         }
-        $parentElement->appendChild($domElement);
+        $parent->appendChild($paragraph);
     }
 }
 

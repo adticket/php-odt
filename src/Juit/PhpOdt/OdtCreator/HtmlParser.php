@@ -4,12 +4,10 @@ namespace Juit\PhpOdt\OdtCreator;
 
 use FluentDOM\Document;
 use FluentDOM\Element;
-use Juit\PhpOdt\OdtCreator\Content\LineBreak;
 use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Element\ElementFactory;
 use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\HtmlParser\TextStyleConfig;
-use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 use Juit\PhpOdt\OdtCreator\Value\FontSize;
 
 class HtmlParser

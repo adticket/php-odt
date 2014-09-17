@@ -3,15 +3,16 @@
 namespace Juit\PhpOdt\OdtCreator;
 
 use Juit\PhpOdt\OdtCreator\Document\ContentFile;
+use Juit\PhpOdt\OdtCreator\Document\File;
 use Juit\PhpOdt\OdtCreator\Document\ManifestFile;
 use Juit\PhpOdt\OdtCreator\Document\MetaFile;
 use Juit\PhpOdt\OdtCreator\Document\SettingsFile;
 use Juit\PhpOdt\OdtCreator\Document\StylesFile;
 use Juit\PhpOdt\OdtCreator\Element\ElementFactory;
 use Juit\PhpOdt\OdtCreator\Element\Frame;
-use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\Style\ParagraphStyle;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
+use Juit\PhpOdt\OdtCreator\Style\TextStyle;
 use Juit\PhpOdt\OdtCreator\Value\Length;
 
 class OdtFile
@@ -29,12 +30,12 @@ class OdtFile
     private $elementFactory;
 
     /**
-     * @var \Juit\PhpOdt\OdtCreator\Document\StylesFile
+     * @var StylesFile
      */
     private $styles;
 
     /**
-     * @var \Juit\PhpOdt\OdtCreator\Document\ContentFile
+     * @var ContentFile
      */
     private $content;
 
@@ -48,7 +49,7 @@ class OdtFile
         $this->styleFactory   = new StyleFactory();
         $this->elementFactory = new ElementFactory($this->styleFactory);
         $this->styles         = new StylesFile($this->styleFactory);
-        $this->content        = new ContentFile();
+        $this->content        = new ContentFile($this->styleFactory);
     }
 
     /**
@@ -60,7 +61,7 @@ class OdtFile
     }
 
     /**
-     * @return Style\TextStyle
+     * @return TextStyle
      */
     public function getDefaultTextStyle()
     {
@@ -87,13 +88,9 @@ class OdtFile
         return $this->elementFactory->createFrame($xCoordinate, $yCoordinate, $width, $height);
     }
 
-    /**
-     * @param ParagraphStyle $style
-     * @return Paragraph
-     */
-    public function createParagraph(ParagraphStyle $style = null)
+    public function createParagraph()
     {
-        return $this->elementFactory->createParagraph($style);
+        return $this->elementFactory->createParagraph();
     }
 
     public function save(\SplFileInfo $targetFile)
@@ -111,7 +108,7 @@ class OdtFile
             $this->styles
         );
         foreach ($files as $file) {
-            /** @var $file \Juit\PhpOdt\OdtCreator\Document\File */
+            /** @var $file File */
             $document->addFromString($file->getRelativePath(), $file->render());
         }
 

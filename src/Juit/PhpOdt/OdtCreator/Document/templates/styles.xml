@@ -28,7 +28,14 @@
         <style:font-face style:name="Verdana" svg:font-family="Verdana" style:font-family-generic="swiss"
                          style:font-pitch="variable"/>
     </office:font-face-decls>
-    <office:styles/>
+    <office:styles>
+        <style:style style:name="Graphics" style:family="graphic">
+            <style:graphic-properties text:anchor-type="paragraph" svg:x="0cm" svg:y="0cm" style:wrap="dynamic"
+                                      style:number-wrapped-paragraphs="no-limit" style:wrap-contour="false"
+                                      style:vertical-pos="top" style:vertical-rel="paragraph"
+                                      style:horizontal-pos="center" style:horizontal-rel="paragraph"/>
+        </style:style>
+    </office:styles>
     <office:automatic-styles>
         <style:page-layout style:name="Mpm1">
             <style:page-layout-properties fo:page-width="21.001cm" fo:page-height="29.7cm" style:num-format="1"

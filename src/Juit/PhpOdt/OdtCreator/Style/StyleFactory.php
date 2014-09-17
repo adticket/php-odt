@@ -2,7 +2,8 @@
 
 namespace Juit\PhpOdt\OdtCreator\Style;
 
-use Juit\PhpOdt\OdtCreator\Document\StylesFile;
+use DOMDocument;
+use DOMXPath;
 
 class StyleFactory
 {
@@ -14,7 +15,7 @@ class StyleFactory
     /**
      * @var TextStyle[]
      */
-    private $textStyles = array();
+    private $textStyles = [];
 
     /**
      * @var TextStyle|null
@@ -24,7 +25,7 @@ class StyleFactory
     /**
      * @var ParagraphStyle[]
      */
-    private $paragraphStyles = array();
+    private $paragraphStyles = [];
 
     /**
      * @var ParagraphStyle|null
@@ -34,7 +35,12 @@ class StyleFactory
     /**
      * @var GraphicStyle[]
      */
-    private $graphicStyles = array();
+    private $graphicStyles = [];
+
+    /**
+     * @var ImageStyle[]
+     */
+    private $imageStyles = [];
 
     public function __construct()
     {
@@ -94,6 +100,18 @@ class StyleFactory
     }
 
     /**
+     * @return ImageStyle
+     */
+    public function createImageStyle()
+    {
+        $name = 'im' . (count($this->imageStyles) + 1);
+        $imageStyle = new ImageStyle($name);
+        $this->imageStyles[] = $imageStyle;
+
+        return $imageStyle;
+    }
+
+    /**
      * @return TextStyle
      */
     public function getDefaultTextStyle()
@@ -109,17 +127,26 @@ class StyleFactory
         return $this->defaultParagraphStyle;
     }
 
-    public function renderAllStylesTo(\DOMDocument $stylesDocument)
+    public function renderStyles(DOMDocument $stylesDocument)
     {
-        $styles = array_merge($this->textStyles, $this->paragraphStyles, $this->graphicStyles);
-        $parentElement = $stylesDocument->getElementsByTagNameNS(StylesFile::NAMESPACE_OFFICE, 'styles')->item(0);
+        $xPath = new DOMXPath($stylesDocument);
+        $parentElement = $xPath->query('//office:styles')->item(0);
 
-        foreach ($styles as $style) {
-            /** @var $style AbstractStyle */
-            $style->renderTo($stylesDocument, $parentElement);
+        foreach ($this->getAllStyles() as $style) {
+            $style->renderStyles($stylesDocument, $parentElement);
         }
 
         $this->pageStyle->renderMarginsTo($stylesDocument);
+    }
+
+    public function renderAutomaticStyles(DOMDocument $contentDocument)
+    {
+        $xPath = new DOMXPath($contentDocument);
+        $parentElement = $xPath->query('//office:automatic-styles')->item(0);
+
+        foreach ($this->getAllStyles() as $style) {
+            $style->renderAutomaticStyles($contentDocument, $parentElement);
+        }
     }
 
     /**
@@ -127,8 +154,7 @@ class StyleFactory
      */
     private function getNextTextStyleName()
     {
-        $name = 'T' . (count($this->textStyles) + 1);
-        return $name;
+        return 'T' . (count($this->textStyles) + 1);
     }
 
     /**
@@ -136,8 +162,7 @@ class StyleFactory
      */
     private function getNextParagraphStyleName()
     {
-        $name = 'P' . (count($this->paragraphStyles) + 1);
-        return $name;
+        return 'P' . (count($this->paragraphStyles) + 1);
     }
 
     /**
@@ -146,5 +171,18 @@ class StyleFactory
     public function getPageStyle()
     {
         return $this->pageStyle;
+    }
+
+    /**
+     * @return AbstractStyle[]
+     */
+    private function getAllStyles()
+    {
+        return array_merge(
+            $this->textStyles,
+            $this->paragraphStyles,
+            $this->graphicStyles,
+            $this->imageStyles
+        );
     }
 }

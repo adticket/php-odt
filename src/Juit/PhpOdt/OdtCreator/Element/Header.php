@@ -2,7 +2,9 @@
 
 namespace Juit\PhpOdt\OdtCreator\Element;
 
-use Juit\PhpOdt\OdtCreator\Document\ContentFile;
+use DOMDocument;
+use DOMElement;
+use DOMXPath;
 
 class Header extends AbstractElementWithContent
 {
@@ -17,22 +19,23 @@ class Header extends AbstractElementWithContent
     }
 
     /**
-     * @param \DOMDocument $domDocument
-     * @param \DOMElement|null $parentElement
+     * @param DOMDocument $document
+     * @param DOMElement|null $parent
      * @return void
      */
-    public function renderToContent(\DOMDocument $domDocument, \DOMElement $parentElement = null)
+    public function renderToContent(DOMDocument $document, DOMElement $parent = null)
     {
-        $domElement = $domDocument->createElementNS(ContentFile::NAMESPACE_TEXT, 'h');
-        $domElement->setAttributeNS(ContentFile::NAMESPACE_TEXT, 'outline-level', $this->outlineLevel);
+        $header = $document->createElement('text:h');
+        $header->setAttribute('text:outline-level', $this->outlineLevel);
 
         foreach ($this->contents as $text) {
-            $text->renderTo($domDocument, $domElement);
+            $text->renderTo($document, $header);
         }
 
-        if (!$parentElement) {
-            $parentElement = $domDocument->getElementsByTagNameNS(ContentFile::NAMESPACE_OFFICE, 'text')->item(0);
+        if (!$parent) {
+            $xPath = new DOMXPath($document);
+            $parent = $xPath->query('//office:text')->item(0);
         }
-        $parentElement->appendChild($domElement);
+        $parent->appendChild($header);
     }
 }

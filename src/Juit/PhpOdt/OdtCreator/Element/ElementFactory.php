@@ -2,7 +2,6 @@
 
 namespace Juit\PhpOdt\OdtCreator\Element;
 
-use Juit\PhpOdt\OdtCreator\Style\ParagraphStyle;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 use Juit\PhpOdt\OdtCreator\Value\Length;
 

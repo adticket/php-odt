@@ -2,39 +2,34 @@
 
 namespace Juit\PhpOdt\OdtCreator\Style;
 
-use Juit\PhpOdt\OdtCreator\Document\StylesFile;
+use DOMDocument;
+use DOMElement;
 
 class GraphicStyle extends AbstractStyle
 {
-    /**
-     * @param \DOMDocument $stylesDocument
-     * @param \DOMElement $styleElement
-     * @return void
-     */
-    protected function renderToStyleElement(\DOMDocument $stylesDocument, \DOMElement $styleElement)
+    public function renderStyles(DOMDocument $document, DOMElement $parent)
     {
-        $styleElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:family', 'graphic');
+        $style = $this->createDefaultStyleElement($document, $parent);
+        $style->setAttribute('style:family', 'graphic');
 
-        $graphicPropertiesElement = $stylesDocument->createElementNS(StylesFile::NAMESPACE_STYLE, 'style:graphic-properties');
-
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_TEXT, 'text:anchor-type', 'paragraph');
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_SVG, 'svg:anchor-type', 'paragraph');
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_SVG, 'svg:x', '0cm');
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_SVG, 'svg:y', '0cm');
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_FO, 'fo:margin-left', '0.2cm');
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_FO, 'fo:margin-right', '0.2cm');
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_FO, 'fo:margin-top', '0.2cm');
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_FO, 'fo:margin-bottom', '0.2cm');
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:wrap', 'parallel');
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:number-wrapped-paragraphs', 'no-limit');
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:wrap-contour', 'false');
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:vertical-pos', 'from-top');
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:vertical-rel', 'page');
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:horizontal-pos', 'from-left');
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:horizontal-rel', 'page');
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_FO, 'fo:padding', '0cm');
-        $graphicPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_FO, 'fo:border', 'none');
-
-        $styleElement->appendChild($graphicPropertiesElement);
+        $graphicPropertiesElement = $document->createElement('style:graphic-properties');
+        $style->appendChild($graphicPropertiesElement);
+        $graphicPropertiesElement->setAttribute('text:anchor-type', 'paragraph');
+        $graphicPropertiesElement->setAttribute('svg:anchor-type', 'paragraph');
+        $graphicPropertiesElement->setAttribute('svg:x', '0cm');
+        $graphicPropertiesElement->setAttribute('svg:y', '0cm');
+        $graphicPropertiesElement->setAttribute('fo:margin-left', '0.2cm');
+        $graphicPropertiesElement->setAttribute('fo:margin-right', '0.2cm');
+        $graphicPropertiesElement->setAttribute('fo:margin-top', '0.2cm');
+        $graphicPropertiesElement->setAttribute('fo:margin-bottom', '0.2cm');
+        $graphicPropertiesElement->setAttribute('style:wrap', 'parallel');
+        $graphicPropertiesElement->setAttribute('style:number-wrapped-paragraphs', 'no-limit');
+        $graphicPropertiesElement->setAttribute('style:wrap-contour', 'false');
+        $graphicPropertiesElement->setAttribute('style:vertical-pos', 'from-top');
+        $graphicPropertiesElement->setAttribute('style:vertical-rel', 'page');
+        $graphicPropertiesElement->setAttribute('style:horizontal-pos', 'from-left');
+        $graphicPropertiesElement->setAttribute('style:horizontal-rel', 'page');
+        $graphicPropertiesElement->setAttribute('fo:padding', '0cm');
+        $graphicPropertiesElement->setAttribute('fo:border', 'none');
     }
 }
