@@ -58,6 +58,7 @@ class ExampleBuilder
         $this->addBiggerContent();
         $this->addContentWithACombinationOfFormats();
         $this->addImages();
+        $this->addTextFrames();
         $this->addRegards();
 
         $this->odtFile->save($odtFileInfo);
@@ -100,7 +101,7 @@ class ExampleBuilder
 
     private function addDateFrame()
     {
-        $dateFrame   = $this->odtFile->createFrame(
+        $dateFrame = $this->odtFile->createFrame(
             new Length('14cm'),
             new Length('8cm'),
             new Length('5cm'),
@@ -147,7 +148,7 @@ class ExampleBuilder
      */
     private function createParagraphs($dummyText)
     {
-        $textBlocks       = explode("\n", $dummyText);
+        $textBlocks = explode("\n", $dummyText);
         foreach ($textBlocks as $text) {
             $paragraph = $this->odtFile->createParagraph();
             $paragraph->createTextElement($text);
@@ -156,28 +157,28 @@ class ExampleBuilder
 
     private function addColoredContent()
     {
-        $paragraph = $this->odtFile->createParagraph();
+        $paragraph   = $this->odtFile->createParagraph();
         $textElement = $paragraph->createTextElement("Dies ist roter Text.");
         $textElement->getStyle()->setColor(new Color('#ff0000'));
     }
 
     private function addBoldContent()
     {
-        $paragraph = $this->odtFile->createParagraph();
+        $paragraph   = $this->odtFile->createParagraph();
         $textElement = $paragraph->createTextElement("Dies ist fett gedruckter Text.");
         $textElement->getStyle()->setBold();
     }
 
     private function addBiggerContent()
     {
-        $paragraph = $this->odtFile->createParagraph();
+        $paragraph   = $this->odtFile->createParagraph();
         $textElement = $paragraph->createTextElement("Dies ist größerer Text.");
         $textElement->getStyle()->setFontSize(new FontSize('16pt'));
     }
 
     private function addContentWithACombinationOfFormats()
     {
-        $paragraph = $this->odtFile->createParagraph();
+        $paragraph   = $this->odtFile->createParagraph();
         $textElement = $paragraph->createTextElement("Dies ist größerer, fett gedruckter, blauer Text.");
 
         $textStyle = $textElement->getStyle();
@@ -189,7 +190,7 @@ class ExampleBuilder
     private function addImages()
     {
         $paragraph = $this->odtFile->createParagraph();
-        $image = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
+        $image     = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
         $image->setWidth(new Length('7cm'));
         $image->getStyle()->setMarginTop(new Length('0.5cm'));
         $image->getStyle()->setMarginLeft(new Length('1cm'));
@@ -198,37 +199,124 @@ class ExampleBuilder
         $paragraph->createTextElement('This text should not be wrapped.');
 
         $paragraph = $this->odtFile->createParagraph();
-        $image = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
+        $image     = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
         $image->getStyle()->setAlignCenter();
         $paragraph->createTextElement('This text should not be wrapped.');
 
         $paragraph = $this->odtFile->createParagraph();
-        $image = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
+        $image     = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
         $image->setHeight(new Length('0.5cm'));
         $image->getStyle()->setAlignRight();
         $paragraph->createTextElement('This text should not be wrapped.');
 
         $paragraph = $this->odtFile->createParagraph();
-        $image = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
+        $image     = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
         $image->getStyle()->setWrapParallel();
         $image->getStyle()->setMarginRight(new Length('0.5cm'));
-        $paragraph->createTextElement('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.');
+        $paragraph->createTextElement(
+            'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.'
+        );
 
         $paragraph = $this->odtFile->createParagraph();
-        $image = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
+        $image     = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
         $image->getStyle()->setWrapParallel();
         $image->getStyle()->setAlignCenter();
         $image->getStyle()->setMarginLeft(new Length('0.5cm'));
         $image->getStyle()->setMarginRight(new Length('0.5cm'));
-        $paragraph->createTextElement('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.');
+        $paragraph->createTextElement(
+            'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.'
+        );
 
         $paragraph = $this->odtFile->createParagraph();
-        $image = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
+        $image     = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
         $image->getStyle()->setWrapParallel();
         $image->getStyle()->setAlignRight();
         $image->getStyle()->setMarginLeft(new Length('0.5cm'));
         $image->getStyle()->setMarginRight(new Length('0.5cm'));
-        $paragraph->createTextElement('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.');
+        $paragraph->createTextElement(
+            'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.'
+        );
+    }
+
+    private function addTextFrames()
+    {
+        $paragraph = $this->odtFile->createParagraph();
+        $paragraph->getStyle()->setPageBreakBefore(true);
+        $paragraph->createTextElement('This paragraph has a page break before.');
+
+        $paragraph = $this->odtFile->createParagraph();
+        $textFrame = $paragraph->createTextFrame();
+        $textFrame->setHeight(new Length('3cm'));
+        $textFrame->setWidth(new Length('4cm'));
+        $paragraph->createTextElement('Frame 1 - This text should not be wrapped.');
+
+        $paragraph = $this->odtFile->createParagraph();
+        $textFrame = $paragraph->createTextFrame();
+        $textFrame->setHeight(new Length('3cm'));
+        $textFrame->setWidth(new Length('4cm'));
+        $textFrame->getStyle()->setBorderWidth(new Length('0.06pt'));
+        $paragraph->createTextElement('Frame 2 - This text should not be wrapped.');
+
+        $paragraph = $this->odtFile->createParagraph();
+        $textFrame = $paragraph->createTextFrame();
+        $textFrame->setHeight(new Length('2cm'));
+        $textFrame->setWidth(new Length('2cm'));
+        $textFrame->getStyle()->setBorderWidth(new Length('5pt'));
+        $textFrame->getStyle()->setBorderColor(new Color('#ff0000'));
+        $paragraph->createTextElement('Frame 3 - This text should not be wrapped.');
+
+        $paragraph = $this->odtFile->createParagraph();
+        $textFrame = $paragraph->createTextFrame();
+        $textFrame->setHeight(new Length('2cm'));
+        $textFrame->setWidth(new Length('2cm'));
+        $textFrame->getStyle()->setBorderWidth(new Length('5pt'));
+        $textFrame->getStyle()->setBorderColor(new Color('#ff0000'));
+        $textFrame->getStyle()->setAlignCenter();
+        $paragraph->createTextElement('Frame 4 - This text should not be wrapped.');
+
+        $paragraph = $this->odtFile->createParagraph();
+        $textFrame = $paragraph->createTextFrame();
+        $textFrame->setHeight(new Length('2cm'));
+        $textFrame->setWidth(new Length('2cm'));
+        $textFrame->getStyle()->setBorderWidth(new Length('5pt'));
+        $textFrame->getStyle()->setBorderColor(new Color('#ff0000'));
+        $textFrame->getStyle()->setAlignRight();
+        $paragraph->createTextElement('Frame 5 - This text should not be wrapped.');
+
+        $paragraph = $this->odtFile->createParagraph();
+        $paragraph->getStyle()->setPageBreakBefore(true);
+        $paragraph->createTextElement('This paragraph has a page break before.');
+
+        $paragraph = $this->odtFile->createParagraph();
+        $textFrame = $paragraph->createTextFrame();
+        $textFrame->setHeight(new Length('1.5cm'));
+        $textFrame->setWidth(new Length('10cm'));
+        $textFrame->getStyle()->setBorderWidth(new Length('5pt'));
+        $textFrame->getStyle()->setBorderColor(new Color('#ff0000'));
+        $textFrame->getStyle()->setWrapParallel();
+        $paragraph->createTextElement('Frame 6 - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.');
+
+
+        $paragraph = $this->odtFile->createParagraph();
+        $textFrame = $paragraph->createTextFrame();
+        $textFrame->setHeight(new Length('1.5cm'));
+        $textFrame->setWidth(new Length('10cm'));
+        $textFrame->getStyle()->setBorderWidth(new Length('5pt'));
+        $textFrame->getStyle()->setBorderColor(new Color('#ff0000'));
+        $textFrame->getStyle()->setWrapParallel();
+        $textFrame->getStyle()->setAlignCenter();
+        $paragraph->createTextElement('Frame 7 - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.');
+
+
+        $paragraph = $this->odtFile->createParagraph();
+        $textFrame = $paragraph->createTextFrame();
+        $textFrame->setHeight(new Length('1.5cm'));
+        $textFrame->setWidth(new Length('10cm'));
+        $textFrame->getStyle()->setBorderWidth(new Length('5pt'));
+        $textFrame->getStyle()->setBorderColor(new Color('#ff0000'));
+        $textFrame->getStyle()->setWrapParallel();
+        $textFrame->getStyle()->setAlignRight();
+        $paragraph->createTextElement('Frame 8 - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.');
     }
 
     private function addRegards()
