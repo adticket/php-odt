@@ -31,6 +31,11 @@ class OdtFile
     private $elementFactory;
 
     /**
+     * @var HtmlParser
+     */
+    private $htmlParser;
+
+    /**
      * @var StylesFile
      */
     private $styles;
@@ -61,6 +66,7 @@ class OdtFile
         $this->elementFactory = new ElementFactory($this->styleFactory);
         $this->styles = new StylesFile($this->styleFactory);
         $this->content = new ContentFile($this->styleFactory);
+        $this->htmlParser = new HtmlParser($this->elementFactory);
     }
 
     /**
@@ -100,6 +106,17 @@ class OdtFile
         $this->frames[] = $frame;
 
         return $frame;
+    }
+
+    public function createHtmlFrame(
+        $htmlString,
+        Length $xCoordinate,
+        Length $yCoordinate,
+        Length $width,
+        Length $height
+    ) {
+        $frame = $this->createFrame($xCoordinate, $yCoordinate, $width, $height);
+        $frame->setContent($this->htmlParser->parse($htmlString));
     }
 
     /**
