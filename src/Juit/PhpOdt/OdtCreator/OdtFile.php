@@ -108,7 +108,15 @@ class OdtFile
         return $frame;
     }
 
-    public function createHtmlFrame(
+    /**
+     * @param $htmlString
+     * @param Length $xCoordinate
+     * @param Length $yCoordinate
+     * @param Length $width
+     * @param Length $height
+     * @return Frame
+     */
+    public function createFrameFromHtml(
         $htmlString,
         Length $xCoordinate,
         Length $yCoordinate,
@@ -117,10 +125,12 @@ class OdtFile
     ) {
         $frame = $this->createFrame($xCoordinate, $yCoordinate, $width, $height);
         $frame->setContent($this->htmlParser->parse($htmlString));
+
+        return $frame;
     }
 
     /**
-     * @return Element\Paragraph
+     * @return Paragraph
      */
     public function createParagraph()
     {
@@ -128,6 +138,20 @@ class OdtFile
         $this->paragraphs[] = $paragraph;
 
         return $paragraph;
+    }
+
+    /**
+     * @param $htmlString
+     * @return Paragraph[]
+     */
+    public function createParagraphsFromHtml($htmlString)
+    {
+        $paragraphs = $this->htmlParser->parse($htmlString);
+        foreach ($paragraphs as $paragraph) {
+            $this->paragraphs[] = $paragraph;
+        }
+
+        return $paragraphs;
     }
 
     public function save(\SplFileInfo $targetFile)

@@ -57,6 +57,7 @@ class ExampleBuilder
         $this->addBoldContent();
         $this->addBiggerContent();
         $this->addContentWithACombinationOfFormats();
+        $this->addContentFromHtml();
         $this->addImages();
         $this->addTextFrames();
         $this->addRegards();
@@ -86,7 +87,7 @@ class ExampleBuilder
         $yCoordinate = new Length('2.7cm');
         $width       = new Length('8.5cm');
         $height      = new Length('4.5cm');
-        $this->odtFile->createHtmlFrame(
+        $this->odtFile->createFrameFromHtml(
             '<p>Mustermann GmbH<br>Herr Max Mustermann<br>Musterstr. 1<br><br><strong>12345 Musterstadt</strong></p>',
             $xCoordinate,
             $yCoordinate,
@@ -97,7 +98,7 @@ class ExampleBuilder
 
     private function addDateFrame()
     {
-        $this->odtFile->createHtmlFrame(
+        $this->odtFile->createFrameFromHtml(
             '<p>Musterdorf, <em>den 02.05.2014</em></p>',
             new Length('14cm'),
             new Length('8cm'),
@@ -182,8 +183,17 @@ class ExampleBuilder
         $textStyle->setColor(new Color('#0000ff'));
     }
 
+    private function addContentFromHtml()
+    {
+        $this->odtFile->createParagraphsFromHtml('<p>Dieser Text <u>ist per <strong>HTML</strong> erstellt</u>.<br>Er kann <em>Zeilenumbrüche</em> enthalten.</p><p>Mehrere Absätze <span style="font-family: \'Times New Roman\'">und <span style="font-size: 20px">Schriftformate</span></span> sind ebenfalls möglich.</p>');
+    }
+
     private function addImages()
     {
+        $paragraph = $this->odtFile->createParagraph();
+        $paragraph->getStyle()->setPageBreakBefore(true);
+        $paragraph->createTextElement('Seitenumbruch');
+
         $paragraph = $this->odtFile->createParagraph();
         $image     = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
         $image->setWidth(new Length('7cm'));
