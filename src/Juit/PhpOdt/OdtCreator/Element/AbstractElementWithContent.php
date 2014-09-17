@@ -6,6 +6,7 @@ use Juit\PhpOdt\OdtCreator\Content\Content;
 use Juit\PhpOdt\OdtCreator\Content\Image;
 use Juit\PhpOdt\OdtCreator\Content\LineBreak;
 use Juit\PhpOdt\OdtCreator\Content\Text;
+use Juit\PhpOdt\OdtCreator\Content\TextFrame;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 use SplFileInfo;
 
@@ -54,5 +55,17 @@ abstract class AbstractElementWithContent implements Element
         $this->contents[] = $image;
 
         return $image;
+    }
+
+    /**
+     * @return TextFrame
+     */
+    public function createTextFrame()
+    {
+        $name             = 'Frame' . (count($this->contents) + 1);
+        $frame            = new TextFrame($name, $this->styleFactory);
+        $this->contents[] = $frame;
+
+        return $frame;
     }
 }

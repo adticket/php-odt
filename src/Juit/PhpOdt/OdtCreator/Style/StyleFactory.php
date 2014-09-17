@@ -42,6 +42,11 @@ class StyleFactory
      */
     private $imageStyles = [];
 
+    /**
+     * @var TextFrameStyle[]
+     */
+    private $textFrameStyles = [];
+
     public function __construct()
     {
         $this->pageStyle = new PageStyle();
@@ -109,6 +114,18 @@ class StyleFactory
         $this->imageStyles[] = $imageStyle;
 
         return $imageStyle;
+    }
+
+    /**
+     * @return TextFrameStyle
+     */
+    public function createTextFrameStyle()
+    {
+        $name = 'fr' . (count($this->textFrameStyles) + 1);
+        $textFrameStyle = new TextFrameStyle($name);
+        $this->textFrameStyles[] = $textFrameStyle;
+
+        return $textFrameStyle;
     }
 
     /**
@@ -182,7 +199,8 @@ class StyleFactory
             $this->textStyles,
             $this->paragraphStyles,
             $this->graphicStyles,
-            $this->imageStyles
+            $this->imageStyles,
+            $this->textFrameStyles
         );
     }
 }
