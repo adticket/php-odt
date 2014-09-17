@@ -327,4 +327,29 @@ class HtmlParserTest extends HtmlParserTestCase
         $actual = $contents[0];
         $this->assertTextWithContent('A text with    blanks', $actual);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_handle_font_colors_in_rgb_notation()
+    {
+        $SUT = $this->SUT;
+
+        $paragraphs = $SUT->parse('<p>A <span style="color: rgb(1, 154, 239);">colored</span> text</p>');
+
+        $this->assertCount(1, $paragraphs);
+
+        $contents = $this->getContentsOfParagraph($paragraphs[0]);
+        $this->assertCount(3, $contents);
+
+        $actual = $contents[0];
+        $this->assertTextWithContent('A ', $actual);
+
+        $actual = $contents[1];
+        $this->assertTextWithContent('colored', $actual);
+        $this->assertFontColor($actual, '#019aef');
+
+        $actual = $contents[2];
+        $this->assertTextWithContent(' text', $actual);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace Juit\PhpOdt\OdtCreator\HtmlParser;
 
+use Juit\PhpOdt\OdtCreator\Value\Color;
 use Juit\PhpOdt\OdtCreator\Value\FontSize;
 
 class TextStyleConfig
@@ -30,6 +31,11 @@ class TextStyleConfig
      * @var string|null
      */
     private $fontName = null;
+
+    /**
+     * @var Color|null
+     */
+    private $fontColor = null;
 
     /**
      * @return TextStyleConfig
@@ -124,6 +130,26 @@ class TextStyleConfig
     {
         $newInstance = clone $this;
         $newInstance->fontName = $fontName;
+
+        return $newInstance;
+    }
+
+    /**
+     * @return Color|null
+     */
+    public function getFontColor()
+    {
+        return $this->fontColor;
+    }
+
+    /**
+     * @param Color|null $fontColor
+     * @return \Juit\PhpOdt\OdtCreator\HtmlParser\TextStyleConfig
+     */
+    public function setFontColor($fontColor)
+    {
+        $newInstance = clone $this;
+        $newInstance->fontColor = $fontColor;
 
         return $newInstance;
     }

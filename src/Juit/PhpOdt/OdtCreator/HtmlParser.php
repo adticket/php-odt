@@ -8,6 +8,7 @@ use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Element\ElementFactory;
 use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\HtmlParser\TextStyleConfig;
+use Juit\PhpOdt\OdtCreator\Value\Color;
 use Juit\PhpOdt\OdtCreator\Value\FontSize;
 
 class HtmlParser
@@ -99,6 +100,9 @@ class HtmlParser
             if ($styleConfig->getFontName()) {
                 $textElement->getStyle()->setFontName($styleConfig->getFontName());
             }
+            if ($styleConfig->getFontColor()) {
+                $textElement->getStyle()->setColor($styleConfig->getFontColor());
+            }
 
             return;
         }
@@ -119,6 +123,9 @@ class HtmlParser
                 }
                 if ($fontName = $this->parseFontName($node)) {
                     $styleConfig = $styleConfig->setFontName($fontName);
+                }
+                if ($fontColor = $this->parseFontColor($node)) {
+                    $styleConfig = $styleConfig->setFontColor($fontColor);
                 }
                 break;
         }
@@ -165,6 +172,31 @@ class HtmlParser
         $matches = [];
         if (preg_match('/\bfont-family\s?:\s?(\'?)(?P<fontName>.*)(\'?)\b/', $styleAttribute, $matches)) {
             return $matches['fontName'];
+        }
+
+        return null;
+    }
+
+    /**
+     * @param Element $node
+     * @return Color|null
+     */
+    private function parseFontColor(Element $node)
+    {
+        $node = FluentDOM($node);
+        $styleAttribute = $node->attr('style');
+
+        if (!$styleAttribute) {
+            return null;
+        }
+
+        $matches = [];
+        if (preg_match('/\bcolor\s?:\s?rgb\((?P<red>\d+), (?P<green>\d+), (?P<blue>\d+)\)/', $styleAttribute, $matches)) {
+            $red = $matches['red'];
+            $green = $matches['green'];
+            $blue = $matches['blue'];
+
+            return Color::fromRgb($red, $green, $blue);
         }
 
         return null;

@@ -185,7 +185,7 @@ class ExampleBuilder
 
     private function addContentFromHtml()
     {
-        $this->odtFile->createParagraphsFromHtml('<p>Dieser Text <u>ist per <strong>HTML</strong> erstellt</u>.<br>Er kann <em>Zeilenumbrüche</em> enthalten.</p><p>Mehrere Absätze <span style="font-family: \'Times New Roman\'">und <span style="font-size: 20px">Schriftformate</span></span> sind ebenfalls möglich.</p>');
+        $this->odtFile->createParagraphsFromHtml('<p>Dieser Text <u>ist per <strong>HTML</strong> erstellt</u>.<br>Er kann <em>Zeilenumbrüche</em> enthalten.</p><p>Mehrere Absätze <span style="font-family: \'Times New Roman\'">und <span style="font-size: 20px">Schriftformate</span></span> sind <span style="color: rgb(255, 0, 0);">ebenfalls</span> möglich.</p>');
     }
 
     private function addImages()
