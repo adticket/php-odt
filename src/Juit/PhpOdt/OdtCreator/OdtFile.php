@@ -8,9 +8,12 @@ use Juit\PhpOdt\OdtCreator\Document\ManifestFile;
 use Juit\PhpOdt\OdtCreator\Document\MetaFile;
 use Juit\PhpOdt\OdtCreator\Document\SettingsFile;
 use Juit\PhpOdt\OdtCreator\Document\StylesFile;
-use Juit\PhpOdt\OdtCreator\Element\Element;
 use Juit\PhpOdt\OdtCreator\Element\ElementFactory;
+use Juit\PhpOdt\OdtCreator\Element\Frame;
+use Juit\PhpOdt\OdtCreator\Style\ParagraphStyle;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
+use Juit\PhpOdt\OdtCreator\Style\TextStyle;
+use Juit\PhpOdt\OdtCreator\Value\Length;
 
 class OdtFile
 {
@@ -27,12 +30,12 @@ class OdtFile
     private $elementFactory;
 
     /**
-     * @var \Juit\PhpOdt\OdtCreator\Document\StylesFile
+     * @var StylesFile
      */
     private $styles;
 
     /**
-     * @var \Juit\PhpOdt\OdtCreator\Document\ContentFile
+     * @var ContentFile
      */
     private $content;
 
@@ -43,26 +46,51 @@ class OdtFile
 
     public function reset()
     {
-        $this->styleFactory = new StyleFactory();
+        $this->styleFactory   = new StyleFactory();
         $this->elementFactory = new ElementFactory($this->styleFactory);
-        $this->styles = new StylesFile($this->styleFactory);
-        $this->content = new ContentFile();
+        $this->styles         = new StylesFile($this->styleFactory);
+        $this->content        = new ContentFile($this->styleFactory);
     }
 
     /**
-     * @return \Juit\PhpOdt\OdtCreator\Style\StyleFactory
+     * @return Style\PageStyle
      */
-    public function getStyleFactory()
+    public function getPageStyle()
     {
-        return $this->styleFactory;
+        return $this->styleFactory->getPageStyle();
     }
 
     /**
-     * @return ElementFactory
+     * @return TextStyle
      */
-    public function getElementFactory()
+    public function getDefaultTextStyle()
     {
-        return $this->elementFactory;
+        return $this->styleFactory->getDefaultTextStyle();
+    }
+
+    /**
+     * @return ParagraphStyle
+     */
+    public function getDefaultParagraphStyle()
+    {
+        return $this->styleFactory->getDefaultParagraphStyle();
+    }
+
+    /**
+     * @param Length $xCoordinate
+     * @param Length $yCoordinate
+     * @param Length $width
+     * @param Length $height
+     * @return Frame
+     */
+    public function createFrame(Length $xCoordinate, Length $yCoordinate, Length $width, Length $height)
+    {
+        return $this->elementFactory->createFrame($xCoordinate, $yCoordinate, $width, $height);
+    }
+
+    public function createParagraph()
+    {
+        return $this->elementFactory->createParagraph();
     }
 
     public function save(\SplFileInfo $targetFile)
@@ -80,7 +108,7 @@ class OdtFile
             $this->styles
         );
         foreach ($files as $file) {
-            /** @var $file \Juit\PhpOdt\OdtCreator\Document\File */
+            /** @var $file File */
             $document->addFromString($file->getRelativePath(), $file->render());
         }
 

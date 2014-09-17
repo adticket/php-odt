@@ -1,0 +1,4 @@
+System requirements:
+
+unoconv
+pdftk

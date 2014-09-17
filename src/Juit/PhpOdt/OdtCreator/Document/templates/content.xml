@@ -31,6 +31,7 @@
         <style:font-face style:name="Verdana" svg:font-family="Verdana" style:font-family-generic="swiss"
                          style:font-pitch="variable"/>
     </office:font-face-decls>
+    <office:automatic-styles/>
     <office:body>
         <office:text/>
     </office:body>

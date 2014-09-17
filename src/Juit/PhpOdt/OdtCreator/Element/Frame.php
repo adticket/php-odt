@@ -2,8 +2,10 @@
 
 namespace Juit\PhpOdt\OdtCreator\Element;
 
-use Juit\PhpOdt\OdtCreator\Document\ContentFile;
+use DOMDocument;
+use DOMElement;
 use Juit\PhpOdt\OdtCreator\Style\GraphicStyle;
+use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 use Juit\PhpOdt\OdtCreator\Value\Length;
 
 class Frame implements Element
@@ -12,6 +14,11 @@ class Frame implements Element
      * @var \Juit\PhpOdt\OdtCreator\Style\GraphicStyle
      */
     private $graphicStyle;
+
+    /**
+     * @var StyleFactory
+     */
+    private $styleFactory;
 
     /**
      * @var Length
@@ -35,17 +42,18 @@ class Frame implements Element
 
     public function __construct(
         GraphicStyle $graphicStyle,
+        StyleFactory $styleFactory,
         Length $xCoordinate,
         Length $yCoordinate,
         Length $width,
         Length $height
-    )
-    {
+    ) {
         $this->graphicStyle = $graphicStyle;
-        $this->xCoordinate = $xCoordinate;
-        $this->yCoordinate = $yCoordinate;
-        $this->width = $width;
-        $this->height = $height;
+        $this->styleFactory = $styleFactory;
+        $this->xCoordinate  = $xCoordinate;
+        $this->yCoordinate  = $yCoordinate;
+        $this->width        = $width;
+        $this->height       = $height;
     }
 
     /**
@@ -54,40 +62,41 @@ class Frame implements Element
     protected $subElements = array();
 
     /**
-     * @param Element $element
+     * @return Paragraph
      */
-    public function addSubElement(Element $element)
+    public function createParagraph()
     {
-        $this->subElements[] = $element;
+        $paragraph           = new Paragraph($this->styleFactory);
+        $this->subElements[] = $paragraph;
+
+        return $paragraph;
     }
 
     /**
-     * @param \DOMDocument $domDocument
-     * @param \DOMElement|null $parentElement
+     * @param DOMDocument $document
+     * @param DOMElement|null $parent
      * @return void
      */
-    public function renderToContent(\DOMDocument $domDocument, \DOMElement $parentElement = null)
+    public function renderToContent(DOMDocument $document, DOMElement $parent = null)
     {
-        $frameElement = $domDocument->createElementNS(ContentFile::NAMESPACE_DRAW, 'draw:frame');
-        $frameElement->setAttributeNS(
-            ContentFile::NAMESPACE_DRAW,
-            'draw:style-name',
-            $this->graphicStyle->getStyleName()
-        );
-        $frameElement->setAttributeNS(ContentFile::NAMESPACE_TEXT, 'text:anchor-type', 'page');
-        $frameElement->setAttributeNS(ContentFile::NAMESPACE_TEXT, 'text:anchor-page-number', '1');
-        $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:x', $this->xCoordinate->getValue());
-        $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:y', $this->yCoordinate->getValue());
-        $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:width', $this->width->getValue());
-        $frameElement->setAttributeNS(ContentFile::NAMESPACE_SVG, 'svg:height', $this->height->getValue());
-        $frameElement->setAttributeNS(ContentFile::NAMESPACE_DRAW, 'draw:z-index', '0');
-        $domDocument->getElementsByTagNameNS(ContentFile::NAMESPACE_OFFICE, 'text')->item(0)->appendChild($frameElement);
+        $frame = $document->createElement('draw:frame');
+        $frame->setAttribute('draw:style-name', $this->graphicStyle->getStyleName());
+        $frame->setAttribute('text:anchor-type', 'page');
+        $frame->setAttribute('text:anchor-page-number', '1');
+        $frame->setAttribute('svg:x', $this->xCoordinate->getValue());
+        $frame->setAttribute('svg:y', $this->yCoordinate->getValue());
+        $frame->setAttribute('svg:width', $this->width->getValue());
+        $frame->setAttribute('svg:height', $this->height->getValue());
+        $frame->setAttribute('draw:z-index', '0');
 
-        $textBoxElement = $domDocument->createElementNS(ContentFile::NAMESPACE_DRAW, 'draw:text-box');
-        $frameElement->appendChild($textBoxElement);
+        $xPath = new \DOMXPath($document);
+        $xPath->query('//office:text')->item(0)->appendChild($frame);
+
+        $textBox = $document->createElement('draw:text-box');
+        $frame->appendChild($textBox);
 
         foreach ($this->subElements as $subElement) {
-            $subElement->renderToContent($domDocument, $textBoxElement);
+            $subElement->renderToContent($document, $textBox);
         }
     }
 }

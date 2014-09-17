@@ -2,7 +2,6 @@
 
 namespace Juit\PhpOdt\OdtCreator\Style;
 
-use Juit\PhpOdt\OdtCreator\Document\StylesFile;
 use Juit\PhpOdt\OdtCreator\Value\Length;
 
 class ParagraphStyle extends AbstractStyle
@@ -21,6 +20,27 @@ class ParagraphStyle extends AbstractStyle
      * @var \Juit\PhpOdt\OdtCreator\Value\Length|null
      */
     private $marginBottom = null;
+
+    /**
+     * @var bool
+     */
+    private $pageBreakBefore = false;
+
+    /**
+     * @param ParagraphStyle $source
+     * @param string $destinationName
+     * @return ParagraphStyle
+     */
+    public static function copy(ParagraphStyle $source, $destinationName)
+    {
+        $destination = new self($destinationName);
+
+        $destination->masterPageName = $source->masterPageName;
+        $destination->marginTop      = $source->marginTop ? clone $source->marginTop : null;
+        $destination->marginBottom   = $source->marginBottom ? clone $source->marginBottom : null;
+
+        return $destination;
+    }
 
     /**
      * @param string $masterPageName
@@ -47,36 +67,33 @@ class ParagraphStyle extends AbstractStyle
     }
 
     /**
-     * @param \DOMDocument $stylesDocument
-     * @param \DOMElement $styleElement
-     * @return void
+     * @param boolean $pageBreakBefore
      */
-    protected function renderToStyleElement(\DOMDocument $stylesDocument, \DOMElement $styleElement)
+    public function setPageBreakBefore($pageBreakBefore)
     {
-        $styleElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:family', 'paragraph');
-        $styleElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:parent-style-name', 'Standard');
+        $this->pageBreakBefore = $pageBreakBefore;
+    }
 
+    public function renderStyles(\DOMDocument $document, \DOMElement $parent)
+    {
+        $style = $this->createDefaultStyleElement($document, $parent);
+        $style->setAttribute('style:family', 'paragraph');
+        $style->setAttribute('style:parent-style-name', 'Standard');
         if ($this->masterPageName) {
-            $styleElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:master-page-name', $this->masterPageName);
+            $style->setAttribute('style:master-page-name', $this->masterPageName);
         }
 
-        $paragraphPropertiesElement = $stylesDocument->createElementNS(StylesFile::NAMESPACE_STYLE, 'style:paragraph-properties');
-        $styleElement->appendChild($paragraphPropertiesElement);
-
-        $paragraphPropertiesElement->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:page-number', 'auto');
+        $paragraphProperties = $document->createElement('style:paragraph-properties');
+        $style->appendChild($paragraphProperties);
+        $paragraphProperties->setAttribute('style:page-number', 'auto');
         if ($this->marginTop) {
-            $paragraphPropertiesElement->setAttributeNS(
-                StylesFile::NAMESPACE_FO,
-                'fo:margin-top',
-                $this->marginTop->getValue()
-            );
+            $paragraphProperties->setAttribute('fo:margin-top', $this->marginTop->getValue());
         }
         if ($this->marginBottom) {
-            $paragraphPropertiesElement->setAttributeNS(
-                StylesFile::NAMESPACE_FO,
-                'fo:margin-bottom',
-                $this->marginBottom->getValue()
-            );
+            $paragraphProperties->setAttribute('fo:margin-bottom', $this->marginBottom->getValue());
+        }
+        if ($this->pageBreakBefore) {
+            $paragraphProperties->setAttribute('fo:break-before', 'page');
         }
     }
 }

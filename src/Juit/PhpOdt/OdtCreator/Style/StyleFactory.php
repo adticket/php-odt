@@ -2,89 +2,56 @@
 
 namespace Juit\PhpOdt\OdtCreator\Style;
 
-use Juit\PhpOdt\OdtCreator\Document\StylesFile;
-use Juit\PhpOdt\OdtCreator\Value\Length;
+use DOMDocument;
+use DOMXPath;
 
 class StyleFactory
 {
     /**
+     * @var PageStyle
+     */
+    private $pageStyle;
+
+    /**
      * @var TextStyle[]
      */
-    private $textStyles = array();
+    private $textStyles = [];
+
+    /**
+     * @var TextStyle|null
+     */
+    private $defaultTextStyle = null;
 
     /**
      * @var ParagraphStyle[]
      */
-    private $paragraphStyles = array();
+    private $paragraphStyles = [];
+
+    /**
+     * @var ParagraphStyle|null
+     */
+    private $defaultParagraphStyle = null;
 
     /**
      * @var GraphicStyle[]
      */
-    private $graphicStyles = array();
+    private $graphicStyles = [];
 
     /**
-     * @var null|Length
+     * @var ImageStyle[]
      */
-    private $marginTop = null;
+    private $imageStyles = [];
 
     /**
-     * @var null|Length
+     * @var TextFrameStyle[]
      */
-    private $marginTopOnFirstPage = null;
+    private $textFrameStyles = [];
 
-    /**
-     * @var null|Length
-     */
-    private $marginLeft = null;
-
-    /**
-     * @var null|Length
-     */
-    private $marginRight = null;
-
-    /**
-     * @var null|Length
-     */
-    private $marginBottom = null;
-
-    /**
-     * @param \Juit\PhpOdt\OdtCreator\Value\Length $marginTop
-     */
-    public function setMarginTop(Length $marginTop)
+    public function __construct()
     {
-        $this->marginTop = $marginTop;
-    }
-
-    /**
-     * @param \Juit\PhpOdt\OdtCreator\Value\Length $marginTopOnFirstPage
-     */
-    public function setMarginTopOnFirstPage(Length $marginTopOnFirstPage)
-    {
-        $this->marginTopOnFirstPage = $marginTopOnFirstPage;
-    }
-
-    /**
-     * @param \Juit\PhpOdt\OdtCreator\Value\Length $marginLeft
-     */
-    public function setMarginLeft(Length $marginLeft)
-    {
-        $this->marginLeft = $marginLeft;
-    }
-
-    /**
-     * @param \Juit\PhpOdt\OdtCreator\Value\Length $marginRight
-     */
-    public function setMarginRight(Length $marginRight)
-    {
-        $this->marginRight = $marginRight;
-    }
-
-    /**
-     * @param \Juit\PhpOdt\OdtCreator\Value\Length $marginBottom
-     */
-    public function setMarginBottom(Length $marginBottom)
-    {
-        $this->marginBottom = $marginBottom;
+        $this->pageStyle = new PageStyle();
+        $this->defaultTextStyle = $this->createDefaultTextStyle();
+        $this->defaultParagraphStyle = $this->createDefaultParagraphStyle();
     }
 
     /**
@@ -92,8 +59,15 @@ class StyleFactory
      */
     public function createTextStyle()
     {
-        $name = 'T' . (count($this->textStyles) + 1);
-        $textStyle = new TextStyle($name);
+        $textStyle = TextStyle::copy($this->defaultTextStyle, $this->getNextTextStyleName());
+        $this->textStyles[] = $textStyle;
+
+        return $textStyle;
+    }
+
+    private function createDefaultTextStyle()
+    {
+        $textStyle = new TextStyle($this->getNextTextStyleName());
         $this->textStyles[] = $textStyle;
 
         return $textStyle;
@@ -104,8 +78,15 @@ class StyleFactory
      */
     public function createParagraphStyle()
     {
-        $name = 'P' . (count($this->paragraphStyles) + 1);
-        $paragraphStyle = new ParagraphStyle($name);
+        $paragraphStyle = ParagraphStyle::copy($this->defaultParagraphStyle, $this->getNextParagraphStyleName());
+        $this->paragraphStyles[] = $paragraphStyle;
+
+        return $paragraphStyle;
+    }
+
+    private function createDefaultParagraphStyle()
+    {
+        $paragraphStyle = new ParagraphStyle($this->getNextParagraphStyleName());
         $this->paragraphStyles[] = $paragraphStyle;
 
         return $paragraphStyle;
@@ -123,75 +104,103 @@ class StyleFactory
         return $graphicStyle;
     }
 
-    public function renderAllStylesTo(\DOMDocument $stylesDocument)
+    /**
+     * @return ImageStyle
+     */
+    public function createImageStyle()
     {
-        $styles = array_merge($this->textStyles, $this->paragraphStyles, $this->graphicStyles);
-        $parentElement = $stylesDocument->getElementsByTagNameNS(StylesFile::NAMESPACE_OFFICE, 'styles')->item(0);
+        $name = 'im' . (count($this->imageStyles) + 1);
+        $imageStyle = new ImageStyle($name);
+        $this->imageStyles[] = $imageStyle;
 
-        foreach ($styles as $style) {
-            /** @var $style AbstractStyle */
-            $style->renderTo($stylesDocument, $parentElement);
-        }
-
-        $this->renderMarginsTo($stylesDocument);
+        return $imageStyle;
     }
 
     /**
-     * @param \DOMDocument $stylesDocument
+     * @return TextFrameStyle
      */
-    private function renderMarginsTo(\DOMDocument $stylesDocument)
+    public function createTextFrameStyle()
     {
-        if (null !== $this->marginTop) {
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm1')
-                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-top', $this->marginTop->getValue());
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm2')
-                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-top', $this->marginTop->getValue());
+        $name = 'fr' . (count($this->textFrameStyles) + 1);
+        $textFrameStyle = new TextFrameStyle($name);
+        $this->textFrameStyles[] = $textFrameStyle;
+
+        return $textFrameStyle;
+    }
+
+    /**
+     * @return TextStyle
+     */
+    public function getDefaultTextStyle()
+    {
+        return $this->defaultTextStyle;
+    }
+
+    /**
+     * @return ParagraphStyle
+     */
+    public function getDefaultParagraphStyle()
+    {
+        return $this->defaultParagraphStyle;
+    }
+
+    public function renderStyles(DOMDocument $stylesDocument)
+    {
+        $xPath = new DOMXPath($stylesDocument);
+        $parentElement = $xPath->query('//office:styles')->item(0);
+
+        foreach ($this->getAllStyles() as $style) {
+            $style->renderStyles($stylesDocument, $parentElement);
         }
-        if (null !== $this->marginTopOnFirstPage) {
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm2')
-                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-top', $this->marginTopOnFirstPage->getValue());
-        }
-        if (null !== $this->marginLeft) {
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm1')
-                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-left', $this->marginLeft->getValue());
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm2')
-                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-left', $this->marginLeft->getValue());
-        }
-        if (null !== $this->marginRight) {
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm1')
-                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-right', $this->marginRight->getValue());
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm2')
-                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-right', $this->marginRight->getValue());
-        }
-        if (null !== $this->marginBottom) {
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm1')
-                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-bottom', $this->marginBottom->getValue());
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm2')
-                ->setAttributeNS(StylesFile::NAMESPACE_FO, 'margin-bottom', $this->marginBottom->getValue());
+
+        $this->pageStyle->renderMarginsTo($stylesDocument);
+    }
+
+    public function renderAutomaticStyles(DOMDocument $contentDocument)
+    {
+        $xPath = new DOMXPath($contentDocument);
+        $parentElement = $xPath->query('//office:automatic-styles')->item(0);
+
+        foreach ($this->getAllStyles() as $style) {
+            $style->renderAutomaticStyles($contentDocument, $parentElement);
         }
     }
 
     /**
-     * @param \DOMDocument $stylesDocument
-     * @param string $name
-     * @return \DOMElement
+     * @return string
      */
-    private function findPageLayoutByName(\DOMDocument $stylesDocument, $name)
+    private function getNextTextStyleName()
     {
-        $xpath = new \DOMXPath($stylesDocument);
-        $xpath->registerNamespace('style', StylesFile::NAMESPACE_STYLE);
+        return 'T' . (count($this->textStyles) + 1);
+    }
 
-        return $xpath
-            ->query('//style:page-layout[@style:name="' . $name . '"]/style:page-layout-properties')
-            ->item(0);
+    /**
+     * @return string
+     */
+    private function getNextParagraphStyleName()
+    {
+        return 'P' . (count($this->paragraphStyles) + 1);
+    }
+
+    /**
+     * @return PageStyle
+     */
+    public function getPageStyle()
+    {
+        return $this->pageStyle;
+    }
+
+    /**
+     * @return AbstractStyle[]
+     */
+    private function getAllStyles()
+    {
+        return array_merge(
+            $this->textStyles,
+            $this->paragraphStyles,
+            $this->graphicStyles,
+            $this->imageStyles,
+            $this->textFrameStyles
+        );
     }
 }

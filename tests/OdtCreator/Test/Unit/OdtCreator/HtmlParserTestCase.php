@@ -165,6 +165,10 @@ class HtmlParserTestCase extends \PHPUnit_Framework_TestCase
     protected function assertNoFontName($text)
     {
         $style = $this->getStyleOfText($text);
+
+        if (null === $style) {
+            return;
+        }
         $this->assertNull($this->getFontNameOfStyle($style));
     }
 

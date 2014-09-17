@@ -2,7 +2,6 @@
 
 namespace Juit\PhpOdt\OdtCreator\Element;
 
-use Juit\PhpOdt\OdtCreator\Style\ParagraphStyle;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 use Juit\PhpOdt\OdtCreator\Value\Length;
 
@@ -29,20 +28,16 @@ class ElementFactory
     }
 
     /**
-     * @param ParagraphStyle $style
      * @return Paragraph
      */
-    public function createParagraph(ParagraphStyle $style = null)
+    public function createParagraph()
     {
-        if (null === $style) {
-            $style = $this->styleFactory->createParagraphStyle();
-        }
+        $paragraph = new Paragraph($this->styleFactory);
 
         if (count($this->paragraphs) === 0) {
-            $style->setMasterPageName('First_20_Page');
+            $paragraph->getStyle()->setMasterPageName('First_20_Page');
         }
 
-        $paragraph = new Paragraph($style);
         $this->paragraphs[] = $paragraph;
 
         return $paragraph;
@@ -51,11 +46,7 @@ class ElementFactory
     public function createFrame(Length $xCoordinate, Length $yCoordinate, Length $width, Length $height)
     {
         $frame = new Frame(
-            $this->styleFactory->createGraphicStyle(),
-            $xCoordinate,
-            $yCoordinate,
-            $width,
-            $height
+            $this->styleFactory->createGraphicStyle(), $this->styleFactory, $xCoordinate, $yCoordinate, $width, $height
         );
         $this->frames[] = $frame;
 

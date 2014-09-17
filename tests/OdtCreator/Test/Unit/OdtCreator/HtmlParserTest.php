@@ -2,6 +2,7 @@
 
 namespace OdtCreator\Test\Unit\OdtCreator;
 
+use Juit\PhpOdt\OdtCreator\Element\ElementFactory;
 use Juit\PhpOdt\OdtCreator\HtmlParser;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 
@@ -14,7 +15,7 @@ class HtmlParserTest extends HtmlParserTestCase
 
     protected function setUp()
     {
-        $this->SUT = new HtmlParser(new StyleFactory());
+        $this->SUT = new HtmlParser(new ElementFactory(new StyleFactory()));
     }
 
     /**

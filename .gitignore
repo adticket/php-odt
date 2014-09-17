@@ -1,3 +1,5 @@
 /vendor
 /vagrant/.vagrant
 /vagrant/VagrantParameters
+/libreoffice
+/web

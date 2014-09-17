@@ -12,3 +12,6 @@ export SYMFONY__DATABASE__NAME=dev
 export SYMFONY__DATABASE__USER=dev
 export SYMFONY__DATABASE__PASSWORD=dev
 export SYMFONY_ENV=dev
+
+alias bugOn="export XDEBUG_CONFIG=\"idekey=phpstorm remote_host=`expr "$SSH_CLIENT" : '\(^[0-9.]*\)'`\";export SERVER_PORT=80;export SERVER_NAME=odtutil.uit.dev";export REQUEST_URI='http://odtutil.uit.dev'
+alias bugOff="unset XDEBUG_CONFIG;unset SERVER_PORT;unset SERVER_NAME";unset REQUEST_URI
