@@ -4,6 +4,8 @@ namespace Juit\PhpOdt\OdtCreator\Style;
 
 use DOMDocument;
 use DOMElement;
+use Juit\PhpOdt\OdtCreator\Value\Color;
+use Juit\PhpOdt\OdtCreator\Value\Length;
 
 class TextFrameStyle extends AbstractStyle
 {
@@ -22,6 +24,23 @@ class TextFrameStyle extends AbstractStyle
      * @var string
      */
     private $wrap = self::WRAP_NONE;
+
+    /**
+     * @var Length|null
+     */
+    private $borderWidth = null;
+
+    /**
+     * @var Color
+     */
+    private $borderColor;
+
+    public function __construct($name)
+    {
+        parent::__construct($name);
+
+        $this->borderColor = new Color('#000000');
+    }
 
     public function setAlignLeft()
     {
@@ -46,6 +65,22 @@ class TextFrameStyle extends AbstractStyle
     public function setWrapParallel()
     {
         $this->wrap = self::WRAP_PARALLEL;
+    }
+
+    /**
+     * @param Length|null $borderWidth
+     */
+    public function setBorderWidth(Length $borderWidth = null)
+    {
+        $this->borderWidth = $borderWidth;
+    }
+
+    /**
+     * @param Color $borderColor
+     */
+    public function setBorderColor(Color $borderColor)
+    {
+        $this->borderColor = $borderColor;
     }
 
     public function renderAutomaticStyles(DOMDocument $content, DOMElement $parent)
@@ -76,6 +111,11 @@ class TextFrameStyle extends AbstractStyle
         $graphicProperties->setAttribute('draw:shadow-opacity', '100%');
         $graphicProperties->setAttribute('style:flow-with-text', 'true');
 
-         $graphicProperties->setAttribute('fo:border', '0.06pt solid #ff0000');
+        if (null !== $this->borderWidth) {
+            $graphicProperties->setAttribute(
+                'fo:border',
+                "{$this->borderWidth->getValue()} solid {$this->borderColor->getHexCode()}"
+            );
+        }
     }
 }
