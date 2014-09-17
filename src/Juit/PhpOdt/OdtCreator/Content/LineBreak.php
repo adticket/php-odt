@@ -2,18 +2,19 @@
 
 namespace Juit\PhpOdt\OdtCreator\Content;
 
-use Juit\PhpOdt\OdtCreator\Document\ContentFile;
+use DOMDocument;
+use DOMElement;
 
 class LineBreak implements Content
 {
     /**
-     * @param \DOMDocument $domDocument
-     * @param \DOMElement $domElement
+     * @param DOMDocument $document
+     * @param DOMElement $parent
      * @return void
      */
-    public function renderTo(\DOMDocument $domDocument, \DOMElement $domElement)
+    public function renderTo(DOMDocument $document, DOMElement $parent)
     {
-        $element = $domDocument->createElementNS(ContentFile::NAMESPACE_TEXT, 'text:line-break');
-        $domElement->appendChild($element);
+        $element = $document->createElement('text:line-break');
+        $parent->appendChild($element);
     }
 }

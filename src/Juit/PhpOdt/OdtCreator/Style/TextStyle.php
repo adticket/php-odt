@@ -4,7 +4,6 @@ namespace Juit\PhpOdt\OdtCreator\Style;
 
 use DOMDocument;
 use DOMElement;
-use Juit\PhpOdt\OdtCreator\Document\StylesFile;
 use Juit\PhpOdt\OdtCreator\Value\Color;
 use Juit\PhpOdt\OdtCreator\Value\FontSize;
 
@@ -110,7 +109,7 @@ class TextStyle extends AbstractStyle
     public function renderStyles(DOMDocument $document, DOMElement $parent)
     {
         $style = $this->createDefaultStyleElement($document, $parent);
-        $style->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:family', 'text');
+        $style->setAttribute('style:family', 'text');
 
         $element = $document->createElement('style:text-properties');
         $style->appendChild($element);

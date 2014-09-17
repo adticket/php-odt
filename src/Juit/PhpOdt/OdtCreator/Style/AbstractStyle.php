@@ -4,7 +4,6 @@ namespace Juit\PhpOdt\OdtCreator\Style;
 
 use DOMDocument;
 use DOMElement;
-use Juit\PhpOdt\OdtCreator\Document\StylesFile;
 
 abstract class AbstractStyle
 {
@@ -43,8 +42,8 @@ abstract class AbstractStyle
      */
     protected function createDefaultStyleElement(DOMDocument $document, DOMElement $parent)
     {
-        $style = $document->createElementNS(StylesFile::NAMESPACE_STYLE, 'style:style');
-        $style->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:name', $this->name);
+        $style = $document->createElement('style:style');
+        $style->setAttribute('style:name', $this->name);
         $parent->appendChild($style);
 
         return $style;

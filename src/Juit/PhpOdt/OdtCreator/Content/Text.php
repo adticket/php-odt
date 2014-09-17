@@ -2,6 +2,8 @@
 
 namespace Juit\PhpOdt\OdtCreator\Content;
 
+use DOMDocument;
+use DOMElement;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 use Juit\PhpOdt\OdtCreator\Style\TextStyle;
 
@@ -40,11 +42,11 @@ class Text implements Content
         return $this->style;
     }
 
-    public function renderTo(\DOMDocument $contentDocument, \DOMElement $parent)
+    public function renderTo(DOMDocument $content, DOMElement $parent)
     {
         $style = $this->style ? $this->style : $this->styleFactory->getDefaultTextStyle();
 
-        $span = $contentDocument->createElement('text:span', $this->content);
+        $span = $content->createElement('text:span', $this->content);
         $span->setAttribute('text:style-name', $style->getStyleName());
         $parent->appendChild($span);
     }

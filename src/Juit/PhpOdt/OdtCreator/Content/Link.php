@@ -2,8 +2,6 @@
 
 namespace Juit\PhpOdt\OdtCreator\Content;
 
-use Juit\PhpOdt\OdtCreator\Document\ContentFile;
-
 class Link implements Content
 {
     /**
@@ -28,9 +26,9 @@ class Link implements Content
      */
     public function renderTo(\DOMDocument $domDocument, \DOMElement $domElement)
     {
-        $element = $domDocument->createElementNS(ContentFile::NAMESPACE_TEXT, 'text:a', $this->text);
-        $element->setAttributeNS(ContentFile::NAMESPACE_XLINK, 'xlink:type', 'simple');
-        $element->setAttributeNS(ContentFile::NAMESPACE_XLINK, 'xlink:href', $this->url);
+        $element = $domDocument->createElement('text:a', $this->text);
+        $element->setAttribute('xlink:type', 'simple');
+        $element->setAttribute('xlink:href', $this->url);
         $domElement->appendChild($element);
     }
 }

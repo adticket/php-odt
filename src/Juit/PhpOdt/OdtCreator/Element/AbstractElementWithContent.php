@@ -7,7 +7,6 @@ use Juit\PhpOdt\OdtCreator\Content\Image;
 use Juit\PhpOdt\OdtCreator\Content\LineBreak;
 use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
-use Juit\PhpOdt\OdtCreator\Value\Length;
 use SplFileInfo;
 
 abstract class AbstractElementWithContent implements Element

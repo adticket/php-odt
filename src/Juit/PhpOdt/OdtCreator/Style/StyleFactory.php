@@ -3,8 +3,7 @@
 namespace Juit\PhpOdt\OdtCreator\Style;
 
 use DOMDocument;
-use Juit\PhpOdt\OdtCreator\Document\ContentFile;
-use Juit\PhpOdt\OdtCreator\Document\StylesFile;
+use DOMXPath;
 
 class StyleFactory
 {
@@ -16,7 +15,7 @@ class StyleFactory
     /**
      * @var TextStyle[]
      */
-    private $textStyles = array();
+    private $textStyles = [];
 
     /**
      * @var TextStyle|null
@@ -26,7 +25,7 @@ class StyleFactory
     /**
      * @var ParagraphStyle[]
      */
-    private $paragraphStyles = array();
+    private $paragraphStyles = [];
 
     /**
      * @var ParagraphStyle|null
@@ -36,12 +35,12 @@ class StyleFactory
     /**
      * @var GraphicStyle[]
      */
-    private $graphicStyles = array();
+    private $graphicStyles = [];
 
     /**
      * @var ImageStyle[]
      */
-    private $imageStyles = array();
+    private $imageStyles = [];
 
     public function __construct()
     {
@@ -105,7 +104,7 @@ class StyleFactory
      */
     public function createImageStyle()
     {
-        $name = 'fr' . (count($this->imageStyles) + 1);
+        $name = 'im' . (count($this->imageStyles) + 1);
         $imageStyle = new ImageStyle($name);
         $this->imageStyles[] = $imageStyle;
 
@@ -130,7 +129,8 @@ class StyleFactory
 
     public function renderStyles(DOMDocument $stylesDocument)
     {
-        $parentElement = $stylesDocument->getElementsByTagNameNS(StylesFile::NAMESPACE_OFFICE, 'styles')->item(0);
+        $xPath = new DOMXPath($stylesDocument);
+        $parentElement = $xPath->query('//office:styles')->item(0);
 
         foreach ($this->getAllStyles() as $style) {
             $style->renderStyles($stylesDocument, $parentElement);
@@ -141,7 +141,8 @@ class StyleFactory
 
     public function renderAutomaticStyles(DOMDocument $contentDocument)
     {
-        $parentElement = $contentDocument->getElementsByTagNameNS(ContentFile::NAMESPACE_OFFICE, 'automatic-styles')->item(0);
+        $xPath = new DOMXPath($contentDocument);
+        $parentElement = $xPath->query('//office:automatic-styles')->item(0);
 
         foreach ($this->getAllStyles() as $style) {
             $style->renderAutomaticStyles($contentDocument, $parentElement);

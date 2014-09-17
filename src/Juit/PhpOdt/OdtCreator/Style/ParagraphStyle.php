@@ -2,7 +2,6 @@
 
 namespace Juit\PhpOdt\OdtCreator\Style;
 
-use Juit\PhpOdt\OdtCreator\Document\StylesFile;
 use Juit\PhpOdt\OdtCreator\Value\Length;
 
 class ParagraphStyle extends AbstractStyle
@@ -65,28 +64,20 @@ class ParagraphStyle extends AbstractStyle
     public function renderStyles(\DOMDocument $document, \DOMElement $parent)
     {
         $style = $this->createDefaultStyleElement($document, $parent);
-        $style->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:family', 'paragraph');
-        $style->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:parent-style-name', 'Standard');
+        $style->setAttribute('style:family', 'paragraph');
+        $style->setAttribute('style:parent-style-name', 'Standard');
         if ($this->masterPageName) {
-            $style->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:master-page-name', $this->masterPageName);
+            $style->setAttribute('style:master-page-name', $this->masterPageName);
         }
 
-        $paragraphProperties = $document->createElementNS(StylesFile::NAMESPACE_STYLE, 'style:paragraph-properties');
+        $paragraphProperties = $document->createElement('style:paragraph-properties');
         $style->appendChild($paragraphProperties);
-        $paragraphProperties->setAttributeNS(StylesFile::NAMESPACE_STYLE, 'style:page-number', 'auto');
+        $paragraphProperties->setAttribute('style:page-number', 'auto');
         if ($this->marginTop) {
-            $paragraphProperties->setAttributeNS(
-                StylesFile::NAMESPACE_FO,
-                'fo:margin-top',
-                $this->marginTop->getValue()
-            );
+            $paragraphProperties->setAttribute('fo:margin-top', $this->marginTop->getValue());
         }
         if ($this->marginBottom) {
-            $paragraphProperties->setAttributeNS(
-                StylesFile::NAMESPACE_FO,
-                'fo:margin-bottom',
-                $this->marginBottom->getValue()
-            );
+            $paragraphProperties->setAttribute('fo:margin-bottom', $this->marginBottom->getValue());
         }
     }
 }
