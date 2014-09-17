@@ -18,7 +18,7 @@ class ContentFile implements File
     /**
      * @var \Juit\PhpOdt\OdtCreator\Element\Element[]
      */
-    private $elements = array();
+    private $elements = [];
 
     /**
      * @var StyleFactory

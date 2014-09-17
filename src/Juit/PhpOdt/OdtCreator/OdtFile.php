@@ -10,6 +10,7 @@ use Juit\PhpOdt\OdtCreator\Document\SettingsFile;
 use Juit\PhpOdt\OdtCreator\Document\StylesFile;
 use Juit\PhpOdt\OdtCreator\Element\ElementFactory;
 use Juit\PhpOdt\OdtCreator\Element\Frame;
+use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\Style\ParagraphStyle;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 use Juit\PhpOdt\OdtCreator\Style\TextStyle;
@@ -39,6 +40,16 @@ class OdtFile
      */
     private $content;
 
+    /**
+     * @var Paragraph[]
+     */
+    private $paragraphs = [];
+
+    /**
+     * @var Frame[]
+     */
+    private $frames = [];
+
     public function __construct()
     {
         $this->reset();
@@ -46,10 +57,10 @@ class OdtFile
 
     public function reset()
     {
-        $this->styleFactory   = new StyleFactory();
+        $this->styleFactory = new StyleFactory();
         $this->elementFactory = new ElementFactory($this->styleFactory);
-        $this->styles         = new StylesFile($this->styleFactory);
-        $this->content        = new ContentFile($this->styleFactory);
+        $this->styles = new StylesFile($this->styleFactory);
+        $this->content = new ContentFile($this->styleFactory);
     }
 
     /**
@@ -85,12 +96,21 @@ class OdtFile
      */
     public function createFrame(Length $xCoordinate, Length $yCoordinate, Length $width, Length $height)
     {
-        return $this->elementFactory->createFrame($xCoordinate, $yCoordinate, $width, $height);
+        $frame = $this->elementFactory->createFrame($xCoordinate, $yCoordinate, $width, $height);
+        $this->frames[] = $frame;
+
+        return $frame;
     }
 
+    /**
+     * @return Element\Paragraph
+     */
     public function createParagraph()
     {
-        return $this->elementFactory->createParagraph();
+        $paragraph = $this->elementFactory->createParagraph();
+        $this->paragraphs[] = $paragraph;
+
+        return $paragraph;
     }
 
     public function save(\SplFileInfo $targetFile)
@@ -98,7 +118,8 @@ class OdtFile
         $document = new \ZipArchive();
         $document->open($targetFile->getPathname(), \ZipArchive::OVERWRITE);
 
-        $this->content->setElements($this->elementFactory->getElements());
+        $this->paragraphs[0]->getStyle()->setMasterPageName('First_20_Page');
+        $this->content->setElements(array_merge($this->frames, $this->paragraphs));
 
         $files = array(
             new ManifestFile(),
