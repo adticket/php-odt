@@ -6,6 +6,7 @@ use DOMDocument;
 use DOMElement;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 use Juit\PhpOdt\OdtCreator\Style\TextFrameStyle;
+use Juit\PhpOdt\OdtCreator\Value\Length;
 
 class TextFrame implements Content
 {
@@ -25,6 +26,16 @@ class TextFrame implements Content
     private $style;
 
     /**
+     * @var Length
+     */
+    private $width;
+
+    /**
+     * @var Length
+     */
+    private $height;
+
+    /**
      * @param string $name
      * @param StyleFactory $styleFactory
      */
@@ -33,6 +44,8 @@ class TextFrame implements Content
         $this->name = $name;
         $this->styleFactory = $styleFactory;
         $this->style = $styleFactory->createTextFrameStyle();
+        $this->width = new Length('9.5cm');
+        $this->height = new Length('6.5cm');
     }
 
     /**
@@ -41,6 +54,22 @@ class TextFrame implements Content
     public function getStyle()
     {
         return $this->style;
+    }
+
+    /**
+     * @param Length $width
+     */
+    public function setWidth(Length $width)
+    {
+        $this->width = $width;
+    }
+
+    /**
+     * @param Length $height
+     */
+    public function setHeight(Length $height)
+    {
+        $this->height = $height;
     }
 
     /**
@@ -55,8 +84,8 @@ class TextFrame implements Content
         $frame->setAttribute('draw:style-name', $this->style->getStyleName());
         $frame->setAttribute('draw:name', $this->name);
         $frame->setAttribute('text:anchor-type', 'paragraph');
-        $frame->setAttribute('svg:width', '5cm'); // TODO
-        $frame->setAttribute('svg:height', '5cm'); // TODO
+        $frame->setAttribute('svg:width', $this->width->getValue());
+        $frame->setAttribute('svg:height', $this->height->getValue());
         $frame->setAttribute('draw:z-index', '0');
 
         $textBox = $content->createElement('draw:text-box');
