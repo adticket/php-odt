@@ -10,7 +10,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     {
         $hexCode = '#01abCD';
 
-        $sut = new \Juit\PhpOdt\OdtCreator\Value\Color($hexCode);
+        $sut = new Color($hexCode);
 
         $this->assertEquals($hexCode, $sut->getHexCode());
     }
@@ -22,7 +22,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     {
         $hexCode = '000000';
 
-        new \Juit\PhpOdt\OdtCreator\Value\Color($hexCode);
+        new Color($hexCode);
     }
 
     /**
@@ -32,7 +32,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     {
         $hexCode = '#00000';
 
-        new \Juit\PhpOdt\OdtCreator\Value\Color($hexCode);
+        new Color($hexCode);
     }
 
     /**
@@ -42,7 +42,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     {
         $hexCode = '#0000000';
 
-        new \Juit\PhpOdt\OdtCreator\Value\Color($hexCode);
+        new Color($hexCode);
     }
 
     /**
@@ -52,6 +52,17 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     {
         $hexCode = '#g000000';
 
-        new \Juit\PhpOdt\OdtCreator\Value\Color($hexCode);
+        new Color($hexCode);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_create_a_valid_instance_from_rgb_values()
+    {
+        $sut = Color::fromRgb(1, 154, 239);
+
+        $this->assertEquals(new Color('#019aef'), $sut);
+    }
+
 }

@@ -10,6 +10,7 @@ use Juit\PhpOdt\OdtCreator\Document\SettingsFile;
 use Juit\PhpOdt\OdtCreator\Document\StylesFile;
 use Juit\PhpOdt\OdtCreator\Element\ElementFactory;
 use Juit\PhpOdt\OdtCreator\Element\Frame;
+use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\Style\ParagraphStyle;
 use Juit\PhpOdt\OdtCreator\Style\StyleFactory;
 use Juit\PhpOdt\OdtCreator\Style\TextStyle;
@@ -30,6 +31,11 @@ class OdtFile
     private $elementFactory;
 
     /**
+     * @var HtmlParser
+     */
+    private $htmlParser;
+
+    /**
      * @var StylesFile
      */
     private $styles;
@@ -39,6 +45,16 @@ class OdtFile
      */
     private $content;
 
+    /**
+     * @var Paragraph[]
+     */
+    private $paragraphs = [];
+
+    /**
+     * @var Frame[]
+     */
+    private $frames = [];
+
     public function __construct()
     {
         $this->reset();
@@ -46,10 +62,11 @@ class OdtFile
 
     public function reset()
     {
-        $this->styleFactory   = new StyleFactory();
+        $this->styleFactory = new StyleFactory();
         $this->elementFactory = new ElementFactory($this->styleFactory);
-        $this->styles         = new StylesFile($this->styleFactory);
-        $this->content        = new ContentFile($this->styleFactory);
+        $this->styles = new StylesFile($this->styleFactory);
+        $this->content = new ContentFile($this->styleFactory);
+        $this->htmlParser = new HtmlParser($this->elementFactory);
     }
 
     /**
@@ -85,12 +102,56 @@ class OdtFile
      */
     public function createFrame(Length $xCoordinate, Length $yCoordinate, Length $width, Length $height)
     {
-        return $this->elementFactory->createFrame($xCoordinate, $yCoordinate, $width, $height);
+        $frame = $this->elementFactory->createFrame($xCoordinate, $yCoordinate, $width, $height);
+        $this->frames[] = $frame;
+
+        return $frame;
     }
 
+    /**
+     * @param $htmlString
+     * @param Length $xCoordinate
+     * @param Length $yCoordinate
+     * @param Length $width
+     * @param Length $height
+     * @return Frame
+     */
+    public function createFrameFromHtml(
+        $htmlString,
+        Length $xCoordinate,
+        Length $yCoordinate,
+        Length $width,
+        Length $height
+    ) {
+        $frame = $this->createFrame($xCoordinate, $yCoordinate, $width, $height);
+        $frame->setContent($this->htmlParser->parse($htmlString));
+
+        return $frame;
+    }
+
+    /**
+     * @return Paragraph
+     */
     public function createParagraph()
     {
-        return $this->elementFactory->createParagraph();
+        $paragraph = $this->elementFactory->createParagraph();
+        $this->paragraphs[] = $paragraph;
+
+        return $paragraph;
+    }
+
+    /**
+     * @param $htmlString
+     * @return Paragraph[]
+     */
+    public function createParagraphsFromHtml($htmlString)
+    {
+        $paragraphs = $this->htmlParser->parse($htmlString);
+        foreach ($paragraphs as $paragraph) {
+            $this->paragraphs[] = $paragraph;
+        }
+
+        return $paragraphs;
     }
 
     public function save(\SplFileInfo $targetFile)
@@ -98,7 +159,8 @@ class OdtFile
         $document = new \ZipArchive();
         $document->open($targetFile->getPathname(), \ZipArchive::OVERWRITE);
 
-        $this->content->setElements($this->elementFactory->getElements());
+        $this->paragraphs[0]->getStyle()->setMasterPageName('First_20_Page');
+        $this->content->setElements(array_merge($this->frames, $this->paragraphs));
 
         $files = array(
             new ManifestFile(),

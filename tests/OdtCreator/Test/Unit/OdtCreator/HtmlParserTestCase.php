@@ -6,6 +6,7 @@ use Juit\PhpOdt\OdtCreator\Content\LineBreak;
 use Juit\PhpOdt\OdtCreator\Content\Text;
 use Juit\PhpOdt\OdtCreator\Element\Paragraph;
 use Juit\PhpOdt\OdtCreator\Style\TextStyle;
+use Juit\PhpOdt\OdtCreator\Value\Color;
 use Juit\PhpOdt\OdtCreator\Value\FontSize;
 
 class HtmlParserTestCase extends \PHPUnit_Framework_TestCase
@@ -173,6 +174,17 @@ class HtmlParserTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param Text $actual
+     * @param string $expected
+     */
+    protected function assertFontColor($actual, $expected)
+    {
+        $style = $this->getStyleOfText($actual);
+        $color = $this->getColorOfStyle($style);
+        $this->assertEquals($expected, $color->getHexCode());
+    }
+
+    /**
      * @param string $propertyName
      * @param object $object
      * @param string $message
@@ -235,6 +247,18 @@ class HtmlParserTestCase extends \PHPUnit_Framework_TestCase
     private function getFontNameOfStyle($style)
     {
         $fontName = new \ReflectionProperty('\Juit\PhpOdt\OdtCreator\Style\TextStyle', 'fontName');
+        $fontName->setAccessible(true);
+
+        return $fontName->getValue($style);
+    }
+
+    /**
+     * @param TextStyle $style
+     * @return Color|null
+     */
+    private function getColorOfStyle($style)
+    {
+        $fontName = new \ReflectionProperty('\Juit\PhpOdt\OdtCreator\Style\TextStyle', 'color');
         $fontName->setAccessible(true);
 
         return $fontName->getValue($style);

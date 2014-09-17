@@ -57,6 +57,7 @@ class ExampleBuilder
         $this->addBoldContent();
         $this->addBiggerContent();
         $this->addContentWithACombinationOfFormats();
+        $this->addContentFromHtml();
         $this->addImages();
         $this->addTextFrames();
         $this->addRegards();
@@ -82,33 +83,28 @@ class ExampleBuilder
 
     private function addAddressFrame()
     {
-        $xCoordinate  = new Length('2cm');
-        $yCoordinate  = new Length('2.7cm');
-        $width        = new Length('8.5cm');
-        $height       = new Length('4.5cm');
-        $addressFrame = $this->odtFile->createFrame($xCoordinate, $yCoordinate, $width, $height);
-
-        $paragraph = $addressFrame->createParagraph();
-        $paragraph->createTextElement('Mustermann GmbH');
-        $paragraph->createLineBreak();
-        $paragraph->createTextElement('Herr Max Mustermann');
-        $paragraph->createLineBreak();
-        $paragraph->createTextElement('Musterstr. 1');
-        $paragraph->createLineBreak();
-        $paragraph->createLineBreak();
-        $paragraph->createTextElement('12345 Musterstadt');
+        $xCoordinate = new Length('2cm');
+        $yCoordinate = new Length('2.7cm');
+        $width       = new Length('8.5cm');
+        $height      = new Length('4.5cm');
+        $this->odtFile->createFrameFromHtml(
+            '<p>Mustermann GmbH<br>Herr Max Mustermann<br>Musterstr. 1<br><br><strong>12345 Musterstadt</strong></p>',
+            $xCoordinate,
+            $yCoordinate,
+            $width,
+            $height
+        );
     }
 
     private function addDateFrame()
     {
-        $dateFrame = $this->odtFile->createFrame(
+        $this->odtFile->createFrameFromHtml(
+            '<p>Musterdorf, <em>den 02.05.2014</em></p>',
             new Length('14cm'),
             new Length('8cm'),
             new Length('5cm'),
             new Length('2cm')
         );
-        $paragraph = $dateFrame->createParagraph();
-        $paragraph->createTextElement('Musterdorf, den 02.05.2014');
     }
 
     private function addSubject()
@@ -187,8 +183,17 @@ class ExampleBuilder
         $textStyle->setColor(new Color('#0000ff'));
     }
 
+    private function addContentFromHtml()
+    {
+        $this->odtFile->createParagraphsFromHtml('<p>Dieser Text <u>ist per <strong>HTML</strong> erstellt</u>.<br>Er kann <em>Zeilenumbrüche</em> enthalten.</p><p>Mehrere Absätze <span style="font-family: \'Times New Roman\'">und <span style="font-size: 20px">Schriftformate</span></span> sind <span style="color: rgb(255, 0, 0);">ebenfalls</span> möglich.</p>');
+    }
+
     private function addImages()
     {
+        $paragraph = $this->odtFile->createParagraph();
+        $paragraph->getStyle()->setPageBreakBefore(true);
+        $paragraph->createTextElement('Seitenumbruch');
+
         $paragraph = $this->odtFile->createParagraph();
         $image     = $paragraph->createImage(new \SplFileInfo(__DIR__ . '/fixtures/logo.png'));
         $image->setWidth(new Length('7cm'));
@@ -294,7 +299,9 @@ class ExampleBuilder
         $textFrame->getStyle()->setBorderWidth(new Length('5pt'));
         $textFrame->getStyle()->setBorderColor(new Color('#ff0000'));
         $textFrame->getStyle()->setWrapParallel();
-        $paragraph->createTextElement('Frame 6 - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.');
+        $paragraph->createTextElement(
+            'Frame 6 - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.'
+        );
 
 
         $paragraph = $this->odtFile->createParagraph();
@@ -305,7 +312,9 @@ class ExampleBuilder
         $textFrame->getStyle()->setBorderColor(new Color('#ff0000'));
         $textFrame->getStyle()->setWrapParallel();
         $textFrame->getStyle()->setAlignCenter();
-        $paragraph->createTextElement('Frame 7 - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.');
+        $paragraph->createTextElement(
+            'Frame 7 - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.'
+        );
 
 
         $paragraph = $this->odtFile->createParagraph();
@@ -316,7 +325,9 @@ class ExampleBuilder
         $textFrame->getStyle()->setBorderColor(new Color('#ff0000'));
         $textFrame->getStyle()->setWrapParallel();
         $textFrame->getStyle()->setAlignRight();
-        $paragraph->createTextElement('Frame 8 - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.');
+        $paragraph->createTextElement(
+            'Frame 8 - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.'
+        );
     }
 
     private function addRegards()

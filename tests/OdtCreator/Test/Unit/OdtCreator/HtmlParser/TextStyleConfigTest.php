@@ -3,6 +3,7 @@
 namespace OdtCreator\Test\Unit\OdtCreator\HtmlParser;
 
 use Juit\PhpOdt\OdtCreator\HtmlParser\TextStyleConfig;
+use Juit\PhpOdt\OdtCreator\Value\Color;
 use Juit\PhpOdt\OdtCreator\Value\FontSize;
 
 class TextStyleConfigTest extends \PHPUnit_Framework_TestCase
@@ -93,6 +94,19 @@ class TextStyleConfigTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function it_should_take_a_font_color()
+    {
+        $SUT = new TextStyleConfig();
+
+        $this->assertNull($SUT->getFontColor());
+
+        $SUT = $SUT->setFontColor(new Color('#000000'));
+        $this->assertEquals(new Color('#000000'), $SUT->getFontColor());
+    }
+
+    /**
+     * @test
+     */
     public function it_should_copy_the_values_of_the_source_instance()
     {
         $SUT = new TextStyleConfig();
@@ -101,6 +115,7 @@ class TextStyleConfigTest extends \PHPUnit_Framework_TestCase
         $SUT = $SUT->setUnderline();
         $SUT = $SUT->setFontSize(new FontSize('20pt'));
         $SUT = $SUT->setFontName('Times New Roman');
+        $SUT = $SUT->setFontColor(new Color('#000000'));
         $SUT = $SUT->setBold();
 
         $this->assertTrue($SUT->isBold());
@@ -108,5 +123,6 @@ class TextStyleConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($SUT->isUnderline());
         $this->assertEquals(new FontSize('20pt'), $SUT->getFontSize());
         $this->assertEquals('Times New Roman', $SUT->getFontName());
+        $this->assertEquals(new Color('#000000'), $SUT->getFontColor());
     }
 }

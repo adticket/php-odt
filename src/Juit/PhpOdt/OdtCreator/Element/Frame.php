@@ -73,6 +73,14 @@ class Frame implements Element
     }
 
     /**
+     * @param Paragraph[] $content
+     */
+    public function setContent(array $content)
+    {
+        $this->subElements = $content;
+    }
+
+    /**
      * @param DOMDocument $document
      * @param DOMElement|null $parent
      * @return void
