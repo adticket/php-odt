@@ -4,6 +4,7 @@ namespace Juit\PhpOdt\OdtCreator\Style;
 
 use DOMDocument;
 use DOMElement;
+use Juit\PhpOdt\OdtCreator\Value\BorderStyle;
 use Juit\PhpOdt\OdtCreator\Value\Color;
 use Juit\PhpOdt\OdtCreator\Value\Length;
 
@@ -26,20 +27,13 @@ class TextFrameStyle extends AbstractStyle
     private $wrap = self::WRAP_NONE;
 
     /**
-     * @var Length|null
+     * @var BorderStyle|null
      */
-    private $borderWidth = null;
-
-    /**
-     * @var Color
-     */
-    private $borderColor;
+    private $border = null;
 
     public function __construct($name)
     {
         parent::__construct($name);
-
-        $this->borderColor = new Color('#000000');
     }
 
     public function setAlignLeft()
@@ -68,19 +62,11 @@ class TextFrameStyle extends AbstractStyle
     }
 
     /**
-     * @param Length|null $borderWidth
+     * @param BorderStyle|null $border
      */
-    public function setBorderWidth(Length $borderWidth = null)
+    public function setBorder(BorderStyle $border)
     {
-        $this->borderWidth = $borderWidth;
-    }
-
-    /**
-     * @param Color $borderColor
-     */
-    public function setBorderColor(Color $borderColor)
-    {
-        $this->borderColor = $borderColor;
+        $this->border = $border;
     }
 
     public function renderAutomaticStyles(DOMDocument $content, DOMElement $parent)
@@ -111,11 +97,12 @@ class TextFrameStyle extends AbstractStyle
         $graphicProperties->setAttribute('draw:shadow-opacity', '100%');
         $graphicProperties->setAttribute('style:flow-with-text', 'true');
 
-        if (null !== $this->borderWidth) {
-            $graphicProperties->setAttribute(
-                'fo:border',
-                "{$this->borderWidth->getValue()} solid {$this->borderColor->getHexCode()}"
-            );
+        $graphicProperties->setAttribute('fo:background-color', 'transparent');
+        $graphicProperties->setAttribute('style:background-transparency', '100%');
+        $graphicProperties->setAttribute('draw:fill', 'solid');
+
+        if (null !== $this->border) {
+            $graphicProperties->setAttribute('fo:border', $this->border->getValue());
         }
     }
 }

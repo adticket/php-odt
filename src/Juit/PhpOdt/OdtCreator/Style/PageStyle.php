@@ -5,6 +5,7 @@ namespace Juit\PhpOdt\OdtCreator\Style;
 use DOMDocument;
 use DOMXPath;
 use Juit\PhpOdt\OdtCreator\Document\StylesFile;
+use Juit\PhpOdt\OdtCreator\Value\BorderStyle;
 use Juit\PhpOdt\OdtCreator\Value\Length;
 
 class PageStyle
@@ -33,6 +34,11 @@ class PageStyle
      * @var null|Length
      */
     private $marginBottom = null;
+
+    /**
+     * @var BorderStyle|null
+     */
+    private $border = null;
 
     /**
      * @param \Juit\PhpOdt\OdtCreator\Value\Length $marginTop
@@ -75,46 +81,48 @@ class PageStyle
     }
 
     /**
+     * @param BorderStyle|null $border
+     */
+    public function setBorder(BorderStyle $border = null)
+    {
+        $this->border = $border;
+    }
+
+    /**
      * @param DOMDocument $stylesDocument
      */
     public function renderMarginsTo(DOMDocument $stylesDocument)
     {
+        $firstPage = $this->findPageLayoutByName($stylesDocument, 'Mpm2');
+        $otherPages = $this->findPageLayoutByName($stylesDocument, 'Mpm1');
+
         if (null !== $this->marginTop) {
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm1')
-                ->setAttribute('fo:margin-top', $this->marginTop->getValue());
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm2')
-                ->setAttribute('fo:margin-top', $this->marginTop->getValue());
+            $firstPage->setAttribute('fo:margin-top', $this->marginTop->getValue());
+            $otherPages->setAttribute('fo:margin-top', $this->marginTop->getValue());
         }
         if (null !== $this->marginTopOnFirstPage) {
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm2')
-                ->setAttribute('fo:margin-top', $this->marginTopOnFirstPage->getValue());
+            $firstPage->setAttribute('fo:margin-top', $this->marginTopOnFirstPage->getValue());
         }
         if (null !== $this->marginLeft) {
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm1')
-                ->setAttribute('fo:margin-left', $this->marginLeft->getValue());
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm2')
-                ->setAttribute('fo:margin-left', $this->marginLeft->getValue());
+            $firstPage->setAttribute('fo:margin-left', $this->marginLeft->getValue());
+            $otherPages->setAttribute('fo:margin-left', $this->marginLeft->getValue());
         }
         if (null !== $this->marginRight) {
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm1')
-                ->setAttribute('fo:margin-right', $this->marginRight->getValue());
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm2')
-                ->setAttribute('fo:margin-right', $this->marginRight->getValue());
+            $firstPage->setAttribute('fo:margin-right', $this->marginRight->getValue());
+            $otherPages->setAttribute('fo:margin-right', $this->marginRight->getValue());
         }
         if (null !== $this->marginBottom) {
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm1')
-                ->setAttribute('fo:margin-bottom', $this->marginBottom->getValue());
-            $this
-                ->findPageLayoutByName($stylesDocument, 'Mpm2')
-                ->setAttribute('fo:margin-bottom', $this->marginBottom->getValue());
+            $firstPage->setAttribute('fo:margin-bottom', $this->marginBottom->getValue());
+            $otherPages->setAttribute('fo:margin-bottom', $this->marginBottom->getValue());
+        }
+        if (null !== $this->border) {
+            $firstPage->setAttribute('fo:border', $this->border->getValue());
+            $firstPage->setAttribute('fo:padding', '0cm');
+            $firstPage->setAttribute('style:shadow', 'none');
+
+            $otherPages->setAttribute('fo:border', $this->border->getValue());
+            $otherPages->setAttribute('fo:padding', '0cm');
+            $otherPages->setAttribute('style:shadow', 'none');
         }
     }
 

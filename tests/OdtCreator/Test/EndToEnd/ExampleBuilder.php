@@ -3,6 +3,7 @@
 namespace OdtCreator\Test\EndToEnd;
 
 use Juit\PhpOdt\OdtCreator\OdtFile;
+use Juit\PhpOdt\OdtCreator\Value\BorderStyle;
 use Juit\PhpOdt\OdtCreator\Value\Color;
 use Juit\PhpOdt\OdtCreator\Value\FontSize;
 use Juit\PhpOdt\OdtCreator\Value\Length;
@@ -259,23 +260,21 @@ class ExampleBuilder
         $textFrame = $paragraph->createTextFrame();
         $textFrame->setHeight(new Length('3cm'));
         $textFrame->setWidth(new Length('4cm'));
-        $textFrame->getStyle()->setBorderWidth(new Length('0.06pt'));
+        $textFrame->getStyle()->setBorder(new BorderStyle(new Length('0.06pt'), new Color('#000000')));
         $paragraph->createTextElement('Frame 2 - This text should not be wrapped.');
 
         $paragraph = $this->odtFile->createParagraph();
         $textFrame = $paragraph->createTextFrame();
         $textFrame->setHeight(new Length('2cm'));
         $textFrame->setWidth(new Length('2cm'));
-        $textFrame->getStyle()->setBorderWidth(new Length('5pt'));
-        $textFrame->getStyle()->setBorderColor(new Color('#ff0000'));
+        $textFrame->getStyle()->setBorder(new BorderStyle(new Length('5pt'), new Color('#ff0000')));
         $paragraph->createTextElement('Frame 3 - This text should not be wrapped.');
 
         $paragraph = $this->odtFile->createParagraph();
         $textFrame = $paragraph->createTextFrame();
         $textFrame->setHeight(new Length('2cm'));
         $textFrame->setWidth(new Length('2cm'));
-        $textFrame->getStyle()->setBorderWidth(new Length('5pt'));
-        $textFrame->getStyle()->setBorderColor(new Color('#ff0000'));
+        $textFrame->getStyle()->setBorder(new BorderStyle(new Length('5pt'), new Color('#ff0000')));
         $textFrame->getStyle()->setAlignCenter();
         $paragraph->createTextElement('Frame 4 - This text should not be wrapped.');
 
@@ -283,8 +282,7 @@ class ExampleBuilder
         $textFrame = $paragraph->createTextFrame();
         $textFrame->setHeight(new Length('2cm'));
         $textFrame->setWidth(new Length('2cm'));
-        $textFrame->getStyle()->setBorderWidth(new Length('5pt'));
-        $textFrame->getStyle()->setBorderColor(new Color('#ff0000'));
+        $textFrame->getStyle()->setBorder(new BorderStyle(new Length('5pt'), new Color('#ff0000')));
         $textFrame->getStyle()->setAlignRight();
         $paragraph->createTextElement('Frame 5 - This text should not be wrapped.');
 
@@ -296,8 +294,7 @@ class ExampleBuilder
         $textFrame = $paragraph->createTextFrame();
         $textFrame->setHeight(new Length('1.5cm'));
         $textFrame->setWidth(new Length('10cm'));
-        $textFrame->getStyle()->setBorderWidth(new Length('5pt'));
-        $textFrame->getStyle()->setBorderColor(new Color('#ff0000'));
+        $textFrame->getStyle()->setBorder(new BorderStyle(new Length('5pt'), new Color('#ff0000')));
         $textFrame->getStyle()->setWrapParallel();
         $paragraph->createTextElement(
             'Frame 6 - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.'
@@ -308,8 +305,7 @@ class ExampleBuilder
         $textFrame = $paragraph->createTextFrame();
         $textFrame->setHeight(new Length('1.5cm'));
         $textFrame->setWidth(new Length('10cm'));
-        $textFrame->getStyle()->setBorderWidth(new Length('5pt'));
-        $textFrame->getStyle()->setBorderColor(new Color('#ff0000'));
+        $textFrame->getStyle()->setBorder(new BorderStyle(new Length('5pt'), new Color('#ff0000')));
         $textFrame->getStyle()->setWrapParallel();
         $textFrame->getStyle()->setAlignCenter();
         $paragraph->createTextElement(
@@ -321,8 +317,7 @@ class ExampleBuilder
         $textFrame = $paragraph->createTextFrame();
         $textFrame->setHeight(new Length('1.5cm'));
         $textFrame->setWidth(new Length('10cm'));
-        $textFrame->getStyle()->setBorderWidth(new Length('5pt'));
-        $textFrame->getStyle()->setBorderColor(new Color('#ff0000'));
+        $textFrame->getStyle()->setBorder(new BorderStyle(new Length('5pt'), new Color('#ff0000')));
         $textFrame->getStyle()->setWrapParallel();
         $textFrame->getStyle()->setAlignRight();
         $paragraph->createTextElement(
