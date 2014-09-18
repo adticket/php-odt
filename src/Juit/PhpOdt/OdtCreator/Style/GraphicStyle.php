@@ -4,9 +4,15 @@ namespace Juit\PhpOdt\OdtCreator\Style;
 
 use DOMDocument;
 use DOMElement;
+use Juit\PhpOdt\OdtCreator\Value\BorderStyle;
 
 class GraphicStyle extends AbstractStyle
 {
+    /**
+     * @var BorderStyle|null
+     */
+    private $border = null;
+
     public function renderStyles(DOMDocument $document, DOMElement $parent)
     {
         $style = $this->createDefaultStyleElement($document, $parent);
@@ -30,6 +36,20 @@ class GraphicStyle extends AbstractStyle
         $graphicPropertiesElement->setAttribute('style:horizontal-pos', 'from-left');
         $graphicPropertiesElement->setAttribute('style:horizontal-rel', 'page');
         $graphicPropertiesElement->setAttribute('fo:padding', '0cm');
-        $graphicPropertiesElement->setAttribute('fo:border', 'none');
+
+        if (null !== $this->border) {
+            $border = $this->border->getValue();
+        } else {
+            $border = 'none';
+        }
+        $graphicPropertiesElement->setAttribute('fo:border', $border);
+    }
+
+    /**
+     * @param BorderStyle|null $border
+     */
+    public function setBorder(BorderStyle $border = null)
+    {
+        $this->border = $border;
     }
 }

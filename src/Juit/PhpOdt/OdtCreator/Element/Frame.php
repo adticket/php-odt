@@ -13,7 +13,7 @@ class Frame implements Element
     /**
      * @var \Juit\PhpOdt\OdtCreator\Style\GraphicStyle
      */
-    private $graphicStyle;
+    private $style;
 
     /**
      * @var StyleFactory
@@ -41,14 +41,14 @@ class Frame implements Element
     private $height;
 
     public function __construct(
-        GraphicStyle $graphicStyle,
+        GraphicStyle $style,
         StyleFactory $styleFactory,
         Length $xCoordinate,
         Length $yCoordinate,
         Length $width,
         Length $height
     ) {
-        $this->graphicStyle = $graphicStyle;
+        $this->style        = $style;
         $this->styleFactory = $styleFactory;
         $this->xCoordinate  = $xCoordinate;
         $this->yCoordinate  = $yCoordinate;
@@ -60,6 +60,14 @@ class Frame implements Element
      * @var Element[]
      */
     protected $subElements = array();
+
+    /**
+     * @return GraphicStyle
+     */
+    public function getStyle()
+    {
+        return $this->style;
+    }
 
     /**
      * @return Paragraph
@@ -88,7 +96,7 @@ class Frame implements Element
     public function renderToContent(DOMDocument $document, DOMElement $parent = null)
     {
         $frame = $document->createElement('draw:frame');
-        $frame->setAttribute('draw:style-name', $this->graphicStyle->getStyleName());
+        $frame->setAttribute('draw:style-name', $this->style->getStyleName());
         $frame->setAttribute('text:anchor-type', 'page');
         $frame->setAttribute('text:anchor-page-number', '1');
         $frame->setAttribute('svg:x', $this->xCoordinate->getValue());
