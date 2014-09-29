@@ -46,6 +46,7 @@ abstract class AbstractOdtToPdfRenderer
         $shellCommand = $this->createShellCommand($odtFile);
 
         $process = new Process($shellCommand);
+        $process->setTimeout(600);
         $process->run();
 
         if (!$process->isSuccessful()) {
@@ -83,6 +84,7 @@ abstract class AbstractOdtToPdfRenderer
             . " output {$tmpFile}";
 
         $process = new Process($shellCommand);
+        $process->setTimeout(600);
         $process->run();
 
         if (!$process->isSuccessful()) {
@@ -113,6 +115,7 @@ abstract class AbstractOdtToPdfRenderer
             . " output {$tmpFile}";
 
         $process = new Process($shellCommand);
+        $process->setTimeout(600);
         $process->run();
 
         if (!$process->isSuccessful()) {
