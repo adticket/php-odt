@@ -9,6 +9,11 @@
             "email": "ju@juit.de",
             "homepage": "http://www.juit.de",
             "role": "developer"
+        }, {
+            "name": "Christian Nielebock",
+            "email": "christian.nielebock@reservix.de",
+            "homepage": "http://reservix.de",
+            "role": "developer"
         }
     ],
     "require": {
