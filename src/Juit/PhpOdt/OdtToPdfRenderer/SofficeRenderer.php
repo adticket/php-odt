@@ -17,38 +17,46 @@ class SofficeRenderer extends AbstractOdtToPdfRenderer
     private $libreOfficeBinaryPath;
 
     /**
+     * @var string
+     */
+    private $homeFolder;
+
+    /**
      * SofficeRenderer constructor.
      *
      * @param SplFileInfo|null $backgroundPdfPath
      * @param SplFileInfo|null $stampPdfPath
      * @param string|null      $libreOfficeBinaryPath
+     * @param string|null      $homeFolder
      */
     public function __construct(
         SplFileInfo $backgroundPdfPath = null,
         SplFileInfo $stampPdfPath = null,
-        $libreOfficeBinaryPath = null
+        $libreOfficeBinaryPath = null,
+        $homeFolder = null
     ) {
         parent::__construct($backgroundPdfPath, $stampPdfPath);
 
         if (null === $libreOfficeBinaryPath) {
             $libreOfficeBinaryPath = '/usr/bin/soffice';
         }
-        $this->libreOfficeBinaryPath = $libreOfficeBinaryPath;
-    }
 
-    /**
-     * @param \SplFileInfo $odtFile
-     * @param string       $homeFolder
-     * @return string
-     */
-    protected function createShellCommand(\SplFileInfo $odtFile, $homeFolder = null)
-    {
         if (null === $homeFolder) {
             $homeFolder = 'file:///var/www/web/libreoffice';
         }
 
+        $this->libreOfficeBinaryPath = $libreOfficeBinaryPath;
+        $this->homeFolder = $homeFolder;
+    }
+
+    /**
+     * @param \SplFileInfo $odtFile
+     * @return string
+     */
+    protected function createShellCommand(\SplFileInfo $odtFile)
+    {
         return $this->libreOfficeBinaryPath .
-            ' -env:UserInstallation=' . $homeFolder . ' --headless --convert-to pdf ' .
+            ' -env:UserInstallation=' . $this->homeFolder . ' --headless --convert-to pdf ' .
             $odtFile->getPathname() .
             ' --outdir ' . $odtFile->getPath();
     }
