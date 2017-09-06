@@ -45,6 +45,6 @@ class SofficeRenderer extends AbstractOdtToPdfRenderer
         return $this->libreOfficeBinaryPath .
             ' -env:UserInstallation=file:///var/www/web/libreoffice --headless --convert-to pdf ' .
             $odtFile->getPathname() .
-            '--outdir ' . $odtFile->getPath();
+            ' --outdir ' . $odtFile->getPath();
     }
 }
